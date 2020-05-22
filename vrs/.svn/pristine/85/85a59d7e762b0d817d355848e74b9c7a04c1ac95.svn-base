@@ -1,0 +1,451 @@
+package com.bootdo.vrs.pageh5.controller;
+
+
+import com.alibaba.fastjson.JSON;
+import com.bootdo.common.utils.MD5Utils;
+import com.bootdo.common.utils.R;
+import com.bootdo.common.utils.ShiroUtils;
+import com.bootdo.common.utils.StringUtils;
+import com.bootdo.school.annotations.LoginRequired;
+import com.bootdo.school.common.MessageConstant;
+import com.bootdo.school.util.CookieUtil;
+import com.bootdo.school.util.RedisUtil;
+import com.bootdo.school.util.TokenUtil;
+import com.bootdo.system.dao.RoleDao;
+import com.bootdo.system.dao.UserDao;
+import com.bootdo.system.domain.RoleDO;
+import com.bootdo.system.domain.UserDO;
+import com.bootdo.system.service.UserService;
+import com.bootdo.vrs.common.BaseController;
+import com.bootdo.vrs.common.MessageConstantVrs;
+import com.bootdo.vrs.domain.UserImgclsDO;
+import com.bootdo.vrs.domain.UserShopDO;
+import com.bootdo.vrs.service.UserImgclsService;
+import com.bootdo.vrs.service.UserShopService;
+import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+
+@Controller
+@RequestMapping("/vrs/user")
+public class UserVrController  extends BaseController {
+
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserDao userDao;
+
+
+
+    @Autowired
+    private UserImgclsService userImgclsService;
+
+    @Autowired
+    private RoleDao roleDao;
+
+
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+    @Autowired
+    private UserShopService userShopService;
+
+
+
+
+    @GetMapping("/login")
+    public String login(HttpServletRequest request,@RequestParam(defaultValue = "/vrs/houses/index") String url,ModelMap map){
+        map.put("path",url);
+        return MessageConstantVrs.VRSH5_PAGE+"login";
+    }
+
+    @GetMapping("/to_outLogin")
+    @LoginRequired(loginSuccess = false)
+    public String to_outLogin(HttpServletRequest request, HttpServletResponse resp, String url, ModelMap map){
+            Jedis jedis=redisUtil.getJedis();
+        try {
+            CookieUtil.deleteCookie(request,resp,MessageConstant.UserCookieToken);
+            String uid=request.getAttribute("uid")+"";
+            jedis.del("token:"+uid);
+            ShiroUtils.logout();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return "redirect:/vrs/user/login";
+    }
+
+
+
+    @ResponseBody
+    @RequestMapping("/order")
+    @LoginRequired
+    public  String order(HttpServletRequest request){
+
+        try {
+            InetAddress ia = InetAddress.getLocalHost();
+            System.out.println(ia.toString());
+            System.out.println(ia.getHostName());//域名               127
+            System.out.println(ia.getHostAddress());//ip地址
+        }
+        catch (Exception e){
+                e.printStackTrace();
+        }
+
+
+        System.out.println( request.getAttribute("username")+"//"+request.getAttribute("username"));
+        return  "登录1成功";
+    }
+
+
+    @PostMapping("/login")
+    @ResponseBody
+    public Map<String,Object> login(HttpServletRequest request,String username,String password){
+        String token = "";
+        UserDO userdoSucess = null;
+        Jedis jedis = null;
+        Map<String, Object> sucessMap = new HashMap<String, Object>();
+        sucessMap.put("token", token);
+        try {
+            start();
+            if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+                message(MessageConstant.APP_USERLOGIN_DISBLE);
+                success(false);
+                return end();
+            }
+            //先查redis
+            jedis = redisUtil.getJedis();
+            //tel就是账号 学员的 商家的
+            String key = MessageConstantVrs.VRUSERKEE + username + ":" + MD5Utils.encrypt(username, password) ;
+            String userVal = jedis.get(key);
+            if (StringUtils.isNotBlank(userVal)&&!("".equals(userVal))) {
+                //直接赋值返回
+                userdoSucess = JSON.parseObject(userVal, UserDO.class);
+            } else {
+                //封装用户信息
+                UserDO userDO = new UserDO();
+                userDO.setUsername(username);
+                userDO.setPassword(MD5Utils.encrypt(username, password));
+                userdoSucess = userService.vrLogin(userDO);
+
+            }
+
+            //null的话跑异常
+            if (userdoSucess != null) {
+                jedis.setex(key, MessageConstantVrs.VRUSERTIME, JSON.toJSONString(userdoSucess));
+                //jwt封装
+                token = new TokenUtil().getUserToken(userdoSucess, request);
+                if (StringUtils.isNotBlank(token)){
+                    sucessMap.put("token",token);
+                    message(MessageConstant.APP_USERLOGIN_SUCESS);
+                    success(true);
+                    data(sucessMap);
+                    //token设置过期时间 防止用户退出登录拿到token重复刷新
+                    jedis.setex("token:"+userdoSucess.getUserId(),60*30,token);
+                    //保存到后台登录
+                    if ("vr".equals(userdoSucess.getIdfind())) {
+                        UsernamePasswordToken tokens = new UsernamePasswordToken(userdoSucess.getUsername(), userdoSucess.getPassword());
+                        Subject subject = SecurityUtils.getSubject();
+                        subject.login(tokens);
+                    }
+
+                }
+                else{
+                    message(MessageConstant.APP_USERLOGIN_ERROR);
+                    success(false);
+                }
+            }else {
+                message(MessageConstant.APP_USERLOGIN_ERROR);
+                success(false);
+
+            }
+
+
+        } catch (RuntimeException e) {
+            message(e.getMessage());
+            success(false);
+            e.printStackTrace();
+        } catch (Exception e) {
+            message(MessageConstant.APP_USERLOGIN_ERROR);
+            success(false);
+            e.printStackTrace();
+        } finally {
+            if (jedis != null)
+                jedis.close();
+        }
+
+        return end();
+    }
+
+    @RequestMapping("/index")
+    @LoginRequired(loginSuccess = false)
+    public  String index(HttpServletRequest req){
+        System.out.println( req.getAttribute("username")+"//"+req.getAttribute("uid"));
+
+
+        //不需要登录也可以1 访问
+        System.out.println("测试登录页面");
+        return  "test";
+
+    }
+
+
+
+    @RequestMapping("/to_regite")
+    public  String to_regiter(ModelMap map, HttpServletRequest request){
+        map.put("roles",roleDao.getVrRole(MessageConstantVrs.GETVR_RID));
+        return  MessageConstantVrs.VRSH5_PAGE+"register";
+    }
+
+    @ResponseBody
+    @RequestMapping("/getRoles")
+    public  List<RoleDO> getRoles(){
+        List<RoleDO> r=roleDao.getVrRole(MessageConstantVrs.GETVR_RID);
+        return  r;
+    }
+
+
+
+
+    //h5注册 不被拦截的注册1
+    @ResponseBody
+    @RequestMapping("/addH5user")
+    public R addH5user(UserDO user){
+        //设置创建当前用户的id
+        //添加账号给自己
+        //user.setUserIdCreate(getUserId());
+        int c=userDao.queryUsernameAndPwd(user);
+        if (c>0){
+
+            return  R.error("用户名手机号码重复!");
+        }
+
+        user.setRid(59l);
+        user.setStatus(1);
+        user.setIsVip(0);
+        user.setIdfind("vr");
+        user.setUsername(user.getMobile());
+        user.setName(user.getMobile());
+        user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
+        //user.setRid(59);
+        try {
+            if(userService.save(user)>0){
+                return R.ok();
+            }
+        }
+        catch (RuntimeException e){
+            return  R.error(e.getMessage());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+           return R.error();
+        }
+
+        return R.ok();
+    }
+
+    /*
+    加入我的云视
+     */
+    @RequestMapping("/saveMyPro")
+    @LoginRequired
+    @ResponseBody
+    public  Map<String,Object> saveMyPro(ModelMap map, HttpServletRequest request,String proid,String name){
+        String uid=request.getAttribute("uid")+"";
+        if (StringUtils.isBlank(uid)){
+            success(false);
+            message(MessageConstant.LoginMessageError);
+            return end();
+        }
+        RLock rLock=redissonClient.getLock(uid+":"+MessageConstant.VR_MY_LOCK);
+        try {
+
+                start();
+                boolean lock= rLock.tryLock(10, TimeUnit.SECONDS);
+                if (lock==true) {
+                    UserImgclsDO userImgclsDO=new UserImgclsDO();
+                    userImgclsDO.setUid(Integer.parseInt(uid));
+                    userImgclsDO.setCid(Integer.parseInt(proid));
+                    userImgclsDO.setName(name);
+                    userImgclsDO.setCreeatedate(new Date());
+                    userImgclsService.saveMyPro(userImgclsDO);
+                    success(true);
+                    message(MessageConstantVrs.USER_PRO_SUCCESS);
+                }
+                else{
+                    System.out.println("等待中");
+                }
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+            success(false);
+            message(e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            success(false);
+            message(MessageConstantVrs.USER_PRO_ERROR);
+            e.printStackTrace();
+        }
+        finally {
+            if (rLock!=null)
+                rLock.unlock();
+        }
+
+
+        return  end();
+    }
+
+    @RequestMapping("/getUserisVip")
+    @LoginRequired
+    @ResponseBody
+    public  Map<String,Object> getUserisVip(HttpServletRequest request){
+        try {
+            start();
+            String uid=request.getAttribute("uid")+"";
+            if (StringUtils.isBlank(uid)){
+                success(false);
+                message(MessageConstant.LoginMessageError);
+                return end();
+            }
+
+            UserDO userDO=userService.get(Long.parseLong(uid));
+            success(userDO.getIsVip()==1?true:false);
+
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+            success(false);
+            message(e.getMessage());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            success(false);
+            message(MessageConstantVrs.USER_PRO_ERROR);
+
+            e.printStackTrace();
+        }
+        finally {
+
+        }
+
+
+        return  end();
+    }
+
+
+    @RequestMapping("/getUserVerity")
+    @ResponseBody
+    @LoginRequired(loginSuccess = false)
+    public  Map getUserVerity(HttpServletRequest request){
+        try {
+            start();
+            String uid=request.getAttribute("uid")+"";
+            if (StringUtils.isNotBlank(uid)&&!("null".equals(uid))){
+                success(true);
+            }
+            else {
+                success(false);
+                message(MessageConstantVrs.USER_VR_LOGIN);
+
+            }
+
+
+        }
+        catch ( Exception e){
+            success(false);
+            message(MessageConstantVrs.USER_VR_LOGIN);
+            e.printStackTrace();
+        }
+        return  end();
+    }
+
+
+    //1 101
+    @RequestMapping("/saveMyShop")
+    @ResponseBody
+    @LoginRequired
+    public Map<String,Object> saveMyShop(HttpServletRequest req,Integer proid,String name){
+
+
+            try {
+                start();
+               String uid=req.getAttribute("uid")+"";
+                if (StringUtils.isBlank(uid)){
+                    success(false);
+                    message(MessageConstant.LoginMessageError);
+                    return end();
+                }
+                //加入购物车
+                UserShopDO userShopDO=new UserShopDO();
+                userShopDO.setUid(Integer.parseInt(uid));
+                userShopDO.setCreatedate(new Date());
+                userShopDO.setName(name);
+                userShopDO.setProid(proid);
+                userShopService.saveMyShop(userShopDO);
+                success(true);
+                message(MessageConstant.USERSHOPSUCCESS);
+
+            }
+            catch (RuntimeException e){
+                success(false);
+                message(e.getMessage());
+            }
+            catch (Exception e){
+                success(false);
+                message(MessageConstant.USERSHOPERROR);
+                e.printStackTrace();
+            }
+            finally {
+
+            }
+               return end();
+    }
+
+    @RequestMapping("/to_userPro")
+    @LoginRequired
+    public  String to_userPro(HttpServletRequest request,ModelMap map,@RequestParam(defaultValue = "1") Integer page,String name){
+        String uid=request.getAttribute("uid")+"";
+        if (StringUtils.isBlank(uid)||"null".equals(uid)){
+            return  "redirect:/vrs/user/login";
+        }
+        Map<String,Object> parems=new HashMap<String,Object>();
+        parems.put("name",name);
+        System.out.println(uid);
+        map.put("maps",saveIndex());
+        PageInfo<UserImgclsDO> pageinfo=userImgclsService.to_userPro(Integer.parseInt(uid),page,parems);
+        List<UserImgclsDO> proDOList=pageinfo.getList();
+        map.put("info",pageinfo);
+        map.put("name",name);
+        map.put("page",page);
+        return MessageConstantVrs.VRSH5_PAGE+"html/mySearch";
+    }
+
+
+}

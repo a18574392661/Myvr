@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+		<style>
+			.shouyin{font-size: 23px; position: absolute; margin-top: 40px; margin-left: 15px;}
+			.order{height: 100px; background-color: #F2F2F2;}
+			.order-ys{padding: 16px 0px 0px 16px;width: 50%;float: left;}
+			.order-yf{width: 50%;float: right; margin-top: 35px;}
+			.jine-ys{float: right; padding-right: 10px;}
+			.wechat-pay{border: 2px solid #ff0000; width: 60%;margin:0px auto;margin-top: 30px;text-align: center;}
+			.wepaylogo{width: 120px;padding-top: 5px;padding-bottom: 5px;}
+			.QR-card{margin:0px auto;margin-top: 30px;text-align: center;}
+		</style>
+	</head>
+	<body>
+
+	<script src="/js/jquery.min.js"></script>
+		<main role="main">
+			<div class="container">
+				<div>
+					<img src="/vrH5/assets/images/logo.jpg" style="height: 100px; padding: 20px 0 " />
+					<font class="shouyin">收银台</font>
+				</div>
+				<div class="order">
+					<div class="order-ys">
+						<p>订单编号：<span th:text="${code}"></span></p>
+						<p>订单类型：<span th:text="${remker}"></span></p>
+					</div>
+					<div class="order-yf">
+						<div class="jine-ys"><nobr>应付金额：
+							<font size="4" style="font-weight: bold;">￥ <span th:text="${price}"></span></font></nobr>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" th:value="${code}" id="ordercode">
+				<div class="wechat-pay">
+					<img src="/vrH5/img/WePayLogo.png" class="wepaylogo" />
+					<img src="/vrH5/img/button.png" style="width: 40px;" />
+					<span style="font-size: 3px; color: #A4A4A4;">亿万用户的选择，更快更安全</span>
+				</div>
+				<div class="QR-card">
+					<div>
+						<!-- /vrH5/img/erweima.png 动态二维码-->
+						<img id="src"/>
+					</div>
+					<div>
+						<img src="/vrH5/img/explain.png" />
+					</div>
+				</div>
+				
+			</div>
+			<script>
+
+				$(function () {
+					$("#src").attr("src","/api/wxpay/wxPayNative?code="+$("#ordercode").val());
+					//测试
+					$.get("/api/wxpay/wxPayNative",{"ordercode":$("#ordercode").val(), "WIDtotal_fee": 1},function (data) {
+
+						console.log( data )
+						
+						//$("#src").attr("src","/api/wxpay/payImg?code="+data.urlCode)
+
+					})
+				})
+
+			</script>
+
+	</body>
+</html>

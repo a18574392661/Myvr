@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vr.dao.LeftStyleDao">
+
+
+ 	<resultMap id="topLeftMap" type="java.util.Map">
+   		<result property="topId" column="topId"/>
+   		<result property="topName" column="topName"/>
+   		<result property="topLogo" column="topLogo"/>
+    	
+    	<collection property="leftStyle" javaType="java.util.List" ofType="java.util.Map">
+    		<result property="leftId" column="leftId"/>
+    		<result property="leftName" column="leftName"/>
+    		<result property="leftLogo" column="leftLogo"/>
+    		<result property="cad" column="cad"/>
+    	</collection>
+    </resultMap>
+
+	<select id="queryAllTopAndLeftStyles" resultMap="topLeftMap">
+	select 
+	a.top_id topId,a.top_name topName, a.top_logo topLogo,
+	b.left_id leftId,b.left_name leftName,b.left_logo leftLogo,b.cad 
+	from vr_top_style a
+	left join vr_left_style b on a.top_id=b.top_style_id
+	order by a.top_sort,b.left_sort
+	</select>
+
+
+	<select id="get" resultType="com.bootdo.vr.domain.LeftStyleDO">
+		select `left_id`,`top_style_id`,`left_name`,`left_sort`,`left_logo`,cad from vr_left_style where left_id = #{value}
+	</select>
+
+	<select id="queryByTopStyleId"  resultType="com.bootdo.vr.domain.LeftStyleDO">
+		select * from vr_left_style where top_style_id=#{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.vr.domain.LeftStyleDO">
+		select a.*,b.top_name from vr_left_style a 
+		left join vr_top_style b on a.top_style_id = b.top_id
+        <where>  
+  		  <if test="leftId != null and leftId != ''"> and a.left_id = #{leftId} </if>
+  		  <if test="topStyleId != null and topStyleId != ''"> and a.top_style_id = #{topStyleId} </if>
+  		  <if test="leftName != null and leftName != ''"> and a.left_name = #{leftName} </if>
+  		  <if test="leftSort != null and leftSort != ''"> and a.left_sort = #{leftSort} </if>
+  		  <if test="leftLogo != null and leftLogo != ''"> and a.left_logo = #{leftLogo} </if>
+  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by left_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vr_left_style a 
+		left join vr_top_style b on a.top_style_id = b.top_id
+        <where>  
+  		  <if test="leftId != null and leftId != ''"> and a.left_id = #{leftId} </if>
+  		  <if test="topStyleId != null and topStyleId != ''"> and a.top_style_id = #{topStyleId} </if>
+  		  <if test="leftName != null and leftName != ''"> and a.left_name = #{leftName} </if>
+  		  <if test="leftSort != null and leftSort != ''"> and a.left_sort = #{leftSort} </if>
+  		  <if test="leftLogo != null and leftLogo != ''"> and a.left_logo = #{leftLogo} </if>
+  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vr.domain.LeftStyleDO"  useGeneratedKeys="true" keyProperty="leftId">
+		insert into vr_left_style
+		(
+			`top_style_id`, 
+			`left_name`, 
+			`left_sort`, 
+			`left_logo`,
+			cad
+		)
+		values
+		(
+			#{topStyleId}, 
+			#{leftName}, 
+			#{leftSort}, 
+			#{leftLogo},
+			#{cad}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vr.domain.LeftStyleDO">
+		update vr_left_style 
+		<set>
+			<if test="topStyleId != null">`top_style_id` = #{topStyleId}, </if>
+			<if test="leftName != null">`left_name` = #{leftName}, </if>
+			<if test="leftSort != null">`left_sort` = #{leftSort}, </if>
+			<if test="cad != null">`cad` = #{cad}, </if>
+			<if test="leftLogo != null">`left_logo` = #{leftLogo}</if>
+		</set>
+		where left_id = #{leftId}
+	</update>
+	
+	<delete id="remove">
+		delete from vr_left_style where left_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vr_left_style where left_id in 
+		<foreach item="leftId" collection="array" open="(" separator="," close=")">
+			#{leftId}
+		</foreach>
+	</delete>
+
+</mapper>

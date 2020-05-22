@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/tsH5/css/base.css">
+    <link rel="stylesheet" href="/tsH5/css/app.css" type="text/css" />
+	
+	<script src="/tsH5/js/mui.min.js"></script>
+	<link href="/tsH5/css/mui.min.css" rel="stylesheet"/>
+	<link href="/tsH5/css/mui.picker.css" rel="stylesheet" />
+	<link href="/tsH5/css/mui.poppicker.css" rel="stylesheet" />
+</head>
+<body>
+<form id="postForm">
+    <div class="wrap">
+        <div class="box">
+			<input type="hidden" th:value="${cur.cid}" id="kid">
+			<input type="hidden" name="cid" th:value="${cur.id}" id="id">
+			<input type="hidden" name="zid" th:value="${zid}" id="zid">
+			<input type="hidden" name="uname"  th:value="${name}"  id="name">
+			<input type="hidden" name="tel" th:value="${tel}" id="tel">
+            <div class="box-yuxuan">
+                <div>
+					<p class="box-p">姓名：</p>
+					<div class="box-div" th:text="${name}">张三</div>
+				</div>
+            </div>
+
+			<div class="box-yuxuan">
+				<div>
+					<p class="box-p2">联系电话：</p>
+					<div class="box-div" th:text="${tel}">18452452154</div>
+				</div>
+			</div>
+			<div class="box-yuxuan">
+				<div>
+					<p class="box-p2">开课日期：</p>
+					<div class="box-div" th:text="${#dates.format(cur.daydate, 'yyyy-MM-dd')}" >2020-05-15</div>
+				</div>
+			</div>
+			<div class="box-yuxuan">
+				<div>
+					<p class="box-p2">选择课时：</p>
+					<div class="box-div" th:text="${cur.cname}">第三节课</div>
+				</div>
+			</div>
+        </div>
+		
+		<div class="queding" onclick="go_yy()">提交</div>
+    </div>
+</form>
+	
+    <script type="text/javascript" src="/tsH5/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/tsH5/js/common.js"></script>
+	<script src="/tsH5/js/mui.picker.js"></script>
+	<script src="/tsH5/js/mui.poppicker.js"></script>
+    <script type="text/javascript">
+		$("body").show();
+	</script>
+<script>
+	function go_yy() {
+			$.get("/h5/curr/qdYuyue",$('#postForm').serialize(), function (data) {
+
+				alert(data.msg);
+				if (data.code==0){
+					//去选择星期的页面
+					location.href="/h5/curr/to_cnameDays?cid="+$("#kid").val();
+				}
+
+			})
+	}
+</script>
+</body>
+</html>

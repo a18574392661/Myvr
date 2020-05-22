@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>用户信息</title>
+		<script src="/appPage/js/jquery.min.js"></script>
+		<script src="/appPage/js/common.js"></script>
+		<script src="/appPage/js/mui.min.js"></script>
+		<link href="/appPage/css/mui.min.css" rel="stylesheet"/>
+		<link href="/appPage/css/iconfont.css" rel="stylesheet"/>
+		<link href="/appPage/css/common.css" rel="stylesheet"/>
+		<link rel="stylesheet" type="text/css" href="/appPage/css/datedropper.css">
+		<link rel="stylesheet" type="text/css" href="/appPage/css/timedropper.min.css">
+		<style>
+			.radio_input{
+				
+			}
+			.item input[type=text],.item input[type=time],.item .radio_input{
+				width: 80px;
+				height: 30px;
+				border-radius: 20px;
+				font-size: 12px;
+				margin: 0;
+			}
+			.item .radio_input{border: 1px solid #b5b5b5; text-align: center; line-height: 30px;font-size: 14px;}
+			.mui-table-view-cell>a:not(.mui-btn){display: flex;flex-direction: row;align-items: center;justify-content: space-between;}
+			.item{ display: flex; align-items: center;}
+			
+			.boll{border-radius: 50%;width: 20px;height: 20px;background-color: #0077EB; text-align: center; line-height: 20px; color: #fff; font-size: 14px; font-weight: 600;}
+			.num{
+				margin: 0 5px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			select{margin: 0; background: none;padding: 0; }
+			.mui-bar-tab{height: 150px;}
+			.mui-bar .mui-btn{
+				width: 80%;
+				margin: 0 auto;
+				border-radius: 25px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #fff;"></a>
+			<h1 class="mui-title">学员优惠券信息</h1>
+		</header>
+		
+		<div id="" class="mui-content">
+			
+			<div class="mui-card" style="border-radius: 5px 5px 5px 5px;">
+				<!--页眉，放置标题-->
+				<div class="mui-card-header">优惠编号：<span th:text="${ucoupon.code !=''?ucoupon.code:'' }"></span>
+					<!--判断修改 时间不为null-->
+
+
+			<div th:text="${ucoupon.updatedate!=null?'已使用过':'未使用过'}" class="" style="color:#FF601C; width: 60px; height: 18px; border-radius: 10px;text-align: center; line-height: 18px;background-color: #FFEEE7; font-size: 5px;">
+
+				</div>
+				</div>
+				<input type="hidden" id="busid" th:value="${busid}">
+				<input type="hidden" id="couid" th:value="${ucoupon.id}">
+				<!--内容区-->
+				<div style="padding-top: 5px;">
+					<font color="#9A9A9A" style="font-size: 15px; padding-left: 15px;">名称</font>
+					<div style="position: absolute; font-size: 15px; margin-top: -20px; right: 10px; color: #676767;" th:text="${ucoupon.name}"></div>
+				</div>
+				<div style="padding-top: 5px;">
+					<font color="#9A9A9A" style="font-size: 15px; padding-left: 15px;">手机</font>
+					<div style="position: absolute; font-size: 15px; margin-top: -20px; right: 10px; color: #676767;" th:text="${ucoupon.userDO.username}"></div>
+				</div>
+				<div style="padding-top: 5px; padding-bottom: 5px;">
+					<font color="#9A9A9A" style="font-size: 15px; padding-left: 15px;">剩余金额</font>
+					<div style="position: absolute; font-size: 15px; margin-top: -20px; right: 10px; color: #676767;" th:text="${ucoupon.price}">0</div>
+					<input type="hidden" id="price" th:value="${ucoupon.price}">
+				</div>
+
+				<!--	<div style="padding-top: 5px; padding-bottom: 5px;">
+					<font color="#9A9A9A" style="font-size: 15px; padding-left: 15px;">请输入使用金额</font>
+					<input type="number" id="myPrice" placeholder="请输入使用金额" min="0" required="required">
+				</div>-->
+
+				<div style="padding-top: 5px; padding-bottom: 5px;">
+					 <center>
+						 <div width="3rem" height="5rem" class="" style="color:#FF601C; min-width: 60px;max-width: 120px;padding: 2px 0; border-radius: 10px;text-align: center;background-color: #FFEEE7; font-size: 5px;"  onclick="showUserLog()">使用记录查看</div>
+						 <!--<div class="" style="color:#FF601C; width: 60px; height: 18px; border-radius: 10px;text-align: center; line-height: 18px;background-color: #FFEEE7; font-size: 5px;" th:height="70px" onclick="xy()">去使用</div>-->
+					 </center>
+				</div>
+
+				<div style="padding-top: 5px; padding-bottom: 5px;">
+					<center>
+
+					<font style="color: red;size: 30px;" id="zt"></font>
+					</center>
+				</div>
+
+
+
+
+			</div>
+		</div>
+		
+			
+
+	<script>
+		$(function () {
+			 var busid=$("#busid").val();
+			 //var couid=$("#couid").val();
+			if(parseFloat($("#price"))<=0){
+				return;
+			}
+            var times=setInterval(function (){
+               $.post("/api/user/userBusStatusShow",{"busid":busid},function (data) {
+				    if(data.success&&data.data!=null){
+				        if(confirm(data.message)){
+				            //关闭当前 改状态
+							$.post("/api/user/userBusStatus",{"id":data.data.id,"price":data.data.price,"status":1,"busid":data.data.busid},function (res) {
+							    	alert(res.message)
+								if (res.success){
+								    //去成功页面
+
+									location.href="/api/user/to_hxSuccess?price="+res.data.price+"&createDate="+res.data.createDate+"&quedinDate="+res.data.quedinDate;
+
+								}
+
+                            })
+                            window.clearInterval(times)
+
+						}
+						else{
+                            $.post("/api/user/userBusStatus",{"id":data.data.id,"status":2,"busid":data.data.busid},function (data) {
+                                alert(data.message);
+                                window.clearInterval(times)
+
+                            })
+
+						}
+
+
+
+					}
+					else {
+				        //没数据 不监听 关闭
+                        window.clearInterval(times)
+
+					}
+
+               })
+
+
+            }, 5000);
+       	 })
+
+
+		function  xy() {
+			var myPrice=$("#myPrice").val();
+			var price=$("#price").val();
+
+			if (parseFloat(myPrice)>parseFloat(price)){
+				 $("#zt").html("使用金额不能超过总金额!");
+				  return;
+			}
+
+			//ajax请求到后端 使用价格 优惠券id
+			$.post("/api/user/userCoupon_hx",{"price":myPrice,"couid":$("#couid").val()},function (data) {
+				if (data.success){
+					//去成功页面
+					location.href="/api/user/to_hxSuccess?price="+data.data.price+"&createDate="+data.data.createDate;
+				}else {
+
+                    $("#zt").html(data.message);
+				}
+
+            })
+        }
+
+        function showUserLog() {
+		    /*该学员的优惠券记录*/
+			location.href="/api/user/userBusPayLog"
+        }
+	</script>
+		
+	</body>
+	
+</html>

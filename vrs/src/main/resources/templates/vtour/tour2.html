@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>krpano - 2</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=edge" />
+	<link href="https://cdn.bootcss.com/layer/2.3/skin/layer.css" rel="stylesheet">
+	<style>
+		@-ms-viewport { width:device-width; }
+		@media only screen and (min-device-width:800px) { html { overflow:hidden; } }
+		html { height:100%; }
+		body { height:100%; overflow:hidden; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#FFFFFF; background-color:#000000; }
+		li {
+			list-style:none;
+			font-size: 12px;
+		}
+		li a{color: #fff;text-decoration: none;}
+		.box1 {
+			width:120px;
+			height:56px;
+			overflow:hidden;
+			position:absolute;
+			left:50%;
+			top:10px;
+			margin-left: -60px;
+		}
+		.box1 .wrap {
+			width:120px;
+            height:56px;
+            overflow-x:scroll;
+            overflow-y:hidden;
+		}
+		.box1 .wrap ul {
+			display:flex;
+			padding:0;
+			margin:0;
+		}
+		.box1 .wrap ul li {
+			margin: 0 5px;
+			height:40px;
+			box-sizing:border-box;
+		}
+		.box1 .wrap li img{
+			width: 32px;
+			height: 32px;
+		}
+		.box1 .wrap ul li span{
+			display:block;
+			text-align:center;
+			word-break:keep-all;           /* 不换行 */
+			white-space:nowrap;          /* 不换行 */
+			overflow:hidden;               /* 内容超出宽度时隐藏超出部分的内容 */
+			text-overflow:ellipsis;
+		}
+		
+		.box2 {
+			height:120px;
+			width:48px;
+			overflow:hidden;
+			position:absolute;
+			left:10px;
+			top:50%;
+			margin-top: -60px;
+		}
+		.box2 .wrap {
+			height:120px;
+            width:48px;
+            overflow-x:hidden;
+            overflow-y:scroll;
+		}
+		.box2 .wrap ul {
+			padding:0;
+			margin:0;
+		}
+		.box2 .wrap ul li {
+			margin: 5px 0;
+			width:32px;
+			height:32px;
+		}
+		.box2 .wrap li img{
+			width: 32px;
+			height: 32px;
+		}
+	</style>
+</head>
+<body>
+
+<script src="/vtour/tour.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/vtour/template-web.js"></script>
+
+<div id="pano" style="width:100%;height:100%;">
+	<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
+	<script>
+		var krpanoReady = function(krpano){
+		  	var xml = '<scene name="scene_10" thumburl="/vtour/panos/3.tiles/thumb.jpg"><preview url="/vtour/panos/2.tiles/preview.jpg" /><image><sphere url="/vtour/scene.jpg" /></image></scene>'
+		  	krpano.call("loadxml(" + xml + ");loadscene(scene_10);")
+		}
+		//embedpano({swf:"/vtour/tour.swf", xml:"/vtour/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true, onready: krpanoReady});
+		embedpano({swf:"/vtour/tour.swf", xml:"/vtour/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true});
+		/*定义控件*/
+		var krpano = document.getElementById("krpanoSWFObject");
+		var fov = 100, hlookat = 0, vlookat = 0;
+		function getScene(){
+			/*获取变量*/
+			fov = Number(krpano.get("view.fov"));
+			hlookat = Number(krpano.get("view.hlookat"));
+			vlookat = Number(krpano.get("view.vlookat"));
+			
+			console.log(krpano.get("xml.scene"), krpano.get("scene[get(xml.scene)].index") )
+		}
+		function setScene(){
+			krpano.set("view.fov", fov);
+			krpano.set("view.hlookat", hlookat);
+			krpano.set("view.vlookat", vlookat);
+		}
+		//切换场景
+		function krpanoLoadScene(p1, p2) {
+			//var sceneName = krpano.get("xml.scene");
+			console.log('切换场景');
+		}
+
+		function playAudio(obj){
+			console.log(obj)
+			var audio = document.getElementById("audio");
+			if(audio !== null){             
+			    //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+			   //alert(audio.paused);
+			  if(audio.paused){     
+				  audio.currentTime = 0;
+			      audio.play();//audio.play();// 这个就是播放  
+			      $(obj).find("img").attr("src", "/vtour/images/stop.jpg");
+			  }else{
+				   audio.pause();// 这个就是暂停
+				   $(obj).find("img").attr("src", "/vtour/images/play.jpg");
+			  }
+			} 
+		}
+	</script>
+</div>
+
+<div class="box1">
+    <div class="wrap">
+        <ul id="styleGfList">
+            <li><a href="javascript:;" onclick="loadpano('/vtour/tour.xml','scene_2')"><img src="/krpano1/skin/icon-phone.png" alt=""></a></li>
+			<li><a href="javascript:;" onclick="changeScene();"><img src="/krpano1/skin/icon-like.png" alt=""></a></li>
+			<li><a href="javascript:;" onclick="loadpano('/krpano/tour.xml','test3')"><img src="/krpano1/skin/icon-share.png" alt=""></a></li>
+			<li><a href="javascript:;" onclick="playAudio(this)"><img src="/vtour/images/stop.jpg"></a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="box2">
+    <div class="wrap">
+	<ul class="icon-left">
+		<li><a href="javascript:;" onclick="loadpano('/vtour/tour.xml','scene_2')"><img src="/krpano1/skin/icon-phone.png" alt=""></a></li>
+		<li><a href="javascript:;" onclick="changeScene();"><img src="/krpano1/skin/icon-like.png" alt=""></a></li>
+		<li><a href="javascript:;" onclick="loadpano('/krpano/tour.xml','test3')"><img src="/krpano1/skin/icon-share.png" alt=""></a></li>
+		<li><a href="javascript:;" onclick="playAudio(this)"><img src="/vtour/images/stop.jpg"></a></li>
+	</ul>
+	</div>
+</div>
+
+<div id="backAudioDiv" style="visibility: hidden;">
+	<audio id="audio" controls autoplay src="/vtour/mp3/music.mp3" loop></audio>
+</div>
+
+<script id="styleGfTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li>
+			<a href="javascript:;" onclick="loadpano('/vtour/tour.xml','scene_2')">
+				<img src="/krpano1/skin/icon-phone.png" alt="">
+				<span>{{scene.BigTypeName}}</span>
+			</a>
+		</li>
+	{{/each}}
+</script>
+
+
+<script>
+$(window).load(function(){
+	initData();
+});
+
+function initData(){
+	$.get("http://shapi.hncoon.com/api/GetStyleData.ashx?action=GetData", function(data){
+	  	var res = JSON.parse(data);
+	  	if( !res.IsError ){
+	  		var scenes = res.Result;
+	  		console.log( scenes );
+	  		$("#styleGfList").html(template("styleGfTemplate", {scenes: scenes}));
+	  		for( var i = 0; i < scenes.length ; i++ ){
+	  			var scene 
+	  		}
+	  	} else {
+	  		alert('数据加载异常');
+	  	}
+	});
+}
+
+
+function changeScene(){
+	document.getElementById("krpanoSWFObject").call("loadscene('0')");
+}
+
+//切换场景，并跳转到指定的全景图
+function loadpano(xmlname,sceneName) {
+    if(krpano) {    
+        //动态切换xml，xmlname为tour.xml传过来的值 
+        krpano.call("loadpano(" + xmlname + ", null, MERGE, BLEND(0.5));"); 
+         //sceneName为切换后加载的第一个场景
+        krpano.call("loadscene('" + sceneName + "')"); 
+    }
+}
+
+</script>
+
+</body>
+</html>

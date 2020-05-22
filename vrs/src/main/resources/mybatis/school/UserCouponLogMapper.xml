@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.school.dao.UserCouponLogDao">
+
+
+
+<resultMap type="com.bootdo.school.domain.UserCouponLogDO" id="UserCouponLogs" autoMapping="true">
+  <id column="id" property="id"/>
+  <result column="uid" property="uid"/>
+  <result column="price" property="price"/>
+  <result column="createDate" property="createdate"/>
+	<result column="payStatus" property="payStatus"/>
+	<result column="busid"  property="busid"/>
+	<result column="quedinDate"  property="quedinDate"/>
+</resultMap>
+
+<resultMap type="com.bootdo.school.domain.UserCouponLogDO" id="UserCouponLogAll" autoMapping="true" extends="UserCouponLogs">
+
+	<association property="userDO" javaType="com.bootdo.system.domain.UserDO" autoMapping="true">
+  	<result column="u.username" property="username"/>
+		<result column="u.mobile" property="mobile"/>
+  	</association>
+
+	<association property="businessDO" javaType="com.bootdo.school.domain.BusinessDO" autoMapping="true">
+		<result column="sc.name" property="name"/>
+	</association>
+</resultMap>
+
+	<select id="get" resultMap="UserCouponLogAll" parameterType="Long">
+		/*select `id`,`uid`,`price`,`createDate` from sc_user_coupon_log where id = #{value}*/
+
+	select lg.quedinDate u.mobile as 'mobile',bu.name as 'bname',lg.payStatus,lg.busid, cou.`name` as 'cname',cou.price as 'cprice',lg.id,lg.price,lg.createDate,u.username as 'u.username' from sc_user_coupon_log lg left JOIN sys_user u
+		on lg.uid=u.user_id left join sc_user_coupon cou
+		on  lg.uid=cou.uid left join sc_business bu
+		on lg.busid=bu.id
+		where lg.id=#{uid}
+</select>
+	
+	<select id="queryStatus" parameterType="string" resultType="java.lang.String">
+		select payStatus from sc_user_coupon_log where id=#{id}
+	</select>
+
+	<select id="list" resultMap="UserCouponLogAll">
+		<!-- select `id`,`uid`,`price`,`createDate` from sc_user_coupon_log -->
+
+		select  lg.quedinDate,u.mobile as 'mobile',bu.name as 'bname',lg.payStatus,lg.busid, cou.`name` as 'cname',cou.price as 'cprice',lg.id,lg.price,lg.createDate,u.username as 'u.username' from sc_user_coupon_log lg left JOIN sys_user u
+		on lg.uid=u.user_id left join sc_user_coupon cou
+		on  lg.uid=cou.uid left join sc_business bu
+		on lg.busid=bu.id
+
+		<where>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by lg.id
+				desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sc_user_coupon_log
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.school.domain.UserCouponLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sc_user_coupon_log
+		(
+			`uid`, 
+			`price`, 
+			`createDate`,
+			 payStatus,
+			 busid,
+			quedinDate
+		)
+		values
+		(
+			#{uid}, 
+			#{price}, 
+			#{createdate},
+			#{payStatus},
+			#{busid},
+			#{quedinDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.school.domain.UserCouponLogDO">
+		update sc_user_coupon_log  set payStatus=#{payStatus}
+		<!--<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="createdate != null">`createDate` = #{createdate}</if>
+
+		</set>-->
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sc_user_coupon_log where id = #{value}
+	</delete>
+
+
+	<delete id="batchRemove">
+		delete from sc_user_coupon_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="queryUserCouponLog" resultType="com.bootdo.school.domain.UserCouponLogDO" parameterType="Long">
+
+
+select loe.*,u.username as 'uname' ,coup.price as 'cprice',bus.name  as 'bname' from sc_user_coupon_log loe
+left join  sys_user u
+on loe.uid=u.user_id
+left join sc_user_coupon coup
+on u.user_id=coup.uid
+left join sc_business bus
+on loe.busid=bus.id
+
+		<where>
+			<if test="uid !=null">
+				loe.uid=#{uid}
+			</if>
+
+			<if test="busid !=null">
+				and loe.busid=#{busid}
+			</if>
+
+		</where>
+
+
+ ORDER  BY  loe.id desc
+	</select>
+
+
+	<select id="userBusStatusShow" parameterType="Long" resultType="com.bootdo.school.domain.UserCouponLogDO">
+		select * from sc_user_coupon_log where
+		 uid=#{uid} and busid=#{busid} and
+		 payStatus=0
+	</select>
+
+
+	<update id="userBusStatus" parameterType="java.util.Map">
+		UPDATE  sc_user_coupon_log set payStatus=#{status},
+		 quedinDate=now()
+		 where id=#{id}
+
+
+	</update>
+
+	<update id="updateUserCouponPrice2" parameterType="java.util.Map">
+		update sc_user_coupon set price=price-${price},
+		 updateDate=now()
+		 where uid=#{uid}
+	</update>
+
+	
+	<select id="queryUserCouplogDisble" resultType="int" parameterType="java.util.Map">
+		SELECT  count(1) from sc_user_coupon_log
+		where uid=#{sid} and busid=#{busid}
+		and payStatus=0
+
+	</select>
+
+</mapper>

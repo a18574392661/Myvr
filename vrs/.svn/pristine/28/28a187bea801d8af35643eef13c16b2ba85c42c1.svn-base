@@ -1,0 +1,181 @@
+package com.bootdo.vrs.controller;
+
+import com.bootdo.common.config.BootdoConfig;
+import com.bootdo.common.utils.PageUtils;
+import com.bootdo.common.utils.Query;
+import com.bootdo.common.utils.R;
+import com.bootdo.vrs.domain.LogImgsDO;
+import com.bootdo.vrs.service.LogImgsService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 
+ * 
+ * @author chglee
+ * @email 1992lcg@163.com
+ * @date 2020-04-18 16:09:22
+ */
+ 
+@Controller
+@RequestMapping("/vrs/logImgs")
+public class LogImgsController {
+	@Autowired
+	private LogImgsService logImgsService;
+	
+	@Autowired
+	private BootdoConfig bootdoConfig;
+	
+	@GetMapping()
+	@RequiresPermissions("vrs:logImgs:logImgs")
+	String LogImgs(){
+	    return "vrs/logImgs/logImgs";
+	}
+
+
+
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("vrs:logImgs:logImgs")
+	public PageUtils list(@RequestParam Map<String, Object> params){
+		//查询列表数据
+        Query query = new Query(params);
+		List<LogImgsDO> logImgsList = logImgsService.list(query);
+		int total = logImgsService.count(query);
+		PageUtils pageUtils = new PageUtils(logImgsList, total);
+		return pageUtils;
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("vrs:logImgs:add")
+	String add(){
+	    return "vrs/logImgs/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("vrs:logImgs:edit")
+	String edit(@PathVariable("id") Integer id,Model model){
+		LogImgsDO logImgs = logImgsService.get(id);
+		model.addAttribute("logImgs", logImgs);
+	    return "vrs/logImgs/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("vrs:logImgs:add")
+	public R save(HttpServletRequest request, LogImgsDO logImgs){
+		
+
+		if(logImgsService.save(logImgs)>0){
+			return R.ok();
+		}
+		return R.error();
+	}
+	
+	@RequestMapping(value = "/showImg")
+    @ResponseBody
+	public void showImg( HttpServletRequest request,HttpServletResponse response,String pathName) {
+	
+		if(pathName == null) {
+			return;
+		}
+		//绝对路径
+		pathName = bootdoConfig.getUploadPath() + pathName;
+		File imgFile = new File(pathName);
+		//文件是否存在，判断图片
+		if(imgFile.exists() && isImage(pathName)) {
+			FileInputStream fin = null;
+			OutputStream output=null;
+			try {
+			//IO输出
+			output = response.getOutputStream();
+			fin = new FileInputStream(imgFile);
+			byte[] arr = new byte[1024*10];
+			int n;
+			while((n=fin.read(arr))!= -1) {
+				output.write(arr, 0, n);
+			}
+			output.flush();
+			} catch (Exception e) {
+				// TODO: handle exception
+				 e.printStackTrace();
+			}
+			try {
+			    output.close();
+			   } catch (IOException e) {
+			    // TODO Auto-generated catch block
+			    e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	public static boolean isImage(String src) {
+		
+		if(StringUtils.isEmpty(src)) {
+			return false;
+		}
+		if(src.indexOf(".png") > 0 || src.indexOf(".gif") > 0 || src.indexOf(".tif") > 0 ||  src.indexOf(".bmp") > 0 ||  src.indexOf(".jpeg") > 0 || src.indexOf(".jpg") > 0)  {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 修改
+	 */
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("vrs:logImgs:edit")
+	public R update( LogImgsDO logImgs){
+		
+		String src = logImgs.getSrc();
+		if(!StringUtils.isEmpty(src)) {
+			//String replace = src.replace("/files", "");
+			//logImgs.setSrc(replace);
+		}
+		logImgsService.update(logImgs);
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("vrs:logImgs:remove")
+	public R remove( Integer id){
+		if(logImgsService.remove(id)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("vrs:logImgs:batchRemove")
+	public R remove(@RequestParam("ids[]") Integer[] ids){
+		logImgsService.batchRemove(ids);
+		return R.ok();
+	}
+	
+}

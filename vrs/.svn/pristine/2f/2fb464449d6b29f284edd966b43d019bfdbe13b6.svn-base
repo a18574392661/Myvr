@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+.layui-upload-file{display:none!important;}
+</style>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<input id="id" name="id" th:value="${productInfo.id}"  type="hidden">
+							<input id="colorStyleIds" name="colorStyleIds" class="form-control" type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">产品名称：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${productInfo.name}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">产品Logo：</label>
+								<div class="col-sm-8">
+									<button type="button" class="btn  btn-success" id="uploadlogo" style="display:block">
+										<i class="fa fa-qrcode" aria-hidden="true"></i>上传Logo图
+									</button>
+									<input id="logo" name="logo" class="form-control" type="hidden" th:value="${productInfo.logo}">
+									<img src="/img/bg.png" id="logoImg" th:src="${productInfo.logo}" style="margin-top:10px;max-width: 128px;">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">产品背景音乐：</label>
+								<div class="col-sm-8">
+									<button type="button" class="btn  btn-success" id="uploadMusic" style="display:block">
+											<i class="fa fa-qrcode" aria-hidden="true"></i>上传背景音乐
+										</button>
+									<input id="musicUrl" name="musicUrl"  th:value="${productInfo.musicUrl}" class="form-control" type="hidden">
+									<audio th:src="${productInfo.musicUrl}"  id="musicUrlAudio" controls>不支持Audio</audio>
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">产品状态：</label>
+								<div class="col-sm-8">
+									<select id="status" name="status" class="form-control">
+										<option value="1" th:selected="${productInfo.status == 1}">正常</option>
+										<option value="0" th:selected="${productInfo.status == 0}">冻结</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">选择产品与颜色：</label>
+								<div class="col-sm-8">
+									<div id="record-tree" style="height: 500px;overflow-y :scroll;"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/vr/productInfo/edit.js">
+	</script>
+	<script src="/js/layui.js"></script>
+	<script src="/js/bootstrap-treeview.js"></script>
+	<script>
+	
+	
+	var productId = $("#id").val();
+	$.get("/vr/colorType/productTreeByProductId?productId=" + productId, function (data) {
+        $("#record-tree").treeview({
+            data: data,// 赋值
+            highlightSelected: true,// 选中项不高亮，避免和上述制定的颜色变化规则冲突
+            multiSelect: false,// 不允许多选，因为我们要通过check框来控制
+            showCheckbox: true,// 展示checkbox
+            highlightSearchResults: true, // 高亮查询结果
+            levels: 1, // 展开级别 Default: 2
+            searchResultBackColor: '#CCC', // 查找背景
+            onhoverColor: "#e5e5e5",
+//            showTags: true,
+            showIcon: false,
+          //treeview的选中和未选中方法中的参数
+            onNodeChecked: function(event, node) {
+                var selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                if (selectNodes) { //子节点不为空，则选中所有子节点
+                    $('#record-tree').treeview('checkNode', [selectNodes, { silent: true }]);
+                }
+                var parentNode = $("#record-tree").treeview("getNode", node.parentId);
+                setParentNodeCheck(node);
+                console.log("current node = ", node)
+                getAllChecked()
+            },
+            onNodeUnchecked: function (event, node) {
+                // checkmenus.removevalue(node);
+                // 取消父节点 子节点取消
+                var selectNodes = setChildNodeUncheck(node); //获取未被选中的子节点
+                var childNodes = getChildNodeIdArr(node);    //获取所有子节点
+                if (selectNodes && selectNodes.length==0) { //有子节点且未被选中的子节点数目为0，则取消选中所有子节点
+                    console.log("反选");
+                    $('#record-tree').treeview('uncheckNode', [childNodes, { silent: true }]);
+                }
+                // 取消节点 父节点取消
+                var parentNode = $("#record-tree").treeview("getNode", node.parentId);  //获取父节点
+                var selectNodes = getChildNodeIdArr(node);
+                setParentNodeCheck(node);
+                getAllChecked()
+            }
+        });
+        
+        $.get("/vr/colorType/productColorIds?productId=" + productId, function(res){
+			console.log( "res===>", res )
+			var len = res.length;
+			 var ts = [];
+			 var nodes = [];
+			var unchecked = $('#record-tree').treeview('getUnselected');
+			console.log( unchecked )
+			var unlen = unchecked.length;
+			for( var k = 0; k < unlen; k++){
+				for( var i = 0; i < len; i++ ){
+					if( unchecked[k].id === res[i].colorId ){
+						//$('#record-tree').treeview('checkNode', [ unchecked[k].nodeId, { silent: true } ]);
+						ts.push(unchecked[k].nodeId);
+						nodes.push(unchecked[k]);
+						continue;
+					}
+				}
+			}
+			if (ts) { //子节点不为空，则选中所有子节点
+                $('#record-tree').treeview('checkNode', [ts, { silent: true }]);
+                for( var l = 0; l < nodes.length; l++ ){
+                	setParentNodeCheck(nodes[l]);
+                }
+            }
+		});
+        
+    })
+    
+    function getAllChecked(){
+		var checked = $('#record-tree').treeview('getChecked');
+		var len = checked.length;
+		var colorIds = [];
+		for( var i = 0;  i < len ; i++ ){
+			var node = checked[i];
+			if( node.type === 4){
+				colorIds.push( node.id );
+			}
+		}
+		console.log( colorIds.join(",") );
+		$("#colorStyleIds").val(colorIds.join(","));
+	}
+    
+    // 选中父节点时，选中所有子节点
+	function getChildNodeIdArr(node) {
+	    var ts = [];
+	    if (node.nodes) {
+	        for (var x in node.nodes) {
+	            ts.push(node.nodes[x].nodeId);
+	            if (node.nodes[x].nodes) {
+	                var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
+	                for (var j in getNodeDieDai) {
+	                    ts.push(getNodeDieDai[j]);
+	                    }
+	                }
+	            }
+	        } else {
+	        ts.push(node.nodeId);
+	        }
+	    return ts;
+	}
+	
+	// 选中所有子节点时，选中父节点 取消子节点时取消父节点
+	function setParentNodeCheck(node) {
+	    var parentNode = $("#record-tree").treeview("getNode", node.parentId);
+	    if (parentNode.nodes) {
+	        var checkedCount = 0;
+	        for (var x in parentNode.nodes) {
+	            if (parentNode.nodes[x].state.checked) {
+	                checkedCount ++;
+	            } else {
+	                break;
+	            }
+	        }
+	        if (checkedCount == parentNode.nodes.length) {  //如果子节点全部被选 父全选
+	            $("#record-tree").treeview("checkNode", parentNode.nodeId);
+	            setParentNodeCheck(parentNode);
+	        }else {   //如果子节点未全部被选 父未全选
+	            $('#record-tree').treeview('uncheckNode', parentNode.nodeId);
+	            setParentNodeCheck(parentNode);
+	        }
+	    }
+	}
+	
+	// 取消父节点时 取消所有子节点
+	function setChildNodeUncheck(node) {
+	    if (node.nodes) {
+	        var ts = [];    //当前节点子集中未被选中的集合
+	        for (var x in node.nodes) {
+	            if (!node.nodes[x].state.checked) {
+	                ts.push(node.nodes[x].nodeId);
+	            }
+	            if (node.nodes[x].nodes) {
+	                var getNodeDieDai = node.nodes[x];
+	                for (var j in getNodeDieDai) {
+	　　　　　　　　　　　　/**
+	　　　　　　　　　　　　　* 原转载文章中写的是!getNodeDieDai.nodes[x].state.checked
+	　　　　　　　　　　　　　* 但是测试不可用、去掉.nodes[x]可用
+	　　　　　　　　　　　　　*/
+	                    if (!getNodeDieDai.state.checked) {
+	                        ts.push(getNodeDieDai[j]);
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    return ts;
+	}
+	
+	
+	layui.use('upload', function () {
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadlogo', //绑定元素
+            url: '/vr/productInfo/uploadProductInfo', //上传接口
+            size: 60000,
+            accept: 'file',
+            before: function(obj){
+                //this.data={client: $("#client").val(), version: $("#versionNo").val()}//携带额外的数据
+            },
+            done: function (r) {
+            	if( r.code == 0 ){
+	            	$("#logo").val(r.fileName);
+					$("#logoImg").attr("src", r.fileName);            		
+            	} else {
+            		layer.msg(r.msg);
+            	}
+            },
+            error: function (r) {
+                layer.msg(r.msg);
+            }
+        });
+    });
+	
+	layui.use('upload', function () {
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadMusic', //绑定元素
+            url: '/vr/productInfo/uploadProductInfo', //上传接口
+            size: 60000,
+            accept: 'file',
+            before: function(obj){
+                //this.data={client: $("#client").val(), version: $("#versionNo").val()}//携带额外的数据
+            },
+            done: function (r) {
+            	//console.log(r);
+            	if( r.code == 0 ){
+	            	$("#musicUrl").val(r.fileName);
+					$("#musicUrlAudio").attr("src", r.fileName);            		
+            	} else {
+            		layer.msg(r.msg);
+            	}
+            },
+            error: function (r) {
+                layer.msg(r.msg);
+            }
+        });
+    });
+	</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<section style="margin-top: 80px; padding-bottom: 100px;" th:fragment="logs">
+    <div class="block no-gap overlap-75">
+        <div class="container">
+            <div class="info-box">
+                <font color="#AEAEAE">云视+，更多大家居行业正在选择我们</font>
+            </div>
+            <ul>
+                <li>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-5ths" th:each="log,sta : ${maps.logList}" >
+                                    <img th:src="${log.src}" height="3rem" width="3rem"/>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</section>
+
+</html>

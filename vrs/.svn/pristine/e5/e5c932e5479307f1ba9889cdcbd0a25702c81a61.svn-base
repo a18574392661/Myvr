@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+					<input type="hidden" id="ids" th:value="${ids}">
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">选择分配用户：</label>
+
+								<div class="col-sm-8">
+
+									<select id="users"  multiple class="form-control" style="height: 30rem;">
+										<option value="">====请选择用户====</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<span type="submit" class="btn btn-primary" onclick="fp()">确定分配</span>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+
+	<script src="/js/jquery.min.js"></script>
+
+<script>
+	$(function () {
+		$.get("/vrs/userImgcls/touser",function (data) {
+
+			for (let i = 0; i <data.length ; i++) {
+				$("#users").append("<option value='"+data[i].userId+"'>"+data[i].username+"</option>")
+			}
+
+		})
+
+
+	})
+
+	function fp() {
+		var uids=$("#users").val();
+		var imgs=$("#ids").val();
+		if (uids==''||uids==null){
+			layer.msg("请选择要分配的用户!!");
+			return;
+		}else{
+			$.post("/vrs/userImgcls/fpuserImg",{"uids":uids.toString(),"imgs":imgs},function (data) {
+
+				if (data.code==0){
+					layer.msg(data.msg);
+
+					var timer1=window.setTimeout(function (){
+						window.clearTimeout(timer1);
+						var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+						parent.layer.close(index);
+					},1500);
+
+
+				}
+				else{
+					layer.msg(data.msg);
+				}
+			})
+
+		}
+
+
+
+
+
+	}
+
+
+</script>
+</body>
+</html>

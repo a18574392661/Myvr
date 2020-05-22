@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="vrs:pro:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+						<a href="/vrs/houses/pageListM" target="_blank">	<span class="glyphicon glyphicon-cloud" ></span><span style="cursor:pointer;"  th:text="${mengchuang}"></span></a>
+							<button shiro:hasPermission="vrs:pro:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								placeholder="">
+						</div>
+
+
+						<div class="columns  pull-right" style="margin-right: 30px;">
+							<div class="columns  pull-right" style="margin-right: 1px;margin-top: 0px">
+								<a type="button" class="btn btn-info" mce_href="#">分类名称:</a>
+							</div>
+							<select  id="cid1"  class="form-control" required="required" style="width: 15rem;float: left;">
+								<option value="" >请选择</option>
+								<option th:value="${cls.id}" th:text="${cls.name}" th:each="cls : ${cls}"></option>
+							</select>
+
+						</div>
+
+						<div shiro:hasPermission="userallot:user:ulist">
+							<div class="columns  pull-right" style="margin-right: 20px;">
+								<select id="uid1"  class="form-control" style="font-size: 12px;" onchange="changuser('exampleTable')">
+									<option value="">====选择用户名====</option>
+									<option th:value="${u.userId}" th:text="${u.username}" th:each="u : ${ulist}"></option>
+								</select>
+							</div>
+							<div class="columns  pull-right" style="margin-right: 1px">
+								<a type="button" class="btn btn-success" mce_href="#">用户名:</a>
+							</div>
+						</div>
+
+					</div>
+
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+
+				</div>
+			</div>
+
+			<!--可以选多个分类的1-->
+			<div class="col-sm-12">
+				<div class="ibox">
+					<div class="ibox-body">
+						<div class="fixed-table-toolbar">
+
+							<div class="columns pull-left">
+								<button shiro:hasPermission="vrs:pro:add" type="button" class="btn  btn-primary" onclick="add()">
+									<i class="fa fa-plus" aria-hidden="true"></i>添加
+								</button>
+								<a href="/pro/h5/queryCls1Pro" target="_blank"><span class="glyphicon glyphicon-cloud" ><span style="cursor:pointer;" th:text="${dx.name}" id="dz"></span></span></a>
+
+							</div>
+							<div class="columns pull-right">
+								<button class="btn btn-success" onclick="reLoad()">查询</button>
+							</div>
+
+							<div class="columns pull-right col-md-2 nopadding">
+								<input id="searchName2" type="text" class="form-control"
+									   placeholder="">
+							</div>
+
+
+							
+						<!-- 二级联动 -->
+						<div class="columns  pull-right" style="margin-right: 20px">
+							<select id="catory1" name="catory1" class="form-control" style="font-size: 12px;">
+								<option value="">====全部====</option>
+							</select>
+						</div>
+						<div class="columns  pull-right" style="margin-right: 1px">
+							<a type="button" class="btn btn-info" mce_href="#">二级分类名称:</a>
+						</div>
+						
+						<div class="columns  pull-right" style="margin-right: 20px">
+							<select id="catory2" name="catory2" class="form-control" style="font-size: 12px;">
+								<option value="">====全部====</option>
+							</select>
+						</div>
+						<div class="columns  pull-right" style="margin-right: 1px">
+							<a type="button" class="btn btn-success" mce_href="#">一级分类名称:</a>
+						</div>
+
+							<div shiro:hasPermission="userallot:user:ulist">
+								<div class="columns  pull-right" style="margin-right: 20px;">
+									<select id="uid2"  class="form-control" style="font-size: 12px;" onchange="changuser('exampleTable2')">
+										<option value="">====选择用户名====</option>
+										<option th:value="${u.userId}" th:text="${u.username}" th:each="u : ${ulist}"></option>
+									</select>
+								</div>
+								<div class="columns  pull-right" style="margin-right: 1px">
+									<a type="button" class="btn btn-success" mce_href="#">用户名:</a>
+								</div>
+							</div>
+						</div>
+						<table id="exampleTable2" data-mobile-responsive="true">
+						</table>
+					</div>
+				</div>
+
+		</div>
+
+			<div align="center">
+				<button type="button" class="btn btn-outline-info" onclick="shang()">上一页</button>
+			</div>
+
+	<hr>
+
+
+
+
+
+
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="vrs:pro:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="vrs:pro:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="vrs:pro:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/pro/pro2.js"></script>
+<script>
+
+	function changuser(tbname) {
+
+		$('#'+tbname).bootstrapTable('refresh');
+	}
+
+
+	function shang() {
+  location.href='/vrs/pro/';
+	}
+
+
+	$(function () {
+		//二级分类联动
+		$.get("/vrs/imgCls/imgClsPars",{"pid":"0"},function(data){
+			for (let i = 0; i <data.length ; i++) {
+				$("#p").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+			}
+
+		})
+
+
+
+		$("#p").change(function () {
+
+
+			$("#z option[value!='']").remove();
+			$.get("/vrs/imgCls/imgClsPars",{"pid":this.value},function(data){
+				for (let i = 0; i <data.length ; i++) {
+					$("#z").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+				}
+			})
+		})
+		
+		
+		//下拉该改变
+		$("#cid1").change(function(){
+			$('#exampleTable').bootstrapTable('refresh');
+		})
+		
+		
+		//二级联动
+		//一级分类
+		$.get("/vrs/imgCls/getAllCategoryPrimary",{"tablename":"vrs_img_cls","status":"1"},function(data){
+			for(var i = 0;i < data.length;i++){
+				$("#catory2").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>");
+			}
+		})
+		//二级分类
+		$("#catory2").change(function(){
+			//下拉框改变
+			$("option").remove(".opt");
+			var pid = $("#catory2").val();
+			if(pid != null && pid != ''){
+				$.ajaxSettings.async = false;
+				$.get("/vrs/imgCls/getAllCategorySub",{"tablename":"vrs_img_cls","status":"1","pid":pid},function(data){
+					for(var i = 0;i < data.length;i++){
+						$("#catory1").append("<option class='opt' value='"+data[i].id+"'>"+data[i].name+"</option>");
+					}
+				})  
+			}
+			//加载数据
+			$('#exampleTable2').bootstrapTable('refresh');
+		})
+		
+		
+		//二级分类
+		$("#catory1").change(function(){
+			//重新加载表格
+			$('#exampleTable2').bootstrapTable('refresh');
+		})
+		
+	})
+
+
+
+	function to_index(index){
+		if(index==1){
+			//门窗
+			location.href="/vrs/houses/pageListM";
+		}else{
+			location.href="/pro/h5/queryCls1Pro";
+		}
+
+	}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+
+INSERT INTO `sys_menu` VALUES (234, 0, 'Vr系统设置', '', '', 0, '', 10, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (235, 234, '账户注册', '/userallot/user', 'userallot:user:user', 1, '', 0, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (236, 235, '添加', '/userallot/user/save', 'userallot:user:add', 2, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (237, 235, '修改', '/userallot/user/update', 'userallot:user:edit', 2, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (238, 0, '删除', '/userallot/user/remove', 'userallot:user:remove', 2, '', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (239, 235, '删除', '/userallot/user/remove', 'userallot:user:remove', 2, '', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (240, 234, '用户购物车', '/vrs/userShop', 'vrs:userShop:userShop', 1, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (241, 240, '新增', 'vrs/userShop/save', 'vrs:userShop:add', 2, '', 2, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (242, 240, '删除', 'vrs/user/remove', 'vrs:user:remove', 2, '', 3, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (244, 243, '增加', '/userroleallot/role/add', 'userroleallot:role:add', 2, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (245, 243, '修改', '/userroleallot/role/update', 'userroleallot:role:edit', 2, '', 2, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (246, 243, '删除', '/userroleallot/role/remove', 'userroleallot:role:remove', 2, '', 2, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (247, 234, '核销比例设置', '/vrs/userHx', 'vrs:userHx:userHx', 1, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (248, 247, '新增', '/vrs/userHx/add', 'vrs:userHx:add', 2, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (249, 247, '修改', 'vrs/userHx/update', 'vrs:userHx:edit', 2, '', 2, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (250, 247, '删除', '/vrs/userHx/remove', 'vrs:userHx:remove', 2, '', 3, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (251, 240, '编辑', 'vrs/userShop/update', 'vrs:userShop:edit', 2, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (252, 183, '会员日期价格', '/vrs/payvip', 'vrs:payvip:payvip', 2, '', 5, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (253, 183, '新增会员日期', '/vrs/payvip/save', 'vrs:payvip:add', 2, '', 5, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (254, 183, '删除会员日期', 'vrs/payvip/remove', 'vrs:payvip:remove', 2, '', 6, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (255, 183, '修改会员', 'vrs/payvip/update', 'vrs:payvip:edit', 2, '', 8, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (256, 234, '我的云视图', '/vrs/userImgcls', 'vrs:userImgcls:userImgcls', 1, '', 2, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (257, 256, '删除', '/vrs/userImgcls/remove', 'vrs:userImgcls:remove', 2, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (258, 256, '修改', '/vrs/userImgcls/update', 'vrs:userImgcls:edit', 2, '', 3, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (259, 234, '支付订单日志', '/vrs/payorderLog', 'vrs:payorderLog:payorderLog', 1, '', 6, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (260, 259, '删除', '/vrs/payorderLog/remove', 'vrs:payorderLog:remove', 2, '', 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (261, 234, '核销记录', '/vrs/hxLog', 'vrs:hxLog:hxLog', 1, '', 3, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (262, 234, '提现记录', '/vrs/userpayTx', 'vrs:userpayTx:userpayTx', 1, '', 8, NULL, NULL);
+
+SET FOREIGN_KEY_CHECKS = 1;

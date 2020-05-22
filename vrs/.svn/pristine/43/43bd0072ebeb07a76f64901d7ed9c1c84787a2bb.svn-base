@@ -1,0 +1,320 @@
+<!DOCTYPE html><!-- Required tag for HTML5 -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keyword" content="">
+    <meta name="description" content="">
+   
+    <!-- Incluse css and media files -->
+    <link rel="icon" type="image/png" href="#"><!-- favicon icon -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/all.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/flaticon.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/animate.min.css}">
+    <link rel="stylesheet" href="@{/css/manager/house/assets/css/jquery.fancybox.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/owl.carousel.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/perfect-scrollbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/responsive.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/color.css}">
+    <!-- REVOLUTION STYLE SHEETS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/revolution/settings.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/revolution/navigation.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/manager/house/assets/css/revolution/pe-icon-7-stroke/css/pe-icon-7-stroke.css}">
+   
+    <title>换色系统</title>
+	<style>
+		.index-button{background-color:#DA231B ; color: #FFFFFF; border: none; border-radius: 5px; }
+		.head{margin-top: 5px;}
+		.dom{border: 0; appearance:none;}
+		.index-button2{background-color:#E47919 ; color: #FFFFFF; border: none; border-radius: 5px; width: 80px}
+		.help{margin-left: 10px;}
+		.roundness{border:solid 1px #000000; width: 18px;height: 18px;background-color:yellow;border-radius: 50%;-moz-border-radius: 50%;-webkit-border-radius: 50%;}
+		.index{margin-left: 5%;}
+		.index-first{margin-left: 5%;}
+		.index-first-button{background-color:#FFFFFF ; color: #2281B8; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.index-two-button{background-color:#2281B8 ; color: #FFFFFF; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.sousou{background-color: #2281B8; border:1px solid #2281B8;}
+		.fangan{background-color: #71706E; width: 300px; height: 1px; position: absolute; margin-top: 30px; margin-left: -305px;}
+		.fangan2{background-color: #71706E; width: 300px; height: 1px; position: absolute;margin-top: 30px; margin-left: 197px;}
+		 #page li{
+		    cursor:pointer;
+		}
+		.text-with-hr {
+		    text-align: center;
+		    position: relative;
+		    z-index: 2;
+		}
+		.text-with-hr:before {
+		    position: absolute;
+		    content: '';
+		    top: 20px;
+		    left: 0px;
+		    width: 100%;
+		    border-bottom: 1px solid #EF9A4A;
+		    z-index: -1;
+		}
+		.text-with-hr span {
+		    display: inline-block;
+		    background: white;
+			margin-top: -8px;
+		    padding: 10px;
+		}
+		.col-xs-5ths, .col-sm-5ths, .col-md-5ths, .col-lg-5ths {
+			position: relative;
+			min-height: 1px;
+			padding-right: 10px;
+			padding-left: 10px;
+		}
+		
+		@media ( min-width : 768px) {
+			.col-sm-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 992px) {
+			.col-md-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 1200px) {
+			.col-lg-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+	</style>
+
+	<style>
+		#krpanoSWFObject{min-height: 300px;border-radius: 10px;}
+	</style>
+
+</head>
+<body>
+<div th:replace="vrs/manager/house/head::pageheader"></div>
+
+
+<script type="text/javascript" src="/vrH5/assets/js/jquery.min.js"></script>
+<script src="/h5pano/tour.js"></script>
+
+
+			<section style="padding-top: 80px;">
+				<div class="text-with-hr">
+				    <span style="font-size: 25px;">为您精选全景方案</span>
+				</div>
+			</section>
+			
+			<section style="margin-top: 60px;">
+				<div class="block no-gap overlap-75">
+					<div class="container">
+						<div class="info-box">
+
+							<!--th:onclick="'javascript:to_child('+${c.id}+');'"-->
+							<a class="butn1 butn-light"  style="color: #0d8ddb"  th:onclick="'javascript:to_child('+${c.id}+');'"  th:each="c,userStat : ${category}"  th:text="${c.name}"></a>
+						</div>
+
+
+						<div class="info-box" id="child">
+
+						</div>
+					</div>
+				</div>
+			</section>
+			<section style="padding-top: 10px;">
+				<div class="block no-bottom">
+					<div class="container">
+						 <ul style="margin-top: -10%;">
+						    <!-- 图片显示 -->
+							<li th:each="pros,userStat : ${listPro}">
+								<div class="container">
+									<div class="row">
+										<div class="col-sm-4" th:each="pro,sta : ${pros}" style="margin-top: 1rem;"  >
+											<span th:if="${userStat.index==0 and sta.index==0}">
+											<input type="hidden" id="qjt" th:value="${pro.qjtfile}">
+													<input type="hidden" id="mid" th:value="${pro.id}">
+													<!--	<span style="color: #0f3e68;text-align: center; margin-top: 3rem;" th:onclick="'javascript:showProDetail('+${pro.id}+');'" >查看详情</span>-->
+											<div id="pano" style="width:100%;height:100%;min-height: 300px;" onclick="ff()">
+											<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
+											<script>
+												embedpano({swf:"/h5pano/tour.swf", xml:"/h5pano/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true});
+												/*定义控件*/
+												var krpano = document.getElementById("krpanoSWFObject");
+												/*******************动态数据获取*******************/
+														//d902bcc4927747d49739656a27b6db34.jpg
+												var name = "aa3456345";
+												//7bc378b8704a441496a6ff6a438dd77a.tiles
+												var sd_path2 ="/files/qjt/vtour/panos/"+$("#qjt").val();
+												var xml = '<scene name="'+name+'" title="1" onstart=""   lat="" lng="" heading="">' +
+														'<view hlookat="0.0" vlookat="0.0" fovtype="MFOV"  fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" /><image ><cube url="'+ sd_path2 + '/pano_%s.jpg"/></image></scene>';
+
+												//if( !krpano ) krpano = document.getElementById("krpanoSWFObject");
+
+												krpano.call("loadxml(" + xml + ");");//切换场景
+												krpano.call("skin_loadscene("+name+");");//加载某个场景
+
+											</script>
+
+
+											</div>
+
+										</span>
+										<!--	<input type="text" th:value="${sta.index}">
+										th:if="${(userStat.index !=0) || (userStat.index ==0 and sta.index >0) }"
+										-->
+											<span th:if="${(userStat.index !=0) || (userStat.index ==0 and sta.index >0) }">
+													<img th:src="${pro.img}" th:onclick="'javascript:toPage('+${pro.id}+');'" style="width:320px;height:300px;">
+											</span>
+
+											<!--<img th:src="${pro.img}" th:onclick="'javascript:toPage('+${pro.id}+');'" style="width:300px;height:300px;">-->
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			
+			<section class="text">
+				<div class="info-box">
+				    <section style="margin-top: 80px;">
+				    	<div class="block no-gap overlap-75">
+				    		<div class="container text-center">
+				    			<nav aria-label="Page navigation example">
+				    				<!-- 页码 -->
+									<ul th:replace="vrs/manager/house/foot::pagefooter"></ul>
+				    			</nav>
+				    		</div>
+				    	</div>
+				    </section>
+				</div>
+
+				<input type="hidden" id="cid" th:value="${cid}">
+			</section>
+
+
+						<!--<ul th:replace="/vrs/manager/house/logs::logs"></ul>-->
+
+<section style="margin-top: 80px; padding-bottom: 100px;">
+	<div class="block no-gap overlap-75">
+		<div class="container">
+			<div class="info-box">
+				<font color="#AEAEAE">云视+，更多大家居行业正在选择我们</font>
+			</div>
+			<ul>
+				<li>
+					<div class="container" style="margin-top: 20px;">
+						<div class="row">
+
+							<div class="col-sm-5ths"  th:each="log : ${maps.logList}">
+								<div style="width: 150px; height: 70px; float: left;" >
+
+									<font color="#000000" style="position: absolute; margin-top: 30px; margin-left: 55px;" >
+
+										<img   th:onclick="'javascript:member_edit(\''+${log.getHref()}+'\')'"  th:src="${log.src}"   width="150px;" height="150px;"    style="margin-top: 2rem;"/>
+									</font>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</section>
+
+
+
+</main>
+            
+       
+    <script type="text/javascript" th:src="@{/js/appjs/vrs/manager/house/assets/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/appjs/vrs/manager/house/assets/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/appjs/vrs/manager/house/assets/js/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js/appjs/vrs/commons/categorycommon.js}"></script>
+<script type="text/javascript" src="/js/appjs/common.js"></script>
+
+
+
+<script>
+
+   $(function () {
+   var cid=$("#cid").val();
+   			//查所有
+	   $.get("/vrs/houses/getClsAll",function (data) {
+
+				   for (let i = 0; i < data.length; i++) {
+					    if(data[i].id==cid){
+					    	//查询父级显示出来子级别
+							$.get("/vrs/houses/getClsChild",{"pid":data[i].pid},function (chi) {
+								for (let i = 0; i< chi.length; i++) {
+									var path='/vrs/houses/pageListG?cid='+chi[i].id;
+									if (data[i].id==cid){
+										$("#child").append('<a  class="butn1 butn-light" href="'+path+'">'+chi[i].name+'</a>');
+									}else{
+										$("#child").append('<a  class="butn1 butn-light" href="'+path+'">'+chi[i].name+'</a>');
+									}
+
+
+								}
+							})
+
+						}
+				   }
+
+
+	  		 }
+
+   			)
+
+   })
+
+	/*查询子分类*/
+	function  to_child(pid) {
+		//alert(pid)
+			$("#child").empty();
+		$.get("/vrs/houses/getClsChild",{"pid":pid},function (data) {
+
+
+				for (let i = 0; i < data.length; i++) {
+					var path='/vrs/houses/pageListG?cid='+data[i].id;
+					$("#child").append('<a  class="butn1 butn-light" href="'+path+'">'+data[i].name+'</a>');
+
+			}
+		})
+	}
+
+	function toPage(id) {
+  location.href="/pro/h5/proHuance?id="+id;
+	}
+
+
+</script>
+
+
+<script>
+	function ff(){
+		var id=$("#mid").val();
+		location.href="/pro/h5/proHuance?id="+id;
+	}
+
+	$(function () {
+		var i=$("#ste").val();
+		$("#mu"+i).css("color","red");
+
+
+	})
+</script>
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+
+					<input type="hidden" id="lev" th:value="${lev}">
+					<input id="p2id" name="p2id" th:value="${p2id}"  type="hidden">
+
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${imgCls.id}"  type="hidden">
+
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">所属标签:</label>
+								<div class="col-sm-8">
+									<input  th:value="${type.name}"  disabled class="form-control" type="text">
+									<input type="hidden" name="cid" th:value="${type.id}"/>
+								</div>
+							</div>
+
+							<div class="form-group" >
+								<label class="col-sm-3 control-label">显示标签:</label>
+								<div class="col-sm-8">
+									<input id="title" name="title"  th:value="${imgCls.title}" placeholder="请输入自定义名标签" class="form-control" type="text">
+								</div>
+							</div>
+
+
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">分类名称:</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${imgCls.name}" class="form-control" type="text">
+								</div>
+							</div>
+
+
+							<div class="form-group" id="hs">
+								<label class="col-sm-3 control-label">一级分类：</label>
+
+								<div class="col-sm-8">
+
+
+									<select  id="pid2"  class="form-control" required="required" onchange="cs(this.value)" style="width: 15rem;">
+										<option value="">请选择父级</option>
+
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group" id="two">
+								<label class="col-sm-3 control-label">二级分类：</label>
+
+								<div class="col-sm-8">
+									<select  id="twoCls" onchange="s(this.value)"  class="form-control" required="required" style="width: 15rem;">
+										<option value="">请选择</option>
+
+									</select>
+								</div>
+							</div>
+
+
+
+							<input type="hidden" name="pid" id="pid" th:value="${imgCls.pid}">
+
+								<!--						<div class="form-group">
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="title" name="title" th:value="${imgCls.title}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="createdate" name="createdate" th:value="${imgCls.createdate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">0 删除 1正常：</label>
+								<div class="col-sm-8">
+									<input id="status" name="status" th:value="${imgCls.status}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="updatedate" name="updatedate" th:value="${imgCls.updatedate}" class="form-control" type="text">
+								</div>
+							</div>-->
+
+
+						<!--	<div class="form-group">
+								<label class="col-sm-3 control-label">分类展示图：</label>
+								<div class="col-sm-8">
+
+									<style>
+										.layui-upload-file{display:none!important;}
+									</style>
+									<button type="button" class="btn  btn-success" id="uploadlogo" style="display:block">
+										<i class="fa fa-qrcode" aria-hidden="true"></i>上传图片
+									</button>
+									<input id="img" name="img" class="form-control" type="hidden" th:value="${imgCls.img}">
+									<img src="/img/bg.png" id="simg" style="margin-top:10px;max-width: 128px;" th:src="${imgCls.img}">
+								</div>
+							</div>
+-->
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/imgCls/edit.js">
+	</script>
+
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	<script src="/js/layui.js"></script>
+
+
+
+	<script>
+
+		function cs(id){
+		var dj=$("#lev").val();
+			if (dj!=3){
+				$("#pid").val(this.value);
+
+			}
+			else{
+				//$("#pid").val('');
+				//ajaxx查询
+
+				$("#twoCls").empty();
+				$("#twoCls").append("<option value=''>请选择</option>");
+				$.get("/vrs/imgCls/imgClsPars",{"pid":id},function (data) {
+
+					for (let i = 0; i <data.length ; i++) {
+						$("#twoCls").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+					}
+				})
+
+			}
+
+		}
+
+		function s(id){
+			$("#pid").val(id);
+		}
+
+
+		$(function () {
+
+			$("#hs").hide();
+			$("#two").hide();
+
+			var lev=$("#lev").val();
+
+			//如果是子级就显示
+			var pid=$("#pid").val();
+			var oneid=$("#p2id").val();
+			$("#hs").show();
+		//	alert(lev+"//"+pid)
+			if (lev==3&&pid!=0){
+				$("#two").show();
+				$("#hs").show();
+				//2个自己
+				var p2id=$("#p2id").val();
+				$.get("/vrs/imgCls/imgClsPars?pid=0",function (data) {
+					//选中
+					for (let i = 0; i < data.length; i++) {
+						if (oneid==data[i].id){
+							$("#pid2").append("<option selected='selected' value='"+data[i].id+"'>"+data[i].name+"</option>")
+						}else{
+							$("#pid2").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+						}
+
+					}
+				})
+
+				//选择二级id
+				$.get("/vrs/imgCls/imgClsPars?pid="+oneid,function (data) {
+					//选中
+					for (let i = 0; i < data.length; i++) {
+						if (pid==data[i].id){
+							$("#twoCls").append("<option selected='selected' value='"+data[i].id+"'>"+data[i].name+"</option>")
+						}else{
+							$("#twoCls").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+						}
+
+					}
+				})
+
+
+
+				return;
+			}
+
+
+
+			if (pid!=0&&lev!=3){
+				$("#hs").show();
+				$.get("/vrs/imgCls/imgClsPars?pid=0",function (data) {
+					//选中
+					for (let i = 0; i < data.length; i++) {
+						 if (pid==data[i].id){
+							 $("#pid2").append("<option selected='selected' value='"+data[i].id+"'>"+data[i].name+"</option>")
+						 }else{
+							 $("#pid2").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+						 }
+
+					}
+
+
+				})
+			}
+
+
+			if (pid==0){
+				$("#hs").remove();
+				$("#two").remove();
+			}
+
+
+
+
+		})
+
+
+
+
+		//图片上传
+		//imageUpload("uploadlogo","cls","simg","img");
+	</script>
+
+
+<script>
+    //图片上传
+    /*imageUpload("uploadlogo","business","simg","img");*/
+
+</script>
+
+
+</body>
+</html>

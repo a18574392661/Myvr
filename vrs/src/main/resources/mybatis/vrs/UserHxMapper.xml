@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.UserHxDao">
+
+	<select id="get" resultType="com.bootdo.vrs.domain.UserHxDO">
+		select `id`,`rid`,`firstLevel`,`seconLevel`,`detaile` from vrs_user_hx where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.vrs.domain.UserHxDO">
+
+
+		select r.role_name as 'rname',v.`id`,v.`rid`,v.`firstLevel`,v.`seconLevel`,v.`detaile` from vrs_user_hx v
+		left join sys_role r
+		on v.rid=r.role_id
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="rid != null and rid != ''"> and rid = #{rid} </if>
+		  		  <if test="firstlevel != null and firstlevel != ''"> and firstLevel = #{firstlevel} </if>
+		  		  <if test="seconlevel != null and seconlevel != ''"> and seconLevel = #{seconlevel} </if>
+		  		  <if test="detaile != null and detaile != ''"> and detaile = #{detaile} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_user_hx
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="rid != null and rid != ''"> and rid = #{rid} </if>
+		  		  <if test="firstlevel != null and firstlevel != ''"> and firstLevel = #{firstlevel} </if>
+		  		  <if test="seconlevel != null and seconlevel != ''"> and seconLevel = #{seconlevel} </if>
+		  		  <if test="detaile != null and detaile != ''"> and detaile = #{detaile} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.UserHxDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_user_hx
+		(
+			`rid`, 
+			`firstLevel`, 
+			`seconLevel`, 
+			`detaile`
+		)
+		values
+		(
+			#{rid}, 
+			#{firstlevel}, 
+			#{seconlevel}, 
+			#{detaile}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.UserHxDO">
+		update vrs_user_hx 
+		<set>
+			<if test="rid != null">`rid` = #{rid}, </if>
+			<if test="firstlevel != null">`firstLevel` = #{firstlevel}, </if>
+			<if test="seconlevel != null">`seconLevel` = #{seconlevel}, </if>
+			<if test="detaile != null">`detaile` = #{detaile}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_user_hx where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_user_hx where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

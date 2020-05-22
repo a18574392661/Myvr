@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+		 <ul class="pagination"  th:fragment="pagefooter">
+	   		<!-- 分页栏 -->
+	   		<th:block th:if='${start gt 0 && end gt 0}'>
+		    <li class="disabled"><a class="page-link" th:href="@{${requestUrl}+'?page=1'+'&cid='+${cid}}">首页</a></li>
+		    </th:block>
+			<th:block th:if='${pageInfo.hasPreviousPage}'>
+		    	<li class="disabled"><a class="page-link" th:href="@{${requestUrl}+'?page='+${pageInfo.pageNum-1}+'&cid='+${cid}}">上一页</a></li>
+		   	</th:block>
+		   	<!-- 页码 -->
+		   	<th:block th:if='${start gt 0 && end gt 0}'>
+		   		<li class="page-item" th:classappend="${index == pageInfo.pageNum}?'active':''" th:each="index:${#numbers.sequence(start,end)}">
+		   			<a class="page-link"  th:href="@{${requestUrl}+'?page='+${index}+'&cid='+${cid}}">[[${index}]]</a>
+		   		</li>
+	   		</th:block>
+	   		<!-- 末页 -->
+		    <th:block th:if='${pageInfo.hasNextPage}'>
+		  	    <li class="page-item"><a class="page-link" th:href="@{${requestUrl}+'?page='+${pageInfo.pageNum+1}+'&cid='+${cid}}">下一页</a></li>
+		    </th:block>
+		    <th:block th:if='${start gt 0 && end gt 0}'>
+		  	 	<li class="disabled"><a class="page-link" th:href="@{${requestUrl}+'?page='+${pageInfo.pages}+'&cid='+${cid}}">末页</a></li>
+			</th:block>
+		 </ul>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.TitleClsDao">
+
+	<resultMap id="titleClsAll" type="com.bootdo.vrs.domain.TitleClsDO">
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="pid" property="pid"></result>
+		<result column="status" property="status"></result>
+		<result column="hrefs" property="hrefs"></result>
+		<result column="isfulls" property="isfulls"></result>
+
+		<result column="typeid" property="typeid"></result>
+		<result column="tname" property="tname"></result>
+	</resultMap>
+
+	<resultMap id="titleClsAndchildAll" type="com.bootdo.vrs.domain.TitleClsDO" extends="titleClsAll">
+		 <association property="childTitleDo" javaType="com.bootdo.vrs.domain.TitleClsDO" >
+			 <result column="chi.name" property="name"></result>
+		 </association>
+	</resultMap>
+
+	<select id="get" resultType="com.bootdo.vrs.domain.TitleClsDO">
+		select tname,typeid,`id`,`name`,`pid`,`status`,`hrefs`,`isfulls` from vrs_title_cls where id = #{value}
+	</select>
+
+
+
+	<select id="querylist" parameterType="java.util.Map" resultType="com.bootdo.vrs.domain.TitleClsDO">
+
+		select tname,typeid,`id`,`name`,`pid`,`status`,`hrefs`,`isfulls` from vrs_title_cls
+		<where>
+		<if test="id != null and id != ''"> and id = #{id} </if>
+		<if test="name != null and name != ''"> and name like  '%${name}%' </if>
+		<if test="pid != null and pid != ''"> and pid = #{pid} </if>
+
+		<if test="hrefs != null and hrefs != ''"> and hrefs = #{hrefs} </if>
+		<if test="isfulls != null and isfulls != ''"> and isfulls = #{isfulls} </if>
+		  and status !=0
+		</where>
+
+	</select>
+
+
+	<select id="list" resultMap="titleClsAndchildAll">
+		<!--select `id`,`name`,`pid`,`status`,`hrefs`,`isfulls` from vrs_title_cls-->
+		select  par.typeid,chi.`name` as 'chi.name',par.`id`,par.`name`,par.`pid`,par.`status`,par.`hrefs`,par.`isfulls`,par.tname from vrs_title_cls par
+		left join vrs_title_cls chi
+		on par.id=chi.pid
+		<where>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and par.name like  '%${name}%' </if>
+		  		  <if test="pid != null and pid != ''"> and chi.pid #{pid} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="hrefs != null and hrefs != ''"> and hrefs = #{hrefs} </if>
+		  		  <if test="isfulls != null and isfulls != ''"> and isfulls = #{isfulls} </if>
+			<!-- and par.status !=0-->
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by par.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_title_cls
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="pid != null and pid != ''"> and pid = #{pid} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="hrefs != null and hrefs != ''"> and hrefs = #{hrefs} </if>
+		  		  <if test="isfulls != null and isfulls != ''"> and isfulls = #{isfulls} </if>
+			 and status!=0
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.TitleClsDO">
+		insert into vrs_title_cls
+		(
+			`id`, 
+			`name`, 
+			`pid`, 
+			`status`, 
+			`hrefs`, 
+			`isfulls`,
+			 typeid,
+			 pname
+		)
+		values
+		(
+			#{id}, 
+			#{name}, 
+			#{pid}, 
+			#{status}, 
+			#{hrefs}, 
+			#{isfulls},
+			#{typeid},
+			#{pname}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.TitleClsDO">
+		update vrs_title_cls 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="pid != null">`pid` = #{pid}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="hrefs != null">`hrefs` = #{hrefs}, </if>
+			<if test="isfulls != null">`isfulls` = #{isfulls},</if>
+			<if test="typeid != null">`typeid` = #{typeid},</if>
+			<if test="tname != null">`tname` = #{tname}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		<!--delete from vrs_title_cls where id = #{value}-->
+		update vrs_title_cls set status=0 where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		<!--delete from vrs_title_cls-->
+
+		update vrs_title_cls set status=0  where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

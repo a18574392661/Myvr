@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.ImgclsImgsDao">
+
+	<resultMap id="all" type="com.bootdo.vrs.domain.ImgclsImgsDO" autoMapping="true">
+		<id column="id" property="id" ></id>
+		<result column="src" property="src"></result>
+		<result column="sort" property="sort" ></result>
+		<result column="cid" property="cid" ></result>
+	</resultMap>
+
+	<resultMap id="allImgCls" type="com.bootdo.vrs.domain.ImgclsImgsDO" autoMapping="true" extends="all">
+			<association property="proDo" javaType="com.bootdo.vrs.domain.ProDO">
+
+				<result column="cls.name" property="name"></result>
+			</association>
+	</resultMap>
+
+
+	<select id="get" resultType="com.bootdo.vrs.domain.ImgclsImgsDO">
+		select `id`,`src`,`cid`,`sort` from vrs_imgcls_imgs where id = #{value}
+	</select>
+
+	<select id="list"  resultMap="allImgCls">
+		select pro.`name` as 'cls.name',imgs.`id`,imgs.`src`,imgs.`cid`,imgs.`sort` from vrs_imgcls_imgs  imgs
+		left JOIN vrs_pro pro
+		on imgs.cid=pro.id
+
+		<where>
+		  		  <if test="id != null and id != ''"> and imgs.id = #{id} </if>
+		  		  <if test="src != null and src != ''"> and imgs.src = #{src} </if>
+		  		  <if test="cid != null and cid != ''"> and imgs.cid = #{cid} </if>
+		  		  <if test="sort != null and sort != ''"> and imgs.sort = #{sort} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by imgs.sort desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_imgcls_imgs
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="src != null and src != ''"> and src = #{src} </if>
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.ImgclsImgsDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_imgcls_imgs
+		(
+			`src`, 
+			`cid`, 
+			`sort`
+		)
+		values
+		(
+			#{src}, 
+			#{cid}, 
+			#{sort}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.ImgclsImgsDO">
+		update vrs_imgcls_imgs 
+		<set>
+			<if test="src != null">`src` = #{src}, </if>
+			<if test="cid != null">`cid` = #{cid}, </if>
+			<if test="sort != null">`sort` = #{sort}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_imgcls_imgs where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_imgcls_imgs where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

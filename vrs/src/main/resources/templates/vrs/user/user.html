@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="userallot:user:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>分配账户
+							</button>
+							<button shiro:hasPermission="userallot:user:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+
+							<input type="hidden" id="boos" th:value="${boos}">
+
+							<span  id="u" class="btn  btn-danger"
+									onclick="ff()">
+								查看我的下级
+							</span>
+
+							<span style="color: red;" th:if="${days !=null }">
+								会员到期天数:剩余<span th:text="${days}"></span>天
+							</span>
+
+							<span style="color: red;" th:if="${tit !=null }">
+								<span th:text="${tit}"></span>
+							</span>
+
+							<span style="color: red;" th:if="${bools !=null }">
+								 我的收益总金额:<span th:text="${price}"></span>元
+							</span>
+
+						</div>
+
+						<input type="hidden" id="uid" th:value="${uid}">
+
+
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								placeholder="">
+						</div>
+
+						<div shiro:hasPermission="userallot:user:ulist">
+						<div class="columns  pull-right" style="margin-right: 20px;">
+							<select id="userIdCreate"  class="form-control" style="font-size: 12px;">
+								<option value="">====选择用户名====</option>
+								<option th:value="${u.userId}" th:text="${u.username}" th:each="u : ${ulist}"></option>
+							</select>
+						</div>
+						<div class="columns  pull-right" style="margin-right: 1px">
+							<a type="button" class="btn btn-success" mce_href="#">用户名:</a>
+						</div>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="userallot:user:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="userallot:user:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="userallot:user:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+
+	<script>
+		$("#u").hide();
+		var ts=$("#boos").val();
+		if(ts===''||ts==null){
+			//是自己用户
+			$("#u").show();
+
+		}
+		else{
+			$("#u").hide();
+		}
+	</script>
+	<script type="text/javascript" src="/js/appjs/vrs/user/user.js"></script>
+
+
+</body>
+</html>

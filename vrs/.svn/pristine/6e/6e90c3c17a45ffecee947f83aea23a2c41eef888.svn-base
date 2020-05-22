@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.school.dao.BusinessDao">
+
+
+	<resultMap id="busineAll" type="com.bootdo.school.domain.BusinessDO" autoMapping="true">
+		<id property="id" column="id"></id>
+		<result property="name" column="name"></result>
+		<result property="addres" column="addres"></result>
+		<result property="createdate" column="createDate"></result>
+		<result property="updatedate" column="updateDate"></result>
+		<result property="detailed" column="detailed"></result>
+		<result property="img" column="img"></result>
+		<result property="uid" column="uid"></result>
+	</resultMap>
+
+	<resultMap id="busineAndUserAll" type="com.bootdo.school.domain.BusinessDO" autoMapping="true">
+		<association property="userDO" autoMapping="true" javaType="com.bootdo.system.domain.UserDO">
+			<result property="username" column="u.username"></result>
+		</association>
+
+	</resultMap>
+
+	<select id="get" resultMap="busineAndUserAll" parameterType="Integer">
+
+
+select  u.username as 'u.username',bus.uid,`id`,bus.`name`,bus.`addres`,bus.`createDate`,bus.`updateDate`,bus.`longitude`,bus.`latitude`,bus.`status`,bus.`detailed`,bus.`img` from sc_business
+bus left join sys_user u
+on bus.uid=u.user_id
+	where bus.id=#{id}
+</select>
+
+	<select id="list" resultMap="busineAndUserAll">
+
+		select  u.username as 'u.username',bus.uid,`id`,bus.`name`,bus.`addres`,bus.`createDate`,bus.`updateDate`,bus.`longitude`,bus.`latitude`,bus.`status`,bus.`detailed`,bus.`img` from sc_business
+		bus left join sys_user u
+		on bus.uid=u.user_id
+
+		<where>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and bus.name like '%${name}%' </if>
+		  		  <if test="addres != null and addres != ''"> and addres = #{addres} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="updatedate != null and updatedate != ''"> and updateDate = #{updatedate} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="detailed != null and detailed != ''"> and detailed = #{detailed} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		  and bus.status!=0
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by bus.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sc_business
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name like '%${name}%' </if>
+		  		  <if test="addres != null and addres != ''"> and addres = #{addres} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="updatedate != null and updatedate != ''"> and updateDate = #{updatedate} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="detailed != null and detailed != ''"> and detailed = #{detailed} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		   and status!=0
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.school.domain.BusinessDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sc_business
+		(
+			`name`, 
+			`addres`, 
+			`createDate`, 
+			`updateDate`, 
+			`longitude`, 
+			`latitude`, 
+			`status`, 
+			`detailed`, 
+			`img`,
+			uid
+		)
+		values
+		(
+			#{name}, 
+			#{addres}, 
+			#{createdate}, 
+			#{updatedate}, 
+			#{longitude}, 
+			#{latitude}, 
+			#{status}, 
+			#{detailed}, 
+			#{img},
+			#{uid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.school.domain.BusinessDO">
+		update sc_business 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="addres != null">`addres` = #{addres}, </if>
+			<if test="createdate != null">`createDate` = #{createdate}, </if>
+			<if test="updatedate != null">`updateDate` = #{updatedate}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="detailed != null">`detailed` = #{detailed}, </if>
+			<if test="img != null">`img` = #{img}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		<!-- delete from sc_business where id = #{value} -->
+		update sc_business set status=0 where id=#{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		<!-- delete from sc_business where id in  -->
+		update sc_business set status=0 where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="queryUserAndCoupon" parameterType="Long" resultType="int">
+		select count(1) from sc_business where uid=#{uid}
+
+	</select>
+
+
+	<select id="queryCouponId" parameterType="string" resultType="com.bootdo.school.domain.BusinessDO">
+		select * from sc_business where uid=#{uid}
+	</select>
+
+</mapper>

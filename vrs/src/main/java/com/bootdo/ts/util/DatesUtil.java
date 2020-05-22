@@ -1,0 +1,219 @@
+package com.bootdo.ts.util;
+
+import com.bootdo.common.utils.DateUtils;
+import org.joda.time.Days;
+import org.springframework.stereotype.Component;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@Component
+public class DatesUtil {
+
+        private    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    public  String getTimeInterval(Date date) {
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        // 判断要计算的日期是否是周日，如果是则减一天计算周六的，否则会出问题，计算到下一周去了
+        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);// 获得当前日期是一个星期的第几天
+        if (1 == dayWeek) {
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        // System.out.println("要计算日期为:" + sdf.format(cal.getTime())); // 输出要计算日期
+        // 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        // 获得当前日期是一个星期的第几天
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        // 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
+        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
+        String imptimeBegin = sdf.format(cal.getTime());
+        // System.out.println("所在周星期一的日期：" + imptimeBegin);
+        cal.add(Calendar.DATE, 6);
+        String imptimeEnd = sdf.format(cal.getTime());
+        // System.out.println("所在周星期日的日期：" + imptimeEnd);
+        return imptimeBegin + "," + imptimeEnd;
+    }
+
+
+    /*
+    无限获取上一周 下一周 day 上几周 bs 下几周
+     */
+    public  String getLastTimeInterval(String dates,String bs) {
+        Locale locale = Locale.CHINA;
+
+        //默认当时间
+        Calendar calendar1 =  Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
+        try {
+        // 设置传入的时间格式
+        if (dates!=null){
+            Date date = sdf.parse(dates);
+            // 对 calendar 设置为 date 所定的日期
+            calendar1.setTime(date);
+            calendar2.setTime(date);
+        }
+
+
+            }
+     catch ( Exception e){
+     e.printStackTrace();
+        }
+        int dayOfWeek = calendar1.get(Calendar.DAY_OF_WEEK) - 1;
+        int offset1 = 1 - dayOfWeek;
+        int offset2 = 7 - dayOfWeek;
+        if ("end".equals(bs)){
+            calendar1.add(Calendar.DATE, offset1 + 7);
+            calendar2.add(Calendar.DATE, offset2 + 7);
+        }
+        else if ("-".equals(bs)){
+            calendar1.add(Calendar.DATE, offset1 -7);
+            calendar2.add(Calendar.DATE, offset2 - 7);
+        }
+
+        // System.out.println(sdf.format(calendar1.getTime()));// last Monday
+        String lastBeginDate = sdf.format(calendar1.getTime());
+        // System.out.println(sdf.format(calendar2.getTime()));// last Sunday
+        String lastEndDate = sdf.format(calendar2.getTime());
+        return lastBeginDate + "," + lastEndDate;
+    }
+
+
+    public  List<Date> findDates(Date dBegin, Date dEnd)
+    {
+
+        List lDate = new ArrayList();
+        lDate.add(dBegin);
+        Calendar calBegin = Calendar.getInstance();
+        // 使用给定的 Date 设置此 Calendar 的时间
+        calBegin.setTime(dBegin);
+        Calendar calEnd = Calendar.getInstance();
+        // 使用给定的 Date 设置此 Calendar 的时间
+        calEnd.setTime(dEnd);
+        // 测试此日期是否在指定日期之后
+        while (dEnd.after(calBegin.getTime()))
+        {
+            // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
+            calBegin.add(Calendar.DAY_OF_MONTH, 1);
+            lDate.add(calBegin.getTime());
+        }
+        return lDate;
+    }
+
+
+    //获取当前时间这个礼拜的周一
+    public  String geyDayOne(String dayDate){
+
+        String oneDay ="" ;
+
+        try {
+
+            Calendar cld = Calendar.getInstance(Locale.CHINA);
+            cld.setFirstDayOfWeek(Calendar.MONDAY);//以周一为首日
+            cld.setTime(sdf.parse(dayDate));//当前时间
+            cld.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//周一
+            oneDay=sdf.format(cld.getTime());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return oneDay;
+
+    }
+
+
+
+
+
+    //根据自定义日期 返回星期
+
+
+
+    public  static void main(String[] args) {
+      /*  //测试 无限获取上一周 下一周
+        String myday=getTimeInterval(new Date());
+        System.out.println(myday);
+        String[] mydays= myday.split(",");
+        String startDq=mydays[0];//当前周到第一天星期一
+        String startRq=startDq.split(" ")[0];//当前周到第一天星期一
+        System.out.println(startRq);*/
+        //上周1 个人1上周7 的日期
+        System.out.println(new DatesUtil().getLastTimeInterval("2020-5-23","+"));
+       /* String strDate = "2020-05-07";
+
+        try {
+
+            Calendar cld = Calendar.getInstance(Locale.CHINA);
+            cld.setFirstDayOfWeek(Calendar.MONDAY);//以周一为首日
+            cld.setTime(sdf.parse(strDate));//当前时间
+            cld.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//周一
+            System.out.println(sdf.format(cld.getTime()));
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }*/
+
+        DatesUtil dateUtils=new DatesUtil();
+
+
+        String strDate = "2020-05-04";
+        String endDate = "2020-05-10";
+        SimpleDateFormat lsdStrFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date strD = lsdStrFormat.parse(strDate);
+            Date end = lsdStrFormat.parse(endDate);
+            List<Date>  list=new DatesUtil().findDates(strD,end);
+            for (Date o : list) {
+                String sj=dateUtils.sdf.format(o);
+                String[] sz=sj.split("-");
+
+
+
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
+
+
+    public  String getDay(String day){
+        if (day.equalsIgnoreCase("Mon")){
+            day="星期一";
+        }else if (day.equalsIgnoreCase("Tue")||day.equalsIgnoreCase("Tues")){
+            day="星期二";
+        }else if (day.equalsIgnoreCase("Wed")){
+            day="星期三";
+        }else if (day.equalsIgnoreCase("Thu")||day.equalsIgnoreCase("Thur")||day.equalsIgnoreCase("Thurs")){
+            day="星期四";
+        }else if (day.equalsIgnoreCase("Fri")){
+            day="星期五";
+        }else if (day.equalsIgnoreCase("Sat")){
+            day="星期六";
+        }else if (day.equalsIgnoreCase("Sun")){
+            day="星期天";
+        }
+
+
+
+
+        return  day;
+    }
+
+
+
+
+
+
+
+
+}

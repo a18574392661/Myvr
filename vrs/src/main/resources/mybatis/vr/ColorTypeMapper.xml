@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vr.dao.ColorTypeDao">
+
+	<resultMap type="java.util.Map" id="ProductTreeResult">
+        <result property="id"    column="topId"    />
+        <result property="text"    column="topName"    />
+        <result property="type"    column="topType"    />
+        <collection  property="nodes" ofType="java.util.Map" javaType="java.util.List">
+       		<id column="leftId" property="id"/>
+	 		<result column="leftName" property="text"/>
+	 		<result property="type"    column="leftType"    />
+	 		<collection  property="nodes" ofType="java.util.Map" javaType="java.util.List">
+		 		<id column="romeId" property="id"/>
+		 		<result column="romeName" property="text"/>
+		 		<result property="type"    column="romeType"    />
+		 		<collection  property="nodes" ofType="java.util.Map" javaType="java.util.List">
+			 		<id column="colorId" property="id"/>
+			 		<result column="colorName" property="text"/>
+			 		<result property="type"    column="colorType"    />
+				</collection>
+			</collection>
+		</collection>
+    </resultMap>
+
+	<select id="queryForProductTree" resultMap="ProductTreeResult">
+		select 
+		a.top_id topId,a.top_name topName,
+		b.left_id leftId,b.left_name leftName,
+		c.rome_id romeId,c.rome_name romeName,
+		d.id colorId,d.color colorName,
+		1 as topType, 2 as leftType, 3 as romeType, 4 as colorType
+		from vr_top_style a 
+		left join vr_left_style b on a.top_id=b.top_style_id
+		left join vr_rome_type c on c.left_style_id=b.left_id
+		left join vr_color_type d on d.rome_type_id=c.rome_id
+		where d.id is not null and b.left_id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		order by a.top_sort asc,b.left_sort asc,c.rome_sort asc
+	</select>
+
+
+
+	<select id="get" resultType="com.bootdo.vr.domain.ColorTypeDO">
+		select `id`,`rome_type_id`,`color`,`qjt`,`color_logo`,`top_style_id`,`left_style_id` from vr_color_type where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.vr.domain.ColorTypeDO">
+		select a.*,b.top_name,c.left_name,d.rome_name from vr_color_type a 
+		left join vr_top_style b on a.top_style_id = b.top_id
+		left join vr_left_style c on a.left_style_id=c.left_id
+		left join vr_rome_type d on a.rome_type_id=d.rome_id
+        <where>  
+		  		  <if test="id != null and id != ''"> and a.id = #{id} </if>
+		  		  <if test="romeTypeId != null and romeTypeId != ''"> and a.rome_type_id = #{romeTypeId} </if>
+		  		  <if test="color != null and color != ''"> and a.color = #{color} </if>
+		  		  <if test="qjt != null and qjt != ''"> and a.qjt = #{qjt} </if>
+		  		  <if test="colorLogo != null and colorLogo != ''"> and a.color_logo = #{colorLogo} </if>
+		  		  <if test="topStyleId != null and topStyleId != ''"> and a.top_style_id = #{topStyleId} </if>
+		  		  <if test="romeId != null and romeId != ''"> and d.rome_id = #{romeId} </if>
+		  		  <if test="leftStyleId != null and leftStyleId != ''"> and a.left_style_id = #{leftStyleId} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vr_color_type a 
+		left join vr_top_style b on a.top_style_id = b.top_id
+		left join vr_left_style c on a.left_style_id=c.left_id
+		left join vr_rome_type d on a.rome_type_id=d.rome_id
+         <where>  
+		  		  <if test="id != null and id != ''"> and a.id = #{id} </if>
+		  		  <if test="romeTypeId != null and romeTypeId != ''"> and a.rome_type_id = #{romeTypeId} </if>
+		  		  <if test="color != null and color != ''"> and a.color = #{color} </if>
+		  		  <if test="qjt != null and qjt != ''"> and a.qjt = #{qjt} </if>
+		  		  <if test="colorLogo != null and colorLogo != ''"> and a.color_logo = #{colorLogo} </if>
+		  		  <if test="topStyleId != null and topStyleId != ''"> and a.top_style_id = #{topStyleId} </if>
+		  		  <if test="romeId != null and romeId != ''"> and d.rome_id = #{romeId} </if>
+		  		  <if test="leftStyleId != null and leftStyleId != ''"> and a.left_style_id = #{leftStyleId} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vr.domain.ColorTypeDO">
+		insert into vr_color_type
+		(
+			`id`, 
+			`rome_type_id`, 
+			`color`, 
+			`qjt`, 
+			`color_logo`, 
+			`top_style_id`, 
+			`left_style_id`
+		)
+		values
+		(
+			#{id}, 
+			#{romeTypeId}, 
+			#{color}, 
+			#{qjt}, 
+			#{colorLogo}, 
+			#{topStyleId}, 
+			#{leftStyleId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vr.domain.ColorTypeDO">
+		update vr_color_type 
+		<set>
+			<if test="romeTypeId != null">`rome_type_id` = #{romeTypeId}, </if>
+			<if test="color != null">`color` = #{color}, </if>
+			<if test="qjt != null">`qjt` = #{qjt}, </if>
+			<if test="colorLogo != null">`color_logo` = #{colorLogo}, </if>
+			<if test="topStyleId != null">`top_style_id` = #{topStyleId}, </if>
+			<if test="leftStyleId != null">`left_style_id` = #{leftStyleId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vr_color_type where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vr_color_type where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,109 @@
+package com.bootdo.vrs.service.impl;
+
+import com.bootdo.vrs.common.MessageConstantVrs;
+import com.bootdo.vrs.dao.ImgClsDao;
+import com.bootdo.vrs.domain.ImgClsDO;
+import com.bootdo.vrs.service.ImgClsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+
+
+@Service
+@Transactional
+public class ImgClsServiceImpl implements ImgClsService {
+	@Autowired
+	private ImgClsDao imgClsDao;
+	
+	@Override
+	public ImgClsDO get(Long id){
+		return imgClsDao.get(id);
+	}
+	
+	@Override
+	public List<ImgClsDO> list(Map<String, Object> map){
+		return imgClsDao.list(map);
+	}
+	
+	@Override
+	public int count(Map<String, Object> map){
+		return imgClsDao.count(map);
+	}
+	
+	@Override
+	public int save(ImgClsDO imgCls){
+		imgCls.setCreatedate(new Date());
+		imgCls.setStatus(1+"");
+		if (imgCls.getPid()==null){
+			imgCls.setPid(0);
+		}
+		return imgClsDao.save(imgCls);
+	}
+	
+	@Override
+	public int update(ImgClsDO imgCls){
+
+		imgCls.setUpdatedate(new Date());
+
+		return imgClsDao.update(imgCls);
+	}
+	
+	@Override
+	public int remove(Long id){
+		//查询 父分类不能删除 我
+		List<ImgClsDO> list=imgClsDao.imgClsPars(id+"");
+		if (list!=null&&list.size()>0){
+			throw  new RuntimeException(MessageConstantVrs.IMGCLSDEL_ERROR);
+		}
+		//查询子集下面有图片
+		int count=imgClsDao.getClsChildPro(id);
+		if (count>0){
+			throw  new RuntimeException(MessageConstantVrs.CLS_CHILD_PRO);
+		}
+		//上传
+		return imgClsDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(Long[] ids){
+		return imgClsDao.batchRemove(ids);
+	}
+
+	@Override
+	public List<ImgClsDO> imgClsPars(String pid) {
+
+		return imgClsDao.imgClsPars(pid);
+	}
+
+	@Override
+	public String[] queryProCeebnCls(Integer id) {
+
+		return imgClsDao.queryProCeebnCls(id);
+	}
+
+	@Override
+	public List<Map<String, Object>> getAllCategory(Map<String,String> param) {
+		// TODO Auto-generated method stub
+		
+		return imgClsDao.getAllCategory(param);
+	}
+
+	@Override
+	public List<Map<String, Object>> getAllCategorySub(Map<String, String> param) {
+		// TODO Auto-generated method stub
+		return imgClsDao.getAllCategorySub(param);
+	}
+
+	@Override
+	public List<Map<String, Object>> qeuryCategoryByProId(Integer id) {
+		// TODO Auto-generated method stub
+		
+		return imgClsDao.qeuryCategoryByProId(id);
+	}
+
+}

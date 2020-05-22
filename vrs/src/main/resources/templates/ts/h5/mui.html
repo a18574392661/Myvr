@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/tsH5/css/base.css">
+    <link rel="stylesheet" href="/tsH5/css/app.css" type="text/css" />
+	
+	<link href="/tsH5/css/mui.picker.css" rel="stylesheet" />
+	<link href="/tsH5/css/mui.poppicker.css" rel="stylesheet" />
+	<script src="/tsH5/js/mui.picker.js"></script>
+	<script src="/tsH5/js/mui.poppicker.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="box">
+            <div class="header">
+				<p>姓名：XXX</p>
+				<p>手机：18474511452</p>
+                <!-- <p>日期：2020-05-13</p> -->
+				<div id="theList_pregnancyOutcomeDiv" class="mui-input-row">
+					<label>日期</label>
+					<select>
+						<option>111</option>
+					</select>
+				</div>
+				<p>第一：语文</p>
+            </div>
+            <div class="tittle">
+                <div class="t_1">
+                    <span class="sp1"></span>
+                    <p>可选</p>
+                </div>
+                <div class="t_2">
+                    <span class="sp2"></span>
+                    <p>已选</p>
+                </div>
+                <div class="t_3">
+                    <span class="sp3"></span>
+                    <p>已无</p>
+                </div>
+            </div>
+            <img src="images/pingmu.png" class="pingmu">
+            <div class="content">
+                <div class="nine" pai="1">
+					<ul>
+						<li typ="2" onclick="check(this)">
+							<div class="name">
+								张三
+							</div>
+						</li>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+                    </ul>
+                </div>
+				
+				<div class="nine" pai="2">
+					<ul>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+					</ul>
+				</div>
+				
+				<div class="nine" pai="3">
+					<ul>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+					</ul>
+				</div>
+				
+				<div class="nine" pai="4">
+					<ul>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+					</ul>
+				</div>
+				
+				<div class="nine" pai="5">
+					<ul>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+					</ul>
+				</div>
+				
+				<div class="nine" pai="6">
+					<ul>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+					</ul>
+				</div>
+            </div>
+            <div class="zw">
+                <p>已选座位<span>最多只能选择1个座位</span></p>
+                <div class="yxz"></div>
+            </div>
+        </div>
+		<div class="queding">确认选座</div>
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript">
+        /*判断页面加载完成*/
+        window.onload = function () {
+            if (document.readyState == "complete") {
+                $("body").show();
+            }
+        };
+        var arr = []; /*已选座位数组*/
+        /*
+         遍历检查状态
+         typ ==0 可选
+         typ ==1 已选
+         typ ==2 已售
+         */
+        $(".content li").each(function (index) {
+            var typ = $(".content li").eq(index).attr("typ");
+            if (typ == "2") {
+                $(".content li").eq(index).css("background", "#0099ff");
+            }
+        });
+        /*已选座位添加*/
+        function add(msg) {
+            var html = '<div>' + msg + '</div>';
+            return html;
+        }
+        /*选座点击事件*/
+        function check(dom) {
+            var txt = $(dom).parent().parent().attr('pai') + "排" + parseInt($(dom).index() + 1) + "座";
+            var typ = $(dom).attr("typ");
+            if (typ == "0") {
+                if (arr.length > 0) {
+                    alert("一人只能选择1个座位！");
+                    return false;
+                } else {
+                    $(dom).css("background", "#fe3f55");
+                    $(dom).attr("typ", "1");
+                    arr.push(txt);
+                    $(".yxz").append(add(txt));
+                }
+            } else if (typ == "2") {
+                alert("该座位已售出！");
+                return false;
+            } else {
+                $(dom).css("background", "#f5f5f5");
+                $(dom).attr("typ", "0");
+                var index = arr.indexOf(txt);
+                arr.removeByValue(txt);/*指定数组删除*/
+                $(".yxz div").eq(index).remove();
+                $(".num").text(arr.length);/*已选电影票数量*/
+            }
+        }
+        /*数组删除指定元素方法*/
+        Array.prototype.removeByValue = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) {
+                    this.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    </script>
+	<script>
+		var userPicker = new $.PopPicker();
+		            userPicker.setData([{
+		                value: '0',
+		                text: '尚未分娩 '
+		            }, {
+		                value: '1',
+		                text: '活产（单胎）'
+		            }, {
+		                value: '2',
+		                text: '活产（多胎）'
+		            }, {
+		                value: '3',
+		                text: '其他 '
+		            }]);
+		            var showUserPickerButton = doc.getElementById('theList_pregnancyOutcomeDiv');
+		            showUserPickerButton.addEventListener('tap', function(event) {
+		                userPicker.show(function(items) {
+		                    pregnancyOutcomeText.innerHTML = items[0].text;
+		                     pregnancyOutcome =items[0].value;
+		                    //返回 false 可以阻止选择框的关闭
+		                    //return false;
+		                });
+		            }, false);
+	</script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="vrs:pro:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="vrs:pro:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+							
+							<a href="/vrs/houses/pageListH" target="_blank"><span class="glyphicon glyphicon-cloud" ></span><span style="cursor:pointer;" th:text="${huace}"></span></a>
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								placeholder="">
+						</div>
+						
+						<!-- 二级联动 -->
+						<div class="columns  pull-right" style="margin-right: 20px">
+							<select id="cid" name="cid" class="form-control" style="font-size: 12px;">
+								<option value="">====全部====</option>
+							</select>
+						</div>
+
+						<div class="columns  pull-right" style="margin-right: 1px">
+							<a type="button" class="btn btn-success" mce_href="#">分类名称:</a>
+						</div>
+
+						<div shiro:hasPermission="userallot:user:ulist">
+							<div class="columns  pull-right" style="margin-right: 20px;">
+								<select id="uid1"  class="form-control" style="font-size: 12px;" onchange="changuser('exampleTable')">
+									<option value="">====选择用户名====</option>
+									<option th:value="${u.userId}" th:text="${u.username}" th:each="u : ${ulist}"></option>
+								</select>
+							</div>
+							<div class="columns  pull-right" style="margin-right: 1px">
+								<a type="button" class="btn btn-success" mce_href="#">用户名:</a>
+							</div>
+						</div>
+
+
+
+						<!--xxxxxxxxxss-->
+						<div class="columns  pull-right" style="margin-right: 1px;margin-right: 1rem;" >
+							<li type="button" class="btn btn-success" onclick="updateStatus()">批量修改状态</li>
+						</div>
+
+						<div >
+							<div class="columns  pull-right" style="margin-right: 20px;">
+								<select id="status"  class="form-control" style="font-size: 12px;">
+									<option value="">====是否展示====</option>
+									<option value="0">不展示</option>
+									<option value="1">展示</option>
+								</select>
+
+
+							</div>
+
+							<div class="columns  pull-right" style="margin-right: 20px;">
+								<select id="pay"  class="form-control" style="font-size: 12px;">
+									<option value="">====是否免费====</option>
+									<option value="0">免费</option>
+									<option value="1">付费</option>
+								</select>
+							</div>
+
+
+						</div>
+
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	<hr>
+		<!--第二个-->
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="vrs:pro:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<a href="/vrs/houses/pageListG" target="_blank"><span class="glyphicon glyphicon-cloud" ></span><span th:text="${huanse}" style="cursor:pointer;"></span></a>
+
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName2" type="text" class="form-control"
+								   placeholder="">
+						</div>
+						
+						<!-- 二级联动 -->
+						<div class="columns  pull-right" style="margin-right: 20px">
+							<select id="cidcolorchange" name="cidcolorchange" class="form-control" style="font-size: 12px;">
+								<option value="">====全部====</option>
+							</select>
+						</div>
+						<div class="columns  pull-right" style="margin-right: 1px">
+							<a type="button" class="btn btn-success" mce_href="#">分类名称:</a>
+						</div>
+
+
+						<div shiro:hasPermission="userallot:user:ulist">
+							<div class="columns  pull-right" style="margin-right: 20px;">
+								<select id="uid2"  class="form-control" style="font-size: 12px;" onchange="changuser('exampleTable2')">
+									<option value="">====选择用户名====</option>
+									<option th:value="${u.userId}" th:text="${u.username}" th:each="u : ${ulist}"></option>
+								</select>
+							</div>
+							<div class="columns  pull-right" style="margin-right: 1px">
+								<a type="button" class="btn btn-success" mce_href="#">用户名:</a>
+							</div>
+						</div>
+
+
+						<!--xxxxxxxxxss-->
+						<div class="columns  pull-right" style="margin-right: 1px;margin-right: 1rem;" >
+							<a type="button" class="btn btn-success" mce_href="#" onclick="updateStatus2()">批量修改状态:</a>
+						</div>
+
+						<div >
+							<div class="columns  pull-right" style="margin-right: 20px;">
+								<select id="status1"  class="form-control" style="font-size: 12px;" >
+									<option value="">====是否展示====</option>
+									<option value="0">不展示</option>
+									<option value="1">展示</option>
+								</select>
+							</div>
+							<div class="columns  pull-right" style="margin-right: 20px;">
+								<select id="pay1"  class="form-control" style="font-size: 12px;">
+									<option value="">====是否免费====</option>
+									<option value="0">免费</option>
+									<option value="1">付费</option>
+								</select>
+							</div>
+
+
+						</div>
+
+
+					</div>
+						<table id="exampleTable2" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+
+		
+
+		<div align="center">
+			<button type="button" class="btn btn-outline-info" onclick="xia()">下一页</button>
+		</div>
+
+
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="vrs:pro:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="vrs:pro:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="vrs:pro:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/pro/pro.js"></script>
+	
+
+		<script type="text/javascript">
+			function changuser(tbname) {
+				$('#'+tbname).bootstrapTable('refresh');
+			}
+
+			function xia(){
+				location.href="/vrs/pro/pro2";
+			}
+
+			//查询所有的风格标签
+			$.ajax({
+				type: "get",//方法类型 
+                dataType: "json",//预期服务器返回的数据类型
+                url: "/vrs/imgCls3/list" ,//url
+                data:{"offset":null,"limit":null,"status":"1"},
+                success: function (result) {
+
+                    for(var i = 0;i < result.rows.length;i++){
+                    	 $("#cid").append("<option value='"+result.rows[i].id+"'>"+result.rows[i].name+"</option>");
+                    }
+                },
+                error : function(error) {
+                    $('#result').html(error);
+                }
+			})
+
+
+
+			//联动
+			$("#cid").change(function(){
+				$('#exampleTable').bootstrapTable('refresh');
+			})
+			
+			
+			//第二分类
+			//查询所有的风格标签
+			$.ajax({
+				type: "get",//方法类型 
+                dataType: "json",//预期服务器返回的数据类型
+                url: "/vrs/imgCls2/list" ,//url
+                data:{"offset":null,"limit":null,"status":"1"},
+                success: function (result) {
+                    for(var i = 0;i < result.rows.length;i++){
+                    	 $("#cidcolorchange").append("<option value='"+result.rows[i].id+"'>"+result.rows[i].name+"</option>");
+                    }
+                },
+                error : function(error) {
+                    $('#result').html(error);
+                }
+			})
+			
+			//联动
+			$("#cidcolorchange").change(function(){
+				$('#exampleTable2').bootstrapTable('refresh');
+			})
+
+
+
+
+		</script>
+</body>
+</html>

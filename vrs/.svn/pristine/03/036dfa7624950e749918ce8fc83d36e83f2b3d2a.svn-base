@@ -1,0 +1,211 @@
+package com.bootdo.vrs.domain;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * 
+ * 
+ * @author chglee
+ * @email 1992lcg@163.com
+ * @date 2020-04-13 14:20:14
+ */
+public class TitleClsDO implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	//
+	private Integer id;
+	//
+	private String name;
+	//
+	private Integer pid;
+	//0 隐藏 1 显示
+	private Integer status;
+	//下级跳的链接
+	private String hrefs;
+	//首页列表是否展示 0 不展示 1 展示
+	private Integer c;
+
+	private  Integer isfulls;
+
+
+	private  TitleClsDO childTitleDo;
+
+	private  Integer typeid;
+
+	private List<TitleClsDO> childTiles;
+
+	private  String tname;
+
+	private  boolean checkeds;
+
+
+
+
+	private List<ProDo2> proDo2;
+
+
+	public String getTname() {
+		return tname;
+	}
+
+	public void setTname(String tname) {
+		this.tname = tname;
+	}
+
+	public List<ProDo2> getProDo2() {
+		return proDo2;
+	}
+
+	public void setProDo2(List<ProDo2> proDo2) {
+		this.proDo2 = proDo2;
+	}
+
+	//防止swwagger死循环和的调用
+	private  List<Map<String,Object>> proSorts=new ArrayList<>()
+			;
+
+	public  List<Map<String,Object>>  getProSorts() {
+		return proSorts;
+	}
+
+	public boolean isCheckeds() {
+		return checkeds;
+	}
+
+	public void setCheckeds(boolean checkeds) {
+		this.checkeds = checkeds;
+	}
+
+	public void setProSorts(List<Map<String,Object>>  proSorts) {
+		this.proSorts = proSorts;
+	}
+
+
+
+	public List<TitleClsDO> getChildTiles() {
+		return childTiles;
+	}
+
+	public void setChildTiles(List<TitleClsDO> childTiles) {
+		this.childTiles = childTiles;
+	}
+
+	public Integer getC() {
+		return c;
+	}
+
+	public void setC(Integer c) {
+		this.c = c;
+	}
+
+	public Integer getTypeid() {
+		return typeid;
+	}
+
+	public void setTypeid(Integer typeid) {
+		this.typeid = typeid;
+	}
+
+	public TitleClsDO getChildTitleDo() {
+		return childTitleDo;
+	}
+
+
+
+	public void setChildTitleDo(TitleClsDO childTitleDo) {
+		this.childTitleDo = childTitleDo;
+	}
+
+	/**
+	 * 设置：
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	/**
+	 * 获取：
+	 */
+	public Integer getId() {
+		return id;
+	}
+	/**
+	 * 设置：
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * 获取：
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * 设置：
+	 */
+	public void setPid(Integer pid) {
+		this.pid = pid;
+	}
+	/**
+	 * 获取：
+	 */
+	public Integer getPid() {
+		return pid;
+	}
+	/**
+	 * 设置：0 隐藏 1 显示
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	/**
+	 * 获取：0 隐藏 1 显示
+	 */
+	public Integer getStatus() {
+		return status;
+	}
+	/**
+	 * 设置：下级跳的链接
+	 */
+	public void setHrefs(String hrefs) {
+		this.hrefs = hrefs;
+	}
+	/**
+	 * 获取：下级跳的链接
+	 */
+	public String getHrefs() {
+		return hrefs;
+	}
+	/**
+	 * 设置：首页列表是否展示 0 不展示 1 展示
+	 */
+	public void setIsfulls(Integer isfulls) {
+		this.isfulls = isfulls;
+	}
+	/**
+	 * 获取：首页列表是否展示 0 不展示 1 展示
+	 */
+	public Integer getIsfulls() {
+		return isfulls;
+	}
+
+	@Override
+	public String toString() {
+		return "TitleClsDO{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", pid=" + pid +
+				", status=" + status +
+				", hrefs='" + hrefs + '\'' +
+				", c=" + c +
+				", isfulls=" + isfulls +
+				", childTitleDo=" + childTitleDo +
+				", typeid=" + typeid +
+				", childTiles=" + childTiles +
+				'}';
+	}
+}

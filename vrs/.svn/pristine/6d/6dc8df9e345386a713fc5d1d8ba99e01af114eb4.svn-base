@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+<script src="/js/bootstrap.min.js"></script>
+
+<div class="modal" id="myModal1"   role="dialog" aria-labelledby="myModalLabel"  th:fragment="zc">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:30rem;height: 40rem;" >
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myModalLabel" style="text-align: center;">
+
+                        注册用户
+
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <form role="form">
+                    <div class="form-group">
+                        <label for="mobile">手机号码:</label>
+                        <input type="number" class="form-control" maxlength="11" minlength="11" id="mobile" placeholder="手机号码" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 3.5rem;">
+                        <label for="password">密码:</label>
+                        <input type="password" class="form-control" id="password" placeholder="请输入密码" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 3.5rem;">
+                        <label for="password2">确认密码:</label>
+                        <input type="password" class="form-control" id="password2" placeholder="请确认密码" required>
+                    </div>
+
+                  <!--  <div class="form-group" style="margin-top: 2.5rem;">
+                        <label for="rid">级别:</label>
+                        <select class="form-control" id="rsh5" required="">
+                            <option value="">请选择</option>
+
+                        </select>
+
+
+                    </div>
+-->
+
+
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <input type="button" class="btn btn-primary" onclick="register()" value="确定注册"/>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+</body>
+</html>

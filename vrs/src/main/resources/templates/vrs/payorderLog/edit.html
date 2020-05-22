@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${payorderLog.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">订单编号：</label>
+								<div class="col-sm-8">
+									<input id="ordercode" name="ordercode" th:value="${payorderLog.ordercode}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">支付金额：</label>
+								<div class="col-sm-8">
+									<input id="price" name="price" th:value="${payorderLog.price}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">核销后的金额：</label>
+								<div class="col-sm-8">
+									<input id="hprice" name="hprice" th:value="${payorderLog.hprice}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">支付状态：</label>
+								<div class="col-sm-8">
+									<input id="status" name="status" th:value="${payorderLog.status}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">支付备注：</label>
+								<div class="col-sm-8">
+									<input id="remark" name="remark" th:value="${payorderLog.remark}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">1 微信 2支付宝：</label>
+								<div class="col-sm-8">
+									<input id="paysta" name="paysta" th:value="${payorderLog.paysta}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">用户id：</label>
+								<div class="col-sm-8">
+									<input id="uid" name="uid" th:value="${payorderLog.uid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建订单时间：</label>
+								<div class="col-sm-8">
+									<input id="createdate" name="createdate" th:value="${payorderLog.createdate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">回调码：</label>
+								<div class="col-sm-8">
+									<input id="tradeno" name="tradeno" th:value="${payorderLog.tradeno}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/payorderLog/edit.js">
+	</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${paydetailes.id}"  type="hidden">
+
+
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">标题：</label>
+								<div class="col-sm-8">
+									<input id="title" name="title" class="form-control" type="text" th:value="${paydetailes.title}">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">购买金额：</label>
+								<div class="col-sm-8">
+									<input id="price" required="required" name="price" class="form-control" type="number" placeholder="请输入购买金额"  th:value="${paydetailes.price}">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">时长价格：</label>
+								<div class="col-sm-8">
+									<div th:each="vip : ${viplist}">
+         								<label th:text="${vip.remker}"></label>:&nbsp;价格:<label th:text="${vip.price}"></label>
+									  <input type="checkbox" name="vips" th:checked="${vip.checked}" th:value="${vip.id}">
+									</div>
+								</div>
+							</div>
+
+
+							<!--<div class="form-group">
+								<label class="col-sm-3 control-label">支付宝支付状态：</label>
+								<div class="col-sm-8">
+									开启:<input id="paystate" name="paystate"  type="radio" value="1" th:checked="${paydetailes.paystate==1?true:false}">
+									关闭:<input   name="paystate" type="radio" value="0" th:checked="${paydetailes.paystate==0?true:false}">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">微信支付状态：</label>
+								<div class="col-sm-8">
+									<div class="col-sm-8">
+										开启:<input id="paywxstate" name="paywxstate"   type="radio" value="1"  th:checked="${paydetailes.paywxstate==1?true:false}">
+										关闭:<input   name="paywxstate"  type="radio" value="0"th:checked="${paydetailes.paywxstate==0?true:false}">
+									</div>
+
+								</div>
+							</div>-->
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">详细信息介绍:</label>
+								<div class="col-sm-8">
+
+
+									<div class="col-sm-8">
+										<div id="wangEditorDescription"></div>
+										<!--  这里需要用富文本编  -->
+										<input type="hidden" id="detailed" name="texts" th:value="${paydetailes.texts}">
+										<!-- <textarea rows="5" id="detailed" name="detailed" class="form-control" placeHolder="请输入商家简介" style="display:none;"></textarea> -->
+									</div>
+
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">普通用户说明:</label>
+								<div class="col-sm-8">
+
+
+									<div class="col-sm-8">
+
+										<textarea name="usertext"  cols="100" rows="20" th:text="${paydetailes.usertext}">
+
+										</textarea>
+										<!--  这里需要用富文本编  -->
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">会员用户说明:</label>
+								<div class="col-sm-8">
+
+
+									<div class="col-sm-8">
+										<textarea name="vipusertext" cols="100" rows="20" th:text="${paydetailes.usertext}">
+
+										</textarea>
+									</div>
+								</div>
+							</div>
+
+
+
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/paydetailes/edit.js">
+	</script>
+
+	<script type="text/javascript" src="/js/plugins/wangEditor/wangEditor.js"></script>
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	<script>
+		initEditorSaveAndEdit('vrPayText');
+	</script>
+
+</body>
+</html>

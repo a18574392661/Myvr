@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+ul{list-style:none;margin:0;padding:0;}
+ul li{text-align:center;}
+ul li img{display:block;border-radius: 4px;width: 60px;height:60px;margin:0 auto;}
+ul li.top,ul li.top-add{float:left;margin: 10px;}
+ul li.top > a,ul li.top-add > a{display:block;width:100%;border: 2px solid #000;padding: 10px;margin-bottom: 10px;position:relative;border-radius:6px;}
+ul li.top-add > a{width:100px;height:102px;}
+ul li.left,ul li.left-add{width: 100px;height:100px;border: 1px solid gray;margin-top: -1px;position:relative;}
+ul li.top-add a img{width: 32px;height:32px;margin: 14px auto;}
+ul li.left a{display:block;padding: 10px;text-align:center;}
+ul li.left-add a{display:block;height: 100%;padding: 10px;text-align:center;}
+ul li.left-add a img{width: 32px;height:32px;margin: 14px auto;}
+ul li .selected{display:none;position:absolute;top:0;left:0;width: 100%;height:100%;background: rgba(0,0,0,0.5)}
+ul li.top.checked > a .selected,ul li.left.active .selected{display:block;position:absolute;top:0;left:0;width: 100%;height:100%;background: rgba(0,0,0,0.3)}
+.selected-img{width: 32px;height:32px;display:block;margin: 30px auto;	}
+</style>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="columns pull-left">
+						<button type="button" class="btn  btn-danger btn-large" onclick="updateProductStyles()">
+							<i class="fa fa-edit" aria-hidden="true"></i> 保存修改
+						</button>
+					</div>
+					<!-- <div class="columns pull-right">
+						<button type="button" class="btn  btn-primary" onclick="reLoad()">刷新</button>
+					</div> -->
+					<div style="clear:both"></div>
+					<input id="id" name="id" th:value="${id}" type="hidden"/>
+					<ul id="topLeftStylesContainer">
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script src="/vtour/template-web.js"></script>
+	<script  id="addGoodsAttrPriceTemplate" type="text/html">
+		{{each topLeftStyle top i}}
+			<li class="top">
+				<a href='javascript:;' data-topid="{{top.topId}}" onclick="selectAll(this);">
+					<img src='{{top.topLogo}}'/>{{top.topName}}
+					<span class="selected" onclick="$(this).parents('.left').removeClass('active');"><img src="/img/selected.png" class="selected-img"></span>
+				</a>
+				<ul>
+					{{each top.leftStyle left j}}
+						<li class="left {{if isSelected(productLeftStyles, left.leftId)}} active {{/if}} " data-leftid="{{left.leftId}}" data-topid="{{top.topId}}">
+							<a href='javascript:;' data-leftid="{{left.leftId}}" onclick="$(this).parents('.left').addClass('active');"><img src='{{left.leftLogo}}'/>{{left.leftName}}</a>
+							<span class="selected" onclick="$(this).parents('.left').removeClass('active');"><img src="/img/selected.png" class="selected-img"></span>
+						</li>
+					{{/each}}
+				</ul>
+			</li>
+		{{/each}}
+		<div style="clear:both;"></div>
+	</script>
+	<script type="text/javascript" th:inline="javascript">
+	$(window).ready(function() {
+		/*<![CDATA[*/
+		var selectProductLeftStyles = [[${selectProductLeftStyles}]];
+		/*]]>*/
+		getData(selectProductLeftStyles);
+	});
+
+	function reLoad() {
+		window.location.reload();
+	}
+	
+	function getData(selectProductLeftStyles) {
+		$.ajax({
+			type : "get",
+			url : "/vr/leftStyle/queryAllTopAndLeftStyles",
+			error : function(request) {
+				parent.layer.alert("Connection error");
+			},
+			success : function(res) {
+				if (res.code == 0) {
+					console.log(selectProductLeftStyles, res.data )
+					$("#topLeftStylesContainer").html(template("addGoodsAttrPriceTemplate", {productLeftStyles: selectProductLeftStyles, topLeftStyle: res.data }));
+				} else {
+					layer.alert(res.msg)
+				}
+			}
+		});
+	}
+	
+	template.defaults.imports.isSelected = function(selectLeftStyles, leftStyleId){
+		if( !selectLeftStyles || !leftStyleId ){
+			return false;
+		}
+		
+		for( var i = 0; i < selectLeftStyles.length; i++ ){
+			var style = selectLeftStyles[i];
+			if( style.leftStyleId == leftStyleId){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	function selectAll(obj){
+		if( $(obj).parents('.top').hasClass("checked") ){
+			$(obj).parents('.top').removeClass("checked");
+			$(obj).next('ul').find('.left').removeClass("active");
+		} else {
+			$(obj).parents('.top').addClass("checked");
+			$(obj).next('ul').find('.left').addClass("active");
+		}
+	}
+	
+	function updateProductStyles(){
+		var leftStyleIds = [];
+		$(".left.active").each(function(){
+			leftStyleIds.push($(this).attr("data-leftid"));
+		});
+		
+		if( leftStyleIds.length == 0 ){
+			layer.msg("请选择小风格");
+			return false;
+		}
+	
+		
+		var leftIds = leftStyleIds.join(",");
+		$.ajax({
+			cache : true,
+			type : "POST",
+			url : "/vr/productInfo/editProduct",
+			data : {id : $("#id").val(), leftStyleIds : leftIds},
+			async : false,
+			error : function(request) {
+				parent.layer.alert("Connection error");
+			},
+			success : function(data) {
+				if (data.code == 0) {
+					parent.layer.msg("操作成功");
+					parent.reLoad();
+					var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+					parent.layer.close(index);
+				} else {
+					parent.layer.alert(data.msg)
+				}
+
+			}
+		});
+	}
+	
+	</script>
+</body>
+</html>

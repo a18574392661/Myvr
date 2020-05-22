@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${curr.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">课程名称:</label>
+								<div class="col-sm-8">
+									<input id="cname" name="cname" th:value="${curr.cname}" class="form-control" type="text">
+								</div>
+							</div>
+
+
+							<!--对应图标-->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">图标:</label>
+
+								<style>
+									.layui-upload-file{display:none!important;}
+								</style>
+								<div class="col-sm-8">
+									<button type="button" class="btn  btn-success" id="uploadlogo" style="display:block">
+										<i class="fa fa-qrcode" aria-hidden="true"></i>上传图标
+									</button>
+									<input id="img" name="img" class="form-control" type="hidden" th:value="${curr.img}">
+									<img src="/img/bg.png" id="simg" style="margin-top:10px;max-width: 128px;" th:src="${curr.img}">
+								</div>
+							</div>
+
+
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">是否开启预约:</label>
+								<div class="col-sm-8">
+
+
+									<select name="status"  class="form-control" required="required">
+										<option value="">是否开启预约</option>
+										<option value="1" th:selected="${curr.status==1?true:false}">是</option>
+										<option value="0" th:selected="${curr.status==0?true:false}">否</option>
+									</select>
+
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/ts/curr/edit.js">
+	</script>
+
+
+
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	<script src="/js/layui.js"></script>
+
+	<script>
+		imageUpload("uploadlogo","cimgs","simg","img");
+	</script>
+
+</body>
+</html>

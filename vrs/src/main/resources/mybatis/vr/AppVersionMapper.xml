@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vr.dao.AppVersionDao">
+
+	<select id="get" resultType="com.bootdo.vr.domain.AppVersionDO">
+		select `id`,`version`,`client`,`url` from lc_app_version where id = #{value}
+	</select>
+
+	<select id="getByClient" resultType="com.bootdo.vr.domain.AppVersionDO">
+		select `id`,`version`,`client`,`url` from lc_app_version where client = #{value}
+	</select>
+	
+	 <update id="updateVersion">
+		update lc_app_version set `version`=#{version},`url`=#{url}
+		where client = #{client}
+	</update>
+
+	<select id="list" resultType="com.bootdo.vr.domain.AppVersionDO">
+		select `id`,`version`,`client`,`url` from lc_app_version
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="version != null and version != ''"> and version = #{version} </if>
+		  		  <if test="client != null and client != ''"> and client = #{client} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from lc_app_version
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="version != null and version != ''"> and version = #{version} </if>
+		  		  <if test="client != null and client != ''"> and client = #{client} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vr.domain.AppVersionDO">
+		insert into lc_app_version
+		(
+			`id`, 
+			`version`, 
+			`client`, 
+			`url`
+		)
+		values
+		(
+			#{id}, 
+			#{version}, 
+			#{client}, 
+			#{url}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vr.domain.AppVersionDO">
+		update lc_app_version 
+		<set>
+			<if test="version != null">`version` = #{version}, </if>
+			<if test="client != null">`client` = #{client}, </if>
+			<if test="url != null">`url` = #{url}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from lc_app_version where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from lc_app_version where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

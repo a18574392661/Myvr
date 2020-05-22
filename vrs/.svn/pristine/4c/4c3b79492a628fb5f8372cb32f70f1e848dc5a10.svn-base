@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.article.dao.ArticleDao">
+
+	<select id="get" resultType="com.bootdo.article.domain.ArticleDO">
+		select `id`,`title`,`context`,`create_time`,`update_time`,`qrcode_url`,`state`,`category_id`,`img`,`bz` from all_article where id = #{value}
+	</select>
+	
+	
+
+	<select id="list" resultType="com.bootdo.article.domain.ArticleDO">
+		select `id`,`title`,`context`,`create_time`,`update_time`,`qrcode_url`,`state`,`category_id`,`img`,`bz` from all_article
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="title != null and title != ''"> and title like concat('%',#{title},'%')</if>
+		  		  <if test="context != null and context != ''"> and context = #{context} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="qrcodeUrl != null and qrcodeUrl != ''"> and qrcode_url = #{qrcodeUrl} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="categoryId != null and categoryId != ''"> and category_id = #{categoryId} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from all_article
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="title != null and title != ''"> and <!-- title = #{title} --> title like concat('%',#{title},'%') </if>
+		  		  <if test="context != null and context != ''"> and context = #{context} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="qrcodeUrl != null and qrcodeUrl != ''"> and qrcode_url = #{qrcodeUrl} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="categoryId != null and categoryId != ''"> and category_id = #{categoryId} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.article.domain.ArticleDO" useGeneratedKeys="true" keyProperty="id">
+		insert into all_article
+		(
+			`title`, 
+			`context`, 
+			`create_time`, 
+			`update_time`, 
+			`qrcode_url`, 
+			`state`, 
+			`category_id`, 
+			`img`, 
+			`bz`
+		)
+		values
+		(
+			#{title}, 
+			#{context}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{qrcodeUrl}, 
+			#{state}, 
+			#{categoryId}, 
+			#{img}, 
+			#{bz}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.article.domain.ArticleDO">
+		update all_article 
+		<set>
+			<if test="title != null">`title` = #{title}, </if>
+			<if test="context != null">`context` = #{context}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="qrcodeUrl != null">`qrcode_url` = #{qrcodeUrl}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="categoryId != null">`category_id` = #{categoryId}, </if>
+			<if test="img != null">`img` = #{img}, </if>
+			<if test="bz != null">`bz` = #{bz}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<!-- 逻辑删除，修改状态 -->
+	<delete id="remove">
+		<!-- delete from all_article where id = #{value} -->
+		update all_article set state = 0
+		where id = #{value}
+	</delete>
+	
+	<!-- 逻辑删除，修改状态 -->
+	<delete id="batchRemove">
+	<!-- 	delete from all_article where id in  -->
+		update all_article set state = 0
+		where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<!-- 获取详情 -->
+	<select id="selectOne" resultType="com.bootdo.article.domain.ArticleDO">
+		select `id`,`title`,`context`,`create_time`,`update_time`,`qrcode_url`,`state`,`category_id`,`img`,`bz` from all_article where
+		 img = #{value}
+	</select>
+
+	<!-- 批量查询 -->
+	<select id="batchList" resultType="com.bootdo.article.domain.ArticleDO">
+		select a.*,b.`name` categoryname from all_article a
+		left join article_category b
+		on a.category_id = b.id
+		where a.id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+</mapper>

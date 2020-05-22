@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link rel="stylesheet" href="/layui/css/layui.css"  media="all">
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="fixed-table-toolbar">
+							<div class="columns pull-right col-md-2 nopadding">
+								<select id="thirdPid" name="thirdPid" class="form-control" style="font-size: 12px;">
+									<option value="">==请选择三级类别(可不选)==</option>
+								</select>
+							</div>
+							<div class="columns pull-right col-md-2 nopadding">
+								<select id="secondPid" name="secondPid" class="form-control" style="font-size: 12px;">
+									<option value="">==请选择二级类别(可不选)==</option>
+								</select>
+							</div>
+							<div class="columns pull-right col-md-2 nopadding">
+								<select id="firstPid" name="firstPid" class="form-control" style="font-size: 12px;">
+									<option value="">==请选择一级分类(可不选)==</option>
+									<option th:each="type: ${first}" th:value="${type.id}" th:text="${type.type}"></option>
+								</select>
+							</div>
+							<div style="clear:both"></div>
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control" placeholder="请输入商品名称、订单编号或备注">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							结束时间:<input id="endTime" name="endTime" type="text" placeholder="请选择结束时间" style="width:150px;height:32px;border: 1px solid #fff;border-radius: 5px;padding: 0 4px;">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							开始时间:<input id="startTime" name="startTime" type="text" placeholder="请选择开始时间" style="width:150px;height:32px;border: 1px solid #fff;border-radius: 5px;padding: 0 4px;">
+						</div>
+						<div style="clear:both"></div>
+					</div>
+					<div class="pull-right" style="font-weight: bold;">该条件下收入总金额: <span id="totalAmount" style="font-size: 18px;color: red;">0元</span></div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+					<div class="pull-right" style="font-weight: bold;">该条件下收入总金额: <span id="totalAmount2" style="font-size: 18px;color: red;">0元</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="stock:stockGoods:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="stock:stockGoods:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="stock:stockGoods:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/stock/report/reportOut.js"></script>
+	<script src="/layui/layui.js"></script>
+	<script>
+		layui.use('laydate', function(){
+		  	  var laydate = layui.laydate;
+			  laydate.render({
+			    elem: '#startTime',
+			    type: 'date'
+			  });
+			  
+			  laydate.render({
+			    elem: '#endTime',
+			    type: 'date'
+			  });
+		});
+	
+		$("#firstPid").change(function(){
+			var val = $(this).val();
+			if( val ){
+				$.get("/stock/stockType/queryByPid", {pid: val}, function(data){
+					console.log(data)
+					var options = "<option value=''>==请选择二级分类(可不选)==</option>";
+					for( var i = 0; i < data.length; i++ ){
+						options += "<option value='"+data[i].id+"'>"+data[i].type+"</option>";
+					}
+					$("#secondPid").html(options);
+					
+					var options2 = "<option value=''>==请选择三级分类(可不选)==</option>";
+					$("#thirdPid").html(options2);
+				});
+			} else {
+				var options = "<option value=''>==请选择二级分类(可不选)==</option>";
+				$("#secondPid").html(options);
+				
+				var options2 = "<option value=''>==请选择三级分类(可不选)==</option>";
+				$("#thirdPid").html(options2);
+			}
+		});
+		
+		$("#secondPid").change(function(){
+			var val = $(this).val();
+			if( val ){
+				$.get("/stock/stockType/queryByPid", {pid: val}, function(data){
+					console.log(data)
+					var options = "<option value=''>==请选择三级分类(可不选)==</option>";
+					for( var i = 0; i < data.length; i++ ){
+						options += "<option value='"+data[i].id+"'>"+data[i].type+"</option>";
+					}
+					$("#thirdPid").html(options);
+				});
+			} else {
+				var options = "<option value=''>==请选择三级分类(可不选)==</option>";
+				$("#thirdPid").html(options);
+			}
+		});
+	</script>
+</body>
+</html>

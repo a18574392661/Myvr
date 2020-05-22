@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">所属标签:</label>
+								<div class="col-sm-8">
+									<input  th:value="${type.name}"  disabled class="form-control" type="text">
+									<input type="hidden" name="cid" th:value="${type.id}"/>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">分类名称:</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" placeholder="请输入分类名称" class="form-control" type="text">
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">是否是父级：</label>
+								<div class="col-sm-8">
+									<div class="col-sm-8">
+										是:<input id="paywxstate" name="ps"  checked type="radio" value="1" onclick="chaPid(this)">
+										否:<input     name="ps" type="radio" value="0" onclick="chaPid(this)">
+									</div>
+
+								</div>
+							</div>
+
+
+
+
+
+
+							<div class="form-group" id="hs">
+								<label class="col-sm-3 control-label">父级名称：</label>
+
+								<div class="col-sm-8">
+
+
+									<select  id="pid" name="pid" class="form-control" required="required" style="width: 15rem;">
+										<option value="">选择父级</option>
+
+									</select>
+								</div>
+							</div>
+
+
+
+
+
+							<!--是否是父级分类-->
+
+
+
+							<!--							<div class="form-group">
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="title" name="title" class="form-control" type="text">
+								</div>
+							</div>-->
+												<!--		<div class="form-group">
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="createdate" name="createdate" class="form-control" type="text">
+								</div>
+							</div>-->
+												<!--		<div class="form-group">
+								<label class="col-sm-3 control-label">0 删除 1正常：</label>
+								<div class="col-sm-8">
+									<input id="status" name="status" class="form-control" type="text">
+								</div>
+							</div>-->
+													<!--	<div class="form-group">
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="updatedate" name="updatedate" class="form-control" type="text">
+								</div>
+							</div>-->
+
+
+
+						<!--	<div class="form-group">
+								<label class="col-sm-3 control-label">分类展示图：</label>
+								<div class="col-sm-8">
+
+									<style>
+										.layui-upload-file{display:none!important;}
+									</style>
+									<button type="button" class="btn  btn-success" id="uploadlogo" style="display:block">
+										<i class="fa fa-qrcode" aria-hidden="true"></i>上传图片
+									</button>
+									<input id="img" name="img" class="form-control" type="hidden">
+									<img src="/img/bg.png" id="simg" style="margin-top:10px;max-width: 128px;">
+								</div>
+							</div>-->
+
+
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/imgCls/add.js">
+	</script>
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	<script src="/js/layui.js"></script>
+
+<script>
+
+	$(function () {
+
+		$("#hs").hide();
+	})
+
+	function chaPid(ps) {
+		var  sta=ps.value;
+		if(sta==0){
+			$("#pid").empty();
+			$("#hs").show();
+			$("#pid").append("<option value=''>请选择</option>");
+			//查询分类的父级
+			$.get("/vrs/imgCls/imgClsPars?pid=0",function (data) {
+				for (let i = 0; i < data.length; i++) {
+					$("#pid").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+				}
+			})
+		}
+		else{
+			$("#pid").empty();
+			$("#hs").hide();
+			$("#pid").val(0);
+		}
+
+	}
+
+
+	//图片上传
+    //imageUpload("uploadlogo","cls","simg","img");
+</script>
+</body>
+</html>

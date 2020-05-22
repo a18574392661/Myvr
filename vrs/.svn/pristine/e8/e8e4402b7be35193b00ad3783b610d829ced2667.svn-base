@@ -1,0 +1,290 @@
+<!DOCTYPE html><!-- Required tag for HTML5 -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keyword" content="">
+    <meta name="description" content="">
+    <!-- Incluse css and media files -->
+    <link rel="icon" type="image/png" href="#"><!-- favicon icon -->
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/css/manager/house/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/color.css">
+    <!-- REVOLUTION STYLE SHEETS -->
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/settings.css" />
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/navigation.css" />
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+    <title>定制设计</title>
+	<style>
+		.index-button{background-color:#DA231B ; color: #FFFFFF; border: none; border-radius: 5px; }
+		.head{margin-top: 5px;}
+		.dom{border: 0; appearance:none;}
+		.index-button2{background-color:#E47919 ; color: #FFFFFF; border: none; border-radius: 5px; width: 80px}
+		.help{margin-left: 10px;}
+		.roundness{border:solid 1px #000000; width: 18px;height: 18px;background-color:yellow;border-radius: 50%;-moz-border-radius: 50%;-webkit-border-radius: 50%;}
+		.index{margin-left: 5%;}
+		.index-first{margin-left: 5%;}
+		.index-first-button{background-color:#FFFFFF ; color: #2281B8; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.index-two-button{background-color:#2281B8 ; color: #FFFFFF; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.sousou{background-color: #2281B8; border:1px solid #2281B8;}
+		.fangan{background-color: #71706E; width: 300px; height: 1px; position: absolute; margin-top: 30px; margin-left: -305px;}
+		.fangan2{background-color: #71706E; width: 300px; height: 1px; position: absolute;margin-top: 30px; margin-left: 197px;}
+		 #page li{
+		    cursor:pointer;
+		}
+		.text-with-hr {
+		    text-align: center;
+		    position: relative;
+		    z-index: 2;
+		}
+		.text-with-hr:before {
+		    position: absolute;
+		    content: '';
+		    top: 20px;
+		    left: 0px;
+		    width: 100%;
+		    border-bottom: 1px solid #EF9A4A;
+		    z-index: -1;
+		}
+		.text-with-hr span {
+		    display: inline-block;
+		    background: white;
+			margin-top: -8px;
+		    padding: 10px;
+		}
+		.col-xs-5ths, .col-sm-5ths, .col-md-5ths, .col-lg-5ths {
+			position: relative;
+			min-height: 1px;
+			padding-right: 10px;
+			padding-left: 10px;
+		}
+		
+		@media ( min-width : 768px) {
+			.col-sm-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 992px) {
+			.col-md-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 1200px) {
+			.col-lg-5ths {
+				width: 20%;
+				float: left;
+			}
+	</style>
+</head>
+<body>
+
+
+<div class="theme-layout">
+	<div class="se-pre-con"></div><!-- loader -->
+	<header role="banner">
+		<div class="topbar" style="background-color: #FFFFFF;">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+
+					</div>
+					<div class="col-md-6 text-right">
+					<!--	<a href="#" class="log-in-out get-login-register"><input type="button" value="立即体验" class="index-button head" /></a>-->
+						<ul class="socials">
+							<!--<li>
+								<select class="dom">
+									<option>客户端下载</option>
+								</select>&nbsp;&nbsp;&nbsp;&nbsp;
+							</li>-->
+							<li>
+								<div class="head help" style="cursor: pointer;" onclick="down()">客户端下载</div>
+							</li>
+							<script>
+								function down() {
+									location.href="/vrs/houses/to_down";
+								}
+							</script>
+
+
+							<li>
+								<div class="head" style="color: #C5C5C5;">|<div>
+							</li>
+							<li>
+								<div class="head" style="cursor: pointer;">帮助中心</div>
+							</li>
+							<li>
+								<div class="head" style="color: #C5C5C5;">|<div>
+							</li>
+						<!--	<li>
+								<div class="head help">消息<font color="red">3</font></div>
+							</li>-->
+							<li>
+								<div class="head help roundness"></div>
+							</li>
+							<li>
+								<div class="head" th:if="${username !=null}"><span  th:text="${username}"></span></div>
+								<div class="head" th:if="${username == null}"><a href="/vrs/user/login">登陆</a><a href=""  data-toggle="modal" data-target="#myModal1" style="margin-left: 1rem;">注册</a></div>
+
+							</li>
+
+
+							<li th:if="${username !=null}">
+								<div class="head" ><a href="/vrs/user/to_outLogin">退出</a></div>
+							</li>
+
+							<li>
+								<div class="head" onclick="to_vip()">开通会员</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="full-menu-height"></div>
+		<div class="main-bar stick">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-3">
+						<div class="logo">
+							<a href="#">
+								<img src="/vrH5/assets/images/logo.jpg" alt="">
+							</a>
+						</div>
+					</div>
+					<div style="width: 800px;">
+						<nav role="navigation">
+							<div class="main-menu">
+								<ul>
+									<li class="menu-item-has-children" th:each="mu : ${maps.menu}"><a  title="" th:href="${mu.hrefs}" th:text="${mu.name}">首页</a>
+										<ul>
+											<li th:each="chi : ${mu.childTiles}"><a th:text="${chi.name}" th:href="${chi.hrefs}"></a></li>
+										</ul>
+									</li>
+								</ul>
+
+							</div>
+						</nav>
+					</div>
+
+					<div class="col-md-3 text-right" style="position: absolute; right: 10px;">
+						<a href="/vrs/user/to_userPro" class="butn1 butn-light" >我的方案</a>
+						<a href="/login" class="butn1 butn-light">上架云视</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+
+			 <!--页面抽取-->
+
+
+	<center>
+
+				<section style="padding-top: 20px;">
+					<div class="block no-bottom">
+						<div class="container">
+							<ul>
+								<li style=" margin-top: -10%;">
+									<input type="text" style="width: 60%; height: 50px;" id="n" placeholder="编号/昵称" th:value="${name}"/>
+									<input type="hidden" th:value="${name}" id="name">
+									<div style="background-color: #0093DD; height: 50px; width: 138px; margin-top: -50px; margin-left: 60%;">
+										<img src="/images/manager/house/assets/images/sousuo.png" style="margin-left: 70%; margin-top: 10px;"  onclick="toSearch()">
+									</div>
+
+								</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+	</center>
+
+			<section style="padding-top: 10px;">
+				<div class="block no-bottom">
+					<div class="container">
+						 <ul style="margin-top: -10%;">
+							<li style="margin-top: 20px;" >
+								<div class="container">
+								<div class="row">
+									<div class="col-sm-4" th:each="imgs :${info.list}" style="margin-top: 3rem;">
+									 	<!--所月兔-->
+									   <img th:src="${imgs.proDO.img}" width="300px" height="300px" th:onclick="'javascript:to_proDetail('+${imgs.cid}+');'">
+										<div style="color:darkgrey;text-align: center;">
+												<span th:text="${imgs.name}"></span>
+											&nbsp;<span th:text="${imgs.proDO.code}"></span>
+										</div>
+
+									</div>
+
+								</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section class="text">
+				<div class="info-box">
+				    <section style="margin-top: 80px;">
+				    	<div class="block no-gap overlap-75">
+				    		<div class="container text-center">
+				    			<nav aria-label="Page navigation example">
+
+				    			  <ul class="pagination" th:if="${info.pages gt 0}">
+				    			    <li class="page-item"><a class="page-link"  th:href="'javascript:toPage('+${info.prePage}+');'">上一页</a></li>
+
+				    			         <li class="page-item" th:classappend="${i == page}?'active':''"  th:each="i:${#numbers.sequence(1,info.pages)}" ><a  th:href="'javascript:toPage('+${i}+');'" class="page-link" href="#" th:text="${i}">1</a></li>
+
+				    			   	 	<li class="page-item"><a class="page-link"  th:href="'javascript:toPage('+${info.nextPage}+');'">下一页</a></li>
+
+				    			  </ul>
+				    			</nav>
+				    		</div>
+				    	</div>
+				    </section>
+				</div>
+			</section>
+			
+
+			
+			</main>
+
+		<script  type="text/javascript" src="/js/jquery.min.js"></script>
+       
+    <script type="text/javascript" src="/js/appjs/vrs/manager/house/assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/appjs/vrs/manager/house/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/appjs/vrs/manager/house/assets/js/script.js"></script>
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+
+
+		<script>
+			//查询
+			function  toSearch() {
+					var name=$("#n").val();
+					//判断是什么类型的跳什么页面
+				    location.href="/vrs/user/to_userPro?name="+name;
+			}
+
+			function toPage(page) {
+				 var n=$("#name").val();
+				 location.href='/vrs/user/to_userPro?page='+page+"&name="+n;
+			}
+
+		</script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+package com.bootdo.vrs.controller;
+
+import com.bootdo.common.controller.BaseController;
+import com.bootdo.common.domain.Tree;
+import com.bootdo.common.utils.PageUtils;
+import com.bootdo.common.utils.Query;
+import com.bootdo.common.utils.R;
+import com.bootdo.system.dao.RoleDao;
+import com.bootdo.vrs.common.MessageConstantVrs;
+import com.bootdo.vrs.dao.HxLogDao;
+import com.bootdo.vrs.domain.UserDO;
+import com.bootdo.vrs.service.UserAllotService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 
+ * 
+ * @author chglee
+ * @email 1992lcg@163.com
+ * @date 2020-04-21 09:51:24
+ */
+ 
+@Controller
+@RequestMapping("/userallot/user")
+public class UserAllotController extends BaseController{
+	@Autowired
+	private UserAllotService userService;
+
+	@Autowired
+	private RoleDao roleDao;
+
+	@Autowired
+	private HxLogDao logDao;;
+
+
+	
+	@GetMapping()
+	@RequiresPermissions("userallot:user:user")
+	String User(ModelMap map){
+		//判断是不是1管理员
+		if (getUserId()==1||getUserId()==138){
+			map.put("boos","ok");
+
+		}
+
+		//查询当前用户是否是会员
+		if (getUserId()!=1&&getUserId()!=138){
+			long days=userService.getVipUserStatus(getUserId());
+			if (days>=0){
+				map.put("days",days);
+			}
+			else if (days==-1){
+				map.put("tit","非会员用户");
+			}
+			//查询收益金额
+			BigDecimal price=logDao.getUserPrice(getUserId());
+			map.put("price",price==null?0:price);
+			map.put("bools","bools");//标识
+
+			map.put("uid",getUserId());
+		}
+
+		//查询所有vr用户
+		List<UserDO> userList=userService.list(null);
+    	map.put("ulist",userList);
+
+		return "vrs/user/user";
+	}
+
+
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("userallot:user:user")
+	public PageUtils list(@RequestParam Map<String, Object> params){
+		//判断是不是vr管理员
+		if (getUserId()!=1&&getUserId()!=138){
+			//不是2个管理员
+			params.put("userIdCreate",getUserId());
+		}		//查询列表数据
+		params.put("idfind","vr");
+        Query query = new Query(params);
+		List<UserDO> userList = userService.list(query);
+		int total = userService.count(query);
+		PageUtils pageUtils = new PageUtils(userList, total);
+		return pageUtils;
+	}
+
+	@GetMapping("/add")
+	@RequiresPermissions("userallot:user:add")
+	String add(ModelMap map,String uid){
+		map.put("uid",uid);
+		map.put("sta",true);
+		if (getUserId()!=1&&getUserId()!=138){
+			map.put("uid",getUserId());
+			map.put("sta",false);
+
+		}
+
+	    map.put("roles", roleDao.getVrRole(MessageConstantVrs.GETVR_RID));
+		
+		return "vrs/user/add";
+	}
+
+	@GetMapping("/edit/{userId}")
+	@RequiresPermissions("userallot:user:edit")
+	String edit(@PathVariable("userId") Long userId,Model model){
+		model.addAttribute("sta",true);
+		if (getUserId()!=1&&getUserId()!=138){
+
+			model.addAttribute("sta",false);
+
+		}
+
+		model.addAttribute("roles", roleDao.getVrRole(MessageConstantVrs.GETVR_RID));
+		UserDO user = userService.get(userId);
+		model.addAttribute("user", user);
+	    return "vrs/user/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("userallot:user:add")
+	public R save( UserDO user){
+		if (user.getIsvip()==null){
+			user.setIsvip(0);
+		}
+		if (user.getIsvip()==1&&user.getVipDate()==null){
+			return R.error("会员过期时间不能为空!");
+		}
+
+
+
+		//设置创建当前用户的id
+		user.setIdfind("vr");
+		if(user.getUserIdCreate()==null){
+			if (getUserId()==1||getUserId()==138){
+				user.setUserIdCreate(getUserId());
+			}
+		}
+
+
+		user.setUsername(user.getMobile());
+		user.setStatus(1);
+
+		if (getUserId()!=1&&getUserId()!=138){
+			user.setIsvip(0);
+			user.setRid(59);
+		}
+		try {
+			if(userService.save(user)>0){
+				return R.ok();
+			}
+		}
+		catch (RuntimeException e){
+			return  R.error(e.getMessage());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			R.error();
+		}
+
+		return R.error();
+	}
+
+
+
+	/**
+	 * 修改
+	 */
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("userallot:user:edit")
+	public R update(UserDO user){
+
+
+		
+ 		 UserDO userDO=userService.get(user.getUserId());
+		if (userDO.getRid()==61){
+			return R.error("VR管理员不能编辑!");
+		}
+
+		if (getUserId()==1||getUserId()==138){
+			if (user.getIsvip()==null||user.getIsvip()==0){
+				user.setVipDate(null);
+			}
+		}
+		if (getUserId()!=1&&getUserId()!=138){
+			user.setVipDate(userDO.getVipDate());
+		}
+
+
+		userService.update(user);
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("userallot:user:remove")
+	public R remove( Long userId){
+		//VR管理员不能删除
+		if (userService.get(userId).getRid()==61){
+			return R.error("VR管理员不能删除!");
+		}
+
+		if(userService.remove(userId)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("userallot:user:batchRemove")
+	public R remove(@RequestParam("ids[]") Long[] userIds){
+		userService.batchRemove(userIds);
+		return R.ok();
+	}
+
+
+	@RequestMapping("/to_userTree")
+	public  String to_userTree(ModelMap map,String uid){
+
+		map.put("uid",uid);
+
+		return "vrs/user/userTree";
+	}
+
+
+	@ResponseBody
+	@RequestMapping("/userTree")
+	public  Tree<UserDO> userTree(String uid){
+
+		//不是管理员 看自己的信息
+		if (getUserId()!=1&&getUserId()!=138){
+			uid=getUserId()+"";
+
+		}
+
+		Tree<UserDO> list= userService.userTree(Long.parseLong(uid));
+
+		return  list;
+	}
+
+	//查看当前用户的1收益总数 会员到期天数
+
+	@RequestMapping("/getUserDay")
+	public  String getUserDay(Long uid,Model model){
+		//不是管理员 只差看自己的收益
+		if (getUserId()!=1&&getUserId()!=138){
+			uid=getUserId();
+		}
+		//写死测试
+		Map list= userService.getUserStatus(uid);
+		model.addAttribute("u",list);
+
+		return  "vrs/user/showUser";
+	}
+
+	@RequestMapping("/getUservip")
+	@ResponseBody
+	public  R getUservip(){
+
+		if (getUserId()==1||getUserId()==138){
+		  return R.ok();
+		}
+
+		//
+	UserDO userDO=userService.get(getUserId());
+		if (userDO.getIsvip()==0){
+			return R.error();
+		}
+
+		return R.ok();
+
+	}
+
+
+	@RequestMapping("/getYUNUservip")
+	@ResponseBody
+	public  R getYUNUservip(Long uid){
+
+		UserDO userDO=userService.get(uid);
+		if (userDO.getIsvip()==0){
+			return R.error();
+		}
+
+		return R.ok();
+
+	}
+
+
+@RequestMapping("/to_showUserimg")
+	public  String  to_showUserimg(String uid,ModelMap map){
+
+		map.put("uid",uid);
+		return  "vrs/user/showuserimg";
+
+}
+
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>教练详情</title>
+    <script src="/tsH5/js/mui.min.js"></script>
+    <link href="/tsH5/css/mui.min.css" rel="stylesheet"/>
+	<link href="/tsH5/css/mui.picker.css" rel="stylesheet" />
+	<link href="/tsH5/css/mui.poppicker.css" rel="stylesheet" />
+	
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left" style="color: #FFF;">
+			<span class="mui-icon mui-icon-left-nav"></span>
+		</button>
+		<h1 class="mui-title">教练详情</h1>
+	</header>
+	<div class="mui-content">
+		
+		<div class="teacher-btns">
+			<div class="teacher-btns-item" onclick="sendMsg()">
+				<span class="icon iconfont teacher-btns-icon">&#xe604;</span>
+				<span class="teacher-btnstitle">发短信</span>
+			</div>
+		</div>
+		
+	
+	</div>
+	<script src="/tsH5/js/mui.picker.js"></script>
+	<script src="/tsH5/js/mui.poppicker.js"></script>
+	
+	
+	<script type="text/javascript">
+		mui.init();
+		function sendMsg(){
+			var userPicker = new mui.PopPicker({buttons: ["取消","确定"]});
+			//userPicker.setData(messageData);
+			userPicker.setData([{
+			               value: '0',
+			               text: '2020-05-14'
+			           }, {
+			               value: '1',
+			               text: '2020-05-15'
+			           }, {
+			               value: '2',
+			               text: '2020-05-16'
+			           }, {
+			               value: '3',
+			               text: '2020-05-17'
+			           }]);
+			
+			userPicker.show(function(items) {
+				smsMessage(mobile,setData[0].text);
+				//返回 false 可以阻止选择框的关闭
+				//return false;
+			});
+		}
+		
+		
+		
+	</script>
+</body>
+</html>

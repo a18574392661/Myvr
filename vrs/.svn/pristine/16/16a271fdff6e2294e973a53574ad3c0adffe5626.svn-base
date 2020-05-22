@@ -1,0 +1,76 @@
+package com.bootdo.vrs.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.bootdo.vrs.dao.IpgetCountDao;
+import com.bootdo.vrs.domain.IpgetCountDO;
+import com.bootdo.vrs.service.IpgetCountService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+
+@Service
+public class IpgetCountServiceImpl implements IpgetCountService {
+	@Autowired
+	private IpgetCountDao ipgetCountDao;
+
+
+	@Override
+	public IpgetCountDO get(Long id){
+		return ipgetCountDao.get(id);
+	}
+	
+	@Override
+	public List<IpgetCountDO> list(Map<String, Object> map){
+		return ipgetCountDao.list(map);
+	}
+	
+	@Override
+	public int count(Map<String, Object> map){
+		return ipgetCountDao.count(map);
+	}
+	
+	@Override
+	public int save(IpgetCountDO ipgetCount){
+		return ipgetCountDao.save(ipgetCount);
+	}
+	
+	@Override
+	public int update(IpgetCountDO ipgetCount){
+		return ipgetCountDao.update(ipgetCount);
+	}
+	
+	@Override
+	public int remove(Long id){
+		return ipgetCountDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(Long[] ids){
+		return ipgetCountDao.batchRemove(ids);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public int queryProCount(Integer id) {
+		//先查 在改2
+		int c=ipgetCountDao.queryProCount(id);
+		if (c>0){
+
+			ipgetCountDao.editCount(id+"");
+
+		}else{
+			IpgetCountDO ipgetCountDO=new IpgetCountDO();
+			ipgetCountDO.setCount(1l);
+			ipgetCountDO.setProid(Long.parseLong(id+""));
+			ipgetCountDao.save(ipgetCountDO);
+		}
+
+		return 1;
+	}
+
+}

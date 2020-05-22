@@ -1,0 +1,150 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+    <div class="theme-layout" th:fragment="pageheader">
+  <div th:replace="vrs/manager/house/html/zc::zc"></div>
+        <div class="se-pre-con"></div><!-- loader -->
+        <header role="banner">
+            <div class="topbar" style="background-color: #FFFFFF;">
+                <div class="container">
+                    <input type="hidden" id="ste" th:value="${ste}">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6 text-right">
+                       <!--     <a href="#" class="log-in-out get-login-register"><input type="button" value="立即体验" class="index-button head" /></a>-->
+                            <ul class="socials">
+                               <!-- <li>
+                                    <select class="dom">
+                                        <option>客户端下载</option>
+                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                </li>-->
+                                <li>
+                                    <div class="head help" style="cursor: pointer;" onclick="down()">客户端下载</div>
+                                </li>
+                                <script>
+                                    function down() {
+                                        location.href="/vrs/houses/to_down";
+                                    }
+                                </script>
+                                <li>
+                                    <div class="head" style="color: #C5C5C5;">|<div>
+                                </li>
+                                <li>
+                                    <div class="head" style="cursor: pointer;">帮助中心</div>
+                                </li>
+                                <li>
+                                    <div class="head" style="color: #C5C5C5;">|<div>
+                                </li>
+                             <!--   <li>
+                                    <div class="head help" style="cursor: pointer;">消息<font color="red">3</font></div>
+                                </li>-->
+                                
+                                <li>
+                                    <div class="head help roundness"></div>
+                                </li>
+                                <li>
+                                    <div class="head" th:if="${username !=null}"><span  th:text="${username}"></span></div>
+
+                                    <div class="head" th:if="${username == null}" style="cursor: pointer;"><a href="/vrs/user/login">登陆</a><a  data-toggle="modal" data-target="#myModal1" href="" style="margin-left: 1rem;">注册</a></div>
+                                </li>
+
+                                <li th:if="${username !=null}">
+                                    <div class="head" ><a href="/vrs/user/to_outLogin" style="cursor: pointer;">退出</a></div>
+                                </li>
+
+                                <li>
+                                    <div class="head" onclick="to_vip()" style="cursor: pointer;">开通会员</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="full-menu-height"></div>
+            <div class="main-bar stick">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <div class="logo">
+                                <a href="#">
+                                    <img src="/vrH5/assets/images/logo.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div style="width: 800px;">
+                            <nav role="navigation">
+                                <div class="main-menu">
+                                    <ul>
+                                        <li th:id="'mu'+${mu.id}" class="menu-item-has-children" th:each="mu : ${maps.menu}" ><a   title="" th:href="${mu.hrefs}" th:text="${mu.name}">首页</a>
+                                        <!-- <ul>
+                                             <li th:each="chi : ${mu.childTiles}"><a  th:text="${chi.name}" th:href="${chi.hrefs}"></a></li>
+                                         </ul>-->
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </nav>
+                        </div>
+
+                        <div class="col-md-3 text-right" style="position: absolute; right: 10px;">
+                            <a href="/vrs/user/to_userPro" class="butn1 butn-light">我的方案</a>
+                            <a target="_blank" href="/index" class="butn1 butn-light" >个人中心</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+
+
+        <main role="main" >
+            <section  style="padding: 0 15%;">
+                <div class="main-slider">
+                    <div id="demo" class="carousel slide" data-ride="carousel">
+                        <!-- 指示符 -->
+                            <ul class="carousel-indicators" >
+                           <li data-target="#demo"  th:each="lb,sta : ${maps.lbList}" th:data-slide-to="${sta.index}"  th:class="${sta.index==0?'active':''}"  ></li>
+
+                            </ul>
+                     <div class="carousel-inner">
+                        <div    th:class="${sta.index==0?'carousel-item active':'carousel-item'}" th:each="lb ,sta : ${maps.lbList}">
+                                <img src="https://static.runoob.com/images/mix/img_fjords_wide.jpg" style="width: 100%;  height: 350px;" th:src="${lb.img}" th:onclick="'javascript:lbDetail('+${lb.id}+');'" >
+                            </div>
+                        </div>
+                        <!-- 左右切换按钮 -->
+                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#demo" data-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </a>
+
+                    </div>
+                </div>
+            </section><!-- slider -->
+        </main>
+
+
+
+
+        <script>
+
+
+            function lbDetail(pid) {
+
+                    location.href="/pro/h5/queryLbByid?id="+pid;
+            }
+
+
+            function to_vip(){
+                location.href="/pro/h5/queryVip"
+            }
+        </script>
+
+
+
+</div>
+</html>

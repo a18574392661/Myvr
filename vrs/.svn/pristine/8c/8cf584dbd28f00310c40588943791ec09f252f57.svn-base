@@ -1,0 +1,75 @@
+.mui-bar.mui-bar-nav{
+	background: #0077EB;	
+}
+.mui-bar-nav {
+    box-shadow: none;
+}
+.mui-bar .mui-title,
+.mui-bar .mui-action-menu{color: #ffffff;font-weight: normal;font-family: "微软雅黑";}
+/***选中项*/
+
+.box-border{
+    position:relative;
+    left:40px;
+    width:20px;
+    text-align: center;
+    border-bottom: 2px solid #0077EB;
+    border-radius: 20%;
+  }
+
+/***************轮播图下边的点******************/
+.mui-slider-indicator{
+	text-align: right;
+	padding-right: 16px;
+}
+.mui-slider-indicator .mui-indicator {
+    display: inline-block;
+    width: 20px;
+    height: 4px;
+	margin: 1px 1px;
+    border-radius: 1px;
+	box-shadow: none;
+    background: #e5e5e5;
+}
+.mui-slider-indicator .mui-active.mui-indicator {
+    background: #0077EB;
+}
+
+/**************标题栏*****************/
+.card-title{border-left: 4px solid #FF9300;padding: 4px 6px;font-size: 16px;font-family: "微软雅黑";}
+
+.clear{clear: both;}
+
+/******九宫格图标大小******/
+.icon9{width: 32px;height: 32px;}
+
+/*********学员评论模块样式**********/
+.pl-tags{padding: 10px;}
+.pl-tags .tags-item{padding: 6px 10px;background: #EBF4FD;font-size: 12px;color: #333;border-radius: 20px;margin-right: 15px;}
+.pl-tags .tags-item .num{padding-left: 5px;}
+.pl-item{display: flex;justify-content: space-between;align-items: flex-start;margin-top:15px;}
+.pl-item .pl-item-header{width: 90px;padding: 0 10px;text-align: right;}
+.pl-item .pl-item-header-img{width: 40px;height: 40px;border-radius: 100%;}
+.pl-item .pl-item-content{width: 100%;padding: 0 10px 0 0;}
+.pl-item .pl-name{font-size: 14px;color: #333;vertical-align: bottom;}
+.pl-item .pl-time{font-size: 12px;color: #999;padding-left:5px;vertical-align: middle;}
+.pl-item .mui-content-padded{margin: 0;}
+.pl-item .mui-icon-star-title{padding-left: 5px;font-size: 11px;color: #666;vertical-align: middle;}
+.pl-item .mui-icon-star{font-size: 14px;color: rgb(255,162,69)}
+.pl-item .pl-zan{padding: 10px;}
+.pl-item .pl-zan .icon{font-size: 18px;vertical-align: bottom;}
+.pl-item .pl-zan .pl-zan-num{color: #666;font-size: 13px;vertical-align: middle;padding-left: 4px;}
+.pl-item .pl-text{margin: 6px 0 10px 0;}
+.pl-item .pl-text-imgs-item{display: block;float: left;width: 32%;height: 80px;margin-right: 1.33%;margin-bottom: 5px;}
+.pl-item .pl-reply{background: #EBF4FD;padding: 6px 8px;margin-top: 4px;}
+.pl-item .pl-reply-title{color: #333;font-size: 13px;}
+.pl-item .pl-reply-content{color: #666;font-size: 13px;}
+.dz-active,.dz-active .pl-zan-num{color: #0077eb!important;}
+
+/********无数据********/
+.nodata{margin-top: 100px;text-align: center;}
+.nodata .icon-kong{font-size:80px;color: #D1CFD0;}
+.nodata .msg{color: #999;font-size: 12px;margin-top: 15px;}
+.mui-loading{margin-top: 30px;}
+
+.mui-scroll-wrapper{background: #ffffff;}

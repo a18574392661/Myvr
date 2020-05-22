@@ -1,0 +1,78 @@
+<!--
+	app第一次启动时的轮播页
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>引导页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="/css/mui.css">
+		<style>
+			#close {
+				position: absolute;
+				width: 160px;
+				height: 44px;
+				left: 50%;
+				margin-left: -80px;
+				bottom: 10%;
+				padding: 10px;
+				color: #fff;
+				background: #00577A;
+				border-color: #00577A;
+			}
+			img {
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="slider" class="mui-slider mui-fullscreen" style="background-color: black;">
+			<div class="mui-slider-group">
+				<!-- 第一张 -->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<img src="/images/index.jpg">
+				</div>
+			</div>
+			<!-- <div class="mui-slider-indicator">
+				<div class="mui-indicator mui-active"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+			</div> -->
+		</div>
+		<script src="/js/mui.js"></script>
+		<script>
+			mui.back = function() {};//file:///F:/项目资料/浣熊科技/Vr/云视美工资料/2秒开屏页.jpg
+			mui.plusReady(function() {
+				plus.navigator.setFullscreen(true);
+				plus.navigator.closeSplashscreen();
+				setTimeout(function(){
+					var url = 'tour.html';
+					mui.openWindow({
+						url: url,
+						id: url,
+						show: {
+							aniShow: "slide-in-right",
+							autoShow: true, //页面loaded事件发生后自动显示，默认为true
+						},
+						styles: {
+							popGesture: "close",
+						},
+						waiting: {
+							autoShow: true, //自动显示等待框，默认为true
+							title: '', //等待对话框上显示的提示内容
+						}
+					})
+				}, 2000);
+
+			});
+		</script>
+	</body>
+
+</html>

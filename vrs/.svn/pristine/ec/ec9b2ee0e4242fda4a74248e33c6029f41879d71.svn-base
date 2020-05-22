@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left  col-md-2">
+							<button shiro:hasPermission="vr:romeType:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="vr:romeType:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-right col-md-10 nopadding">
+							<div class="pull-right">选择大风格：<select id="topStyleId" style="width: 180px;height: 36px;">
+								<option value="">全部</option>
+								<option th:each="top: ${topStyle}" th:value="${top.topId}" th:text="${top.topName}"></option>
+							</select>
+							<div class="pull-right">选择小风格：<select id="leftStyleId" style="width: 180px;height: 36px;">
+								<option value="">全部</option>
+								<!-- <option th:each="left: ${leftStyle}" th:value="${left.leftId}" th:text="${left.leftName}"></option> -->
+							</select>
+							<button class="btn btn-success" style="margin-top: -4px;" onclick="reLoad()">查询</button>
+							</div>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="vr:romeType:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="vr:romeType:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="vr:romeType:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/vr/romeType/romeType.js"></script>
+	<script>
+		$(window).ready(function(){
+			$("#topStyleId").change(function(){
+				var val = $(this).val();
+				if( val ){
+					$.get("/vr/leftStyle/queryLeftStyles", {topStyleId: val}, function(data){
+						console.log(data)
+						var options = "<option value=''>全部</option>";
+						for( var i = 0; i < data.length; i++ ){
+							options += "<option value='"+data[i].leftId+"'>"+data[i].leftName+"</option>";
+						}
+						$("#leftStyleId").html(options);
+					});
+				} else {
+					$("#leftStyleId").html("<option value=''>全部</option>");
+				}
+			});
+		})
+	</script>
+</body>
+</html>

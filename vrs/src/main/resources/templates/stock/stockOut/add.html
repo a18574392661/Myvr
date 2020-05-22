@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">出库订单编号：</label>
+								<div class="col-sm-5">
+									<input id="ordercode" name="ordercode" class="form-control" type="text" readonly="readonly" th:if="${isNew}">
+									<input id="ordercode" name="ordercode" class="form-control" type="text" readonly="readonly" th:if="${!isNew}" th:value="${ordercode}">
+								</div>
+								<div class="col-sm-4" th:if="${isNew}">
+									<a class="btn btn-warning" id="createOrdercode">生成新订单编号</a>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商品分类：</label>
+								<div class="col-sm-3" style="padding:0;padding-left: 15px;">
+									<select id="firstPid" name="firstPid" class="form-control" style="font-size: 12px;">
+										<option value="">==请选择一级分类==</option>
+										<option th:each="type: ${first}" th:value="${type.id}" th:text="${type.type}"></option>
+									</select>
+								</div>
+								<div class="col-sm-3" style="padding:0;">
+									<select id="secondPid" name="secondPid" class="form-control" style="font-size: 12px;">
+										<option value="">==请选择二级分类==</option>
+									</select>
+								</div>
+								<div class="col-sm-3" style="padding:0;padding-right: 15px;">
+									<select id="thirdPid" name="thirdPid" class="form-control" style="font-size: 12px;">
+										<option value="">==请选择三级分类==</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">选择出库商品：</label>
+								<div class="col-sm-9">
+									<select id="goodsId" name="goodsId" class="form-control" style="font-size: 12px;">
+										<option value="">==请选择商品(需先选择分类)==</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">出库数量：</label>
+								<div class="col-sm-9">
+									<input id="num" name="num" class="form-control" type="number">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">出库单价：</label>
+								<div class="col-sm-9">
+									<input id="price" name="price" class="form-control" type="number">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">出库时间：</label>
+								<div class="col-sm-9">
+									<input id="createTime" name="createTime" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">出库备注：</label>
+								<div class="col-sm-9">
+									<input id="remarks" name="remarks" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/stock/stockOut/add.js">
+	</script>
+	<script src="/layui/layui.js"></script>
+	<script>
+		layui.use('laydate', function(){
+		  	  var laydate = layui.laydate;
+			  laydate.render({
+			    elem: '#createTime',
+			    type: 'datetime'
+			  });
+		});
+	
+		$("#firstPid").change(function(){
+			var val = $(this).val();
+			if( val ){
+				$.get("/stock/stockType/queryByPid", {pid: val}, function(data){
+					console.log(data)
+					var options = "<option value=''>==请选择二级分类==</option>";
+					for( var i = 0; i < data.length; i++ ){
+						options += "<option value='"+data[i].id+"'>"+data[i].type+"</option>";
+					}
+					$("#secondPid").html(options);
+					
+					var options2 = "<option value=''>==请选择三级分类==</option>";
+					$("#thirdPid").html(options2);
+					
+					var options = "<option value=''>==请选择商品(需先选择分类)==</option>";
+					$("#goodsId").html(options);
+				});
+			} else {
+				var options = "<option value=''>==请选择二级分类==</option>";
+				$("#secondPid").html(options);
+				
+				var options2 = "<option value=''>==请选择三级分类==</option>";
+				$("#thirdPid").html(options2);
+				
+				var options = "<option value=''>==请选择商品(需先选择分类)==</option>";
+				$("#goodsId").html(options);
+			}
+		});
+		
+		$("#secondPid").change(function(){
+			var val = $(this).val();
+			if( val ){
+				$.get("/stock/stockType/queryByPid", {pid: val}, function(data){
+					console.log(data)
+					var options = "<option value=''>==请选择三级分类==</option>";
+					for( var i = 0; i < data.length; i++ ){
+						options += "<option value='"+data[i].id+"'>"+data[i].type+"</option>";
+					}
+					$("#thirdPid").html(options);
+					
+					var options = "<option value=''>==请选择商品(需先选择分类)==</option>";
+					$("#goodsId").html(options);
+				});
+			} else {
+				var options = "<option value=''>==请选择三级分类==</option>";
+				$("#thirdPid").html(options);
+				
+				var options = "<option value=''>==请选择商品(需先选择分类)==</option>";
+				$("#goodsId").html(options);
+			}
+		});
+		
+		$("#thirdPid").change(function(){
+			var val = $(this).val();
+			if( val ){//查找商品信息
+				$.get("/stock/stockGoods/queryByType", {typeId: val}, function(data){
+					console.log(data)
+					var options = data.length > 0 ? "" : "<option value=''>==该分类下暂无商品==</option>";
+					for( var i = 0; i < data.length; i++ ){
+						options += "<option value='"+data[i].id+"'>"+data[i].goodsName+"</option>";
+					}
+					$("#goodsId").html(options);
+				});
+			} else {
+				var options = "<option value=''>==请选择商品(需先选择分类)==</option>";
+				$("#goodsId").html(options);
+				
+				var options = "<option value=''>==请选择商品(需先选择分类)==</option>";
+				$("#goodsId").html(options);
+			}
+		});
+		
+		//随机生成一个订单编号 
+		$("#createOrdercode").click(function(){
+			$.get("/stock/stockOut/createOrdercode",{}, function(data){
+				$("#ordercode").val(data);
+			});
+		});
+	</script>
+</body>
+</html>

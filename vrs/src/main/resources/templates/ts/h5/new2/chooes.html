@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+	<link rel="stylesheet" href="/tsH5/css/style.css" type="text/css" />
+	<style>
+		body{
+			background:url(/tsH5/images/bg.png) no-repeat;
+			background-size: 100% 100%;
+			background-position:center;
+			background-attachment:fixed;
+		}
+		.box{
+		        display: flex;
+		        flex-direction: row;
+		}
+		.inner{
+				width: 100%;
+				height: 112px;
+				background: #ffffff;
+				margin: 20px;
+				border-radius: 5px;
+				text-align: center;
+				background:rgba(255, 255, 255, 0.5);
+		}
+		.kcname{font-size: 20px;color: #000000;position: absolute;margin-left: -20px;margin-top: 0px;}
+	</style>
+	
+</head>
+<body>
+	
+	<div class="box" th:each="dx : ${mapSucess}">
+		<div class="inner" th:each="c : ${dx.list}" th:onclick="'javascript:dx('+${c.id}+');'" >
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="text-effect classname">
+							<!--th:src="${c.img}"-->
+
+									<img src="/tsH5/images/language.png" width="60px" th:src="${c.img==''?'/tsH5/images/language.png':c.img}" /><br>
+
+
+							<span class="kcname"  th:text="${c.cname}">语文</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+
+
+
+
+	<script>
+		function dx(id) {
+
+			location.href="/h5/curr/to_cnameDays?cid="+id;
+		}
+	</script>
+
+
+	
+	 
+</body>
+</html>

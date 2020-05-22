@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<!--	<div class="form-group">
+								<label class="col-sm-3 control-label">用户名：</label>
+								<div class="col-sm-8">
+									<input id="username" name="username" class="form-control" type="text">
+								</div>
+							</div>-->
+
+							<input id="username" name="username" class="form-control" type="hidden">
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">学员姓名:</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" class="form-control" type="text">
+								</div>
+							</div>
+
+							<!--
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">密码：</label>
+								<div class="col-sm-8">
+									<input id="password" name="password" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="deptId" name="deptId" class="form-control" type="text">
+								</div>
+							</div>
+
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">邮箱：</label>
+								<div class="col-sm-8">
+									<input id="email" name="email" class="form-control" type="text">
+								</div>
+							</div>-->
+							<!--手机号就是userrname-->
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">手机号：</label>
+								<div class="col-sm-8">
+									<input id="mobile" name="mobile" class="form-control" type="number" maxlength="11" minlength="11">
+								</div>
+							</div>
+
+							<input type="hidden" value="62" name="rid">
+												<!--		<div class="form-group">
+								<label class="col-sm-3 control-label">状态 0:禁用，1:正常：</label>
+								<div class="col-sm-8">
+									<input id="status" name="status" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建用户id：</label>
+								<div class="col-sm-8">
+									<input id="userIdCreate" name="userIdCreate" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="gmtCreate" name="gmtCreate" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">修改时间：</label>
+								<div class="col-sm-8">
+									<input id="gmtModified" name="gmtModified" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">性别：</label>
+								<div class="col-sm-8">
+									<input id="sex" name="sex" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">出身日期：</label>
+								<div class="col-sm-8">
+									<input id="birth" name="birth" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="picId" name="picId" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">现居住地：</label>
+								<div class="col-sm-8">
+									<input id="liveAddress" name="liveAddress" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">爱好：</label>
+								<div class="col-sm-8">
+									<input id="hobby" name="hobby" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">省份：</label>
+								<div class="col-sm-8">
+									<input id="province" name="province" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">所在城市：</label>
+								<div class="col-sm-8">
+									<input id="city" name="city" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">所在地区：</label>
+								<div class="col-sm-8">
+									<input id="district" name="district" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">角色id：</label>
+								<div class="col-sm-8">
+									<input id="rid" name="rid" class="form-control" type="text">
+								</div>
+							</div>-->
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/school/user/add.js">
+	</script>
+</body>
+</html>

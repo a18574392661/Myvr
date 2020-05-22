@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/tsH5/css/base.css">
+    <link rel="stylesheet" href="/tsH5/css/app.css" type="text/css" />
+
+
+
+	<link href="/tsH5/css/mui.min.css" rel="stylesheet"/>
+	<link href="/tsH5/css/mui.picker.css" rel="stylesheet" />
+	<link href="/tsH5/css/mui.poppicker.css" rel="stylesheet" />
+</head>
+<body>
+<input type="hidden" id="kid"  th:value="${kid}" >
+<input type="hidden" id="zid"  >
+<input type="hidden" id="cid" > <!--课程对应时间id-->
+<input type="hidden" id="dates" th:value="${dates}">
+    <div class="wrap">
+        <div class="box">
+
+
+			<div class="tittle">
+				<div class="t_1">
+					<span class="sp1"></span>
+					<p>可选</p >
+				</div>
+				<div class="t_2">
+					<span class="sp2"></span>
+					<p>已选</p >
+				</div>
+				<div class="t_3">
+					<span class="sp3"></span>
+					<p>已无</p >
+				</div>
+				<div class="t_3">
+					<span class="sp4"></span>
+					<p>已预约</p >
+				</div>
+
+				<div style="float: right;position: absolute;right: 0px;">
+					<span class="year"  th:text="${cname}">语文</span>
+				</div>
+			</div>
+			<div style="float: right;position: absolute;right: 0px;">
+				<span class="year" th:text="${year}">2020年</span>
+			</div>
+
+
+			<div class="week">
+				<button class="re-week" onclick="to_xk()">重新选课</button>
+				<button class="last-week" onclick="to_cnameDays('-')">上一周</button>
+				<button class="next-week" onclick="to_cnameDays('end')">下一周</button>
+			</div>
+
+
+            <div class="content">
+				<ul>
+					<li></li>
+
+
+					<li style="text-align: center;" th:each="dx : ${tlist}">
+						<span th:text="${dx.day}"></span><br>
+						<span th:text="${dx.rq}"></span>
+					</li>
+
+					</li>
+				</ul>
+				
+                <div class="nine" pai="1">
+
+					<ul th:each="rs : ${resuList}">
+						<li  onclick="check(this)">
+							<div class="kc" th:text="${rs.jname}">
+								第一节
+							</div>
+						</li>
+
+						<li class="managementPanel" th:typ="${rs.sty1}" onclick="check(this)">
+							<div class="nine-yx">
+								<span th:if="${rs.s1 !=null && rs.s1 !='' }">
+
+										<span th:text="${rs.s1.cname}"></span><br>
+										<span th:text="${rs.s1.uname}"></span>
+								<input type="hidden" th:value="${rs.s1.id}">
+									<input type="hidden" th:value="${rs.s1.zwDO.id}">
+								</span>
+
+								<span th:if="${rs.s1 ==null || rs.s1 =='' }" >
+										<span style="color: black;">未此课</span><br>
+								</span>
+
+							</div>
+						</li>
+
+						<li  class="managementPanel" th:typ="${rs.sty2}" onclick="check(this)">
+							<div class="nine-yx">
+								<span th:if="${rs.s2 !=null && rs.s2 !='' }">
+
+										<span th:text="${rs.s2.cname}"></span><br>
+										<span th:text="${rs.s2.uname}"></span>
+								<input type="hidden" th:value="${rs.s2.id}">
+									<input type="hidden" th:value="${rs.s2.zwDO.id}">
+								</span>
+
+								<span th:if="${rs.s2 ==null || rs.s2 =='' }" >
+										<span style="color: black;">未此课</span><br>
+								</span>
+
+							</div>
+						</li>
+
+						<li class="managementPanel" th:typ="${rs.sty3}" onclick="check(this)">
+							<div class="nine-yx">
+							<span th:if="${rs.s3 !=null && rs.s3 !='' }">
+										<span th:text="${rs.s3.cname}"></span><br>
+										<span th:text="${rs.s3.uname}"></span>
+							<input type="hidden" th:value="${rs.s3.id}">
+									<input type="hidden" th:value="${rs.s3.zwDO.id}">
+								</span>
+
+
+								<span th:if="${rs.s3 ==null || rs.s3 =='' }" >
+										<span style="color: black;">未此课</span><br>
+								</span>
+							</div>
+
+
+						</li>
+
+						<li class="managementPanel" th:typ="${rs.sty4}" onclick="check(this)">
+							<div class="nine-yx">
+
+							<span th:if="${rs.s4 !=null && rs.s4 !='' }">
+										<span th:text="${rs.s4.cname}"></span><br>
+										<span th:text="${rs.s4.uname}"></span>
+								<input type="hidden" th:value="${rs.s4.id}">
+									<input type="hidden" th:value="${rs.s4.zwDO.id}">
+								</span>
+
+								<span th:if="${rs.s4 ==null || rs.s4 =='' }" >
+										<span style="color: black;">未此课</span><br>
+								</span>
+							</div>
+						</li>
+						<li class="managementPanel" th:typ="${rs.sty5}" onclick="check(this)">
+							<div class="nine-yx">
+							<span th:if="${rs.s5 !=null && rs.s5 !='' }">
+										<span th:text="${rs.s5.cname}"></span><br>
+										<span th:text="${rs.s5.uname}"></span>
+									<input type="hidden" th:value="${rs.s5.id}">
+									<input type="hidden" th:value="${rs.s5.zwDO.id}">
+								</span>
+
+								<span th:if="${rs.s5 ==null || rs.s5 =='' }" >
+										<span style="color: black;">未此课</span><br>
+								</span>
+
+							</div>
+						</li>
+						<li class="managementPanel" th:typ="${rs.sty6}" onclick="check(this)">
+							<div class="nine-yx">
+							<span th:if="${rs.s6 !=null && rs.s6 !='' }">
+										<span th:text="${rs.s6.cname}"></span><br>
+										<span th:text="${rs.s6.uname}"></span>
+									<input type="hidden" th:value="${rs.s6.id}">
+									<input type="hidden" th:value="${rs.s6.zwDO.id}">
+								</span>
+
+								<span th:if="${rs.s6 ==null || rs.s6 =='' }" >
+										<span style="color: black;">未此课</span><br>
+								</span>
+
+							</div>
+						</li>
+						<li class="managementPanel" th:typ="${rs.sty7}" onclick="check(this)">
+							<div class="nine-yx">
+							<span th:if="${rs.s7 !=null && rs.s7 !='' }">
+										<span th:text="${rs.s7.cname}"></span><br>
+										<span th:text="${rs.s7.uname}"></span>
+									<input type="hidden" th:value="${rs.s7.id}">
+									<input type="hidden" th:value="${rs.s7.zwDO.id}">
+								</span>
+
+								<span th:if="${rs.s7 ==null || rs.s7 =='' }" >
+										<span style="color: black;">未此课</span><br>
+								</span>
+
+							</div>
+
+						</li>
+					</ul>
+
+
+                </div>
+				
+            </div>
+         
+        </div>
+		<a onclick="showDiv()">
+		<div class="queding">确认预选</div>
+		</a>
+		<!--弹出层开始-->
+		<div id="Idiv" class="tan">
+			<img src="/tsH5/images/guanbi.png" onclick="closeDiv();" style="float: right;" />
+			<div class="tan-title">
+				<font style="text-align: center;">请填写预约信息</font>
+			</div>
+			<div class="name">
+				<font class="user-infor">
+					姓名：
+					<input type="text" style="width: 100px;height: 10px;"  id="name"/>
+				</font>
+			</div>
+			<div class="name">
+				<font class="user-infor">
+					手机：
+					<input type="number" style="width: 100px;height: 10px;"  id="tel" maxlength="11" minlength="11" />
+				</font>
+			</div>
+
+
+			<div class='frow' id="s" style="text-align: center;">
+				<font style="color: red;">请输入完整信息预约!</font>
+			</div>
+
+
+			<div class="tijiao">
+				<span class="tijiao-font" onclick="tj();">提交</span>
+			</div>
+		</div>
+
+		<!--结束-->
+		
+    </div>
+	
+	
+    <script type="text/javascript" src="/tsH5/js/jquery.min.js"></script>
+<script src="/tsH5/js/mui.min.js"></script>
+    <script type="text/javascript" src="/tsH5/js/common.js"></script>
+	<script src="/tsH5/js/mui.picker.js"></script>
+	<script src="/tsH5/js/mui.poppicker.js"></script>
+
+
+
+	<script>
+
+		function to_xk() {
+
+			location.href="/h5/curr/showcCnames";
+		}
+
+		function to_cnameDays(sta){
+			var ds=$("#dates").val();
+			var kid=$("#kid").val();
+			location.href="/h5/curr/to_cnameDays?date="+ds+"&cid="+kid+"&sta="+sta
+		}
+
+
+		$("#s").hide();
+		function tj() {
+
+			var name=$("#name").val()
+			var tel=$("#tel").val();
+			var zid=$("#zid").val();
+			var cid=$("#cid").val();
+			if(name===''||tel===''||name.length<=0||tel.length<=0){
+				$("#s").show();
+				return;
+			}
+
+			$("#s").hide();
+			$("#name").val('');
+			$("#tel").val('');
+
+			location.href="/h5/curr/yuyue?cid="+cid+"&name="+name+"&tel="+tel+"&zid="+zid;
+		}
+
+		function  check(objs) {
+			var lists=$(objs).find("input");
+			if (lists.length>0){
+				//课程预约编号 座位号(占时多余)
+
+				$("#cid").val(lists[0].value);
+				$("#zid").val(lists[1].value)
+
+			}
+			else {
+
+				$("#cid").val('');
+				$("#zid").val('');
+			}
+
+
+		//	alert($("#zid").val()+"//"+$("#cid").val());
+
+		}
+
+		/*function yy() {
+			var name=$("#name").val();
+			var tel=$("#tel").val();
+			var zid=$("#zid").val();
+			var cid=$("#cid").val();
+			if (name===''||tel===''||zid===''||cid===''||name===null||tel===null||name==='null'||tel==='null'){
+				alert("请选择可预约课程!");
+				return;
+			}else{
+				//根据课程id查询1 是否被预约 (占时1不用座位 只有一个)
+				$.get("/h5/curr/geyisfullYy",{"cid":cid},function (data) {
+
+					if (data.code==0){
+						//alert("可以预约");
+						location.href="/h5/curr/yuyue?name="+name+"&tel="+tel+"&zid="+zid+"&cid="+cid;
+					}
+					else{
+						alert(data.msg);
+					}
+				})
+			}
+
+		}*/
+	</script>
+
+
+	<script>
+		/*
+		 * 弹出DIV层
+		*/
+		function showDiv()
+		{
+
+			var zid=$("#zid").val();
+			var cid=$("#cid").val();
+			if (zid===''||cid===''){
+				alert("请选择可预约课程!");
+				return;
+			}else{
+				//根据课程id查询1 是否被预约 (占时1不用座位 只有一个)
+				$.get("/h5/curr/geyisfullYy",{"cid":cid},function (data) {
+
+					if (data.code!=0){
+						alert(data.msg);
+
+					}
+					else{
+
+						var Idiv     = document.getElementById("Idiv");
+						Idiv.style.display = "block";
+						//以下部分要将弹出层居中显示
+						Idiv.style.left=(document.documentElement.clientWidth-Idiv.clientWidth)/2+document.documentElement.scrollLeft+"px";
+						Idiv.style.top =(document.documentElement.clientHeight-Idiv.clientHeight)/2+document.documentElement.scrollTop-50+"px";
+
+						//以下部分使整个页面至灰不可点击
+						var procbg = document.createElement("div"); //首先创建一个div
+						procbg.setAttribute("id","mybg"); //定义该div的id
+						procbg.style.background = "#000000";
+						procbg.style.width = "100%";
+						procbg.style.height = "100%";
+						procbg.style.position = "fixed";
+						procbg.style.top = "0";
+						procbg.style.left = "0";
+						procbg.style.zIndex = "500";
+						procbg.style.opacity = "0.6";
+						procbg.style.filter = "Alpha(opacity=70)";
+						//背景层加入页面
+						document.body.appendChild(procbg);
+						document.body.style.overflow = "hidden"; //取消滚动条
+						//以下部分实现弹出层的拖拽效果
+						var posX;
+						var posY;
+						mou_head.onmousedown=function(e)
+						{
+							if(!e) e = window.event; //IE
+							posX = e.clientX - parseInt(Idiv.style.left);
+							posY = e.clientY - parseInt(Idiv.style.top);
+							document.onmousemove = mousemove;
+						}
+						document.onmouseup = function()
+						{
+							document.onmousemove = null;
+						}
+
+					}
+
+
+				})
+			}
+
+
+		function mousemove(ev)
+		{
+		if(ev==null) ev = window.event;//IE
+		Idiv.style.left = (ev.clientX - posX) + "px";
+		Idiv.style.top = (ev.clientY - posY) + "px";
+		}
+		}
+		function closeDiv() //关闭弹出层
+		{
+		var Idiv=document.getElementById("Idiv");
+		Idiv.style.display="none";
+		document.body.style.overflow = "auto"; //恢复页面滚动条
+		var body = document.getElementsByTagName("body");
+		var mybg = document.getElementById("mybg");
+		body[0].removeChild(mybg);
+		}
+	</script>
+	
+    <script type="text/javascript">
+		//点击
+		$(document).ready(function(){
+		    $(".managementPanel li").click(function() {
+		        $(".managementPanel li").removeClass("red");
+		        $(this).addClass("red");
+		    })
+		});
+		
+        /*判断页面加载完成*/
+        window.onload = function () {
+            if (document.readyState == "complete") {
+                $("body").show();
+            }
+        };
+        var arr = []; /*已选座位数组*/
+        /*
+         遍历检查状态
+         typ ==0 可选
+         typ ==1 已选
+         typ ==2 已售
+         tpe==3 已预约
+         */
+        $(".content li").each(function (index) {
+            var typ = $(".content li").eq(index).attr("typ");
+            if (typ == "2") {
+                $(".content li").eq(index).css("background", "#0099ff");
+            }
+            else if(typ=="3"){
+				$(".content li").eq(index).css("background", "#FFFF00");
+			}
+        });
+        /*已选座位添加*/
+        function add(msg) {
+            var html = '<div>' + msg + '</div>';
+            return html;
+        }
+		
+        /*数组删除指定元素方法*/
+        Array.prototype.removeByValue = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) {
+                    this.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    </script>
+	
+	
+	
+
+</body>
+</html>

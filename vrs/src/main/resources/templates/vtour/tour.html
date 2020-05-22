@@ -1,0 +1,729 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>全景图</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=edge" />
+	<link href="https://cdn.bootcss.com/layer/2.3/skin/layer.css" rel="stylesheet">
+	<style>
+		@-ms-viewport { width:device-width; }
+		@media only screen and (min-device-width:800px) { html { overflow:hidden; } }
+		html { height:100%; }
+		body { height:100%; overflow:hidden; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#FFFFFF; background-color:#000000; }
+		li {
+			list-style:none;
+			font-size: 12px;
+			text-align:center;
+		}
+		li a{color: #fff;text-decoration: none;}
+		.box1 {
+			max-width:240px;
+			height:56px;
+			overflow:hidden;
+			position:absolute;
+			left:50%;
+			top:10px;
+			margin-left: -120px;
+		}
+		.box1 .wrap {
+			max-width:240px;
+            height:56px;
+            overflow-x:scroll;
+            overflow-y:hidden;
+		}
+		.box1 .wrap ul {
+			display:flex;
+			padding:0;
+			margin:0;
+		}
+		.box1 .wrap ul li {
+			margin: 0 5px;
+			height:48px;
+			box-sizing:border-box;
+		}
+		.box1 .wrap li img{
+			width: 48px;
+			height: 48px;
+		    display: block;
+		}
+		.wrap ul li span{
+			display:block;
+			text-align:center;
+			word-break:keep-all;           /* 不换行 */
+			white-space:nowrap;          /* 不换行 */
+			overflow:hidden;               /* 内容超出宽度时隐藏超出部分的内容 */
+			text-overflow:ellipsis;
+			margin-top: -20px;
+		}
+		
+		.box2  ul li span{width: 60px;}
+		.box2 {
+			height:180px;
+			width:66px;
+			overflow:hidden;
+			position:absolute;
+			left:10px;
+			top:50%;
+			margin-top: -90px;
+		}
+		.box2 .wrap {
+			height:180px;
+            width:66px;
+            overflow-x:hidden;
+            overflow-y:scroll;
+		}
+		.box2 .wrap ul {
+			padding:0;
+			margin:0;
+		}
+		.box2 .wrap ul li {
+			margin: 10px 0;
+			width:66px;
+			height:50px;
+		}
+		.box2 .wrap li img{
+			width: 48px;
+			height: 48px;
+		    display: block;
+		}
+		
+		.bar{width: 100%;height: 28px;background: rgba(0,0,0,0.3);position: absolute;left:0;bottom: 75px;}
+		.bar ul#ftypeList{height: 32px;float:left;}
+		#barList{display: inline-block;float: right;}
+		#barList,#ftypeList{height: 26px;margin:0;padding:0;}
+		#barList li{float:right;margin: 4px 8px;}
+		#ftypeList li{float: left;margin: 3px 8px;}
+		#ftypeList a{background: #000;padding:0 5px;border-radius: 4px;display:inline-block;height: 20px;margin-top:1px;line-height: 20px;min-width: 40px;}
+		
+		.box3 {
+			max-width:296px;
+			height:64px;
+			overflow:hidden;
+			position:absolute;
+			left:10px;
+			bottom:6px;
+		}
+		.box3 .wrap {
+			max-width:296px;
+            height:64px;
+            overflow-x:scroll;
+            overflow-y:hidden;
+		}
+		.box3 .wrap ul {
+			display:flex;
+			padding:0;
+			margin:0;
+		}
+		.box3 .wrap ul li {
+			margin: 0 5px;
+			height:64px;
+			box-sizing:border-box;
+		}
+		.box3 li a{height: 64px;display: block;}
+		.box3 .wrap li img{
+			width: 64px;
+			height: 64px;
+		    display: block;
+		}
+		.box3 .wrap ul li span{margin-top: -20px;}
+		.box1 li.active img,.box2 li.active img{padding: 2px;border: 2px solid #f00;border-radius: 4px;box-sizing:border-box;}
+		.box3 li.active img{padding: 2px;border: 2px solid #f00;border-radius: 4px;box-sizing:border-box;}
+		#ftypeList li.active a{color: #000;background: #fff;}
+		
+		
+		.box4 {
+			max-width:256px;
+			height:24px;
+			overflow:hidden;
+			position:absolute;
+			left:50%;
+			bottom:4px;
+			margin-left: -128px;
+		}
+		.box4 .wrap {
+			max-width:256px;
+            height:24px;
+            overflow-x:scroll;
+            overflow-y:hidden;
+		}
+		.box4 .wrap ul {
+			display:flex;
+			padding:0;
+			margin:0;
+		}
+		.box4 .wrap ul li {
+			margin: 0 5px;
+			height:24px;
+			box-sizing:border-box;
+		}
+		.box4 li a{height: 24px;display: block;}
+		.inputCode{position:absolute;width: 150px;top: 160px;left: 50%;margin-left: -75px;box-shadow: 0 2px 2px rgba(0,0,0,0.5)}
+		.finger-print{display:none;}
+		.xz{
+			transform:rotate(90deg);
+			-ms-transform:rotate(90deg); 	/* IE 9 */
+			-moz-transform:rotate(90deg); 	/* Firefox */
+			-webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+			-o-transform:rotate(90deg); 
+		}
+		.finger-print .white_content {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			width: 180px;
+			min-height: 180px;
+			border: 0;
+			border-radius:10px;
+			/* background: linear-gradient(#50BFF4,  #0A6EBC, #10567B); */
+			z-index: 99999999;
+			transform: translate(-50%, -50%) rotate(-90deg);
+		    box-shadow: 0 0 40px 5px rgba(255,255,255,1);
+		    text-align: center;
+		}
+	 
+		.finger-print .btn {
+			height: 50px;
+			line-height: 50px;
+			position: absolute;
+			text-align: center;
+			bottom: 0;
+			width: 100%;
+		   
+		}
+		
+		/**
+	 * 覆盖层样式
+	 */
+		
+		.finger-print .black_overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .86);
+			z-index: 99999998;
+			opacity: .80;
+	}
+	
+	</style>
+</head>
+<body>
+
+<div class="finger-print">
+	<!--弹窗-->
+	<div class="white_content">
+		<div style="text-align: center;">
+			<img src="/vtour/images/timg.gif" style="width: 128px;height: 128px;margin-left: 0px;margin-top: 26px;border-radius: 100%;box-shadow: 0 0 25px 4px rgba(0,0,0,1);">
+		</div>
+		
+		<!-- <img src="/vtour/images/close.png" onclick="cancelFingerpring()" style="width: 32px;height: 32px;position: absolute;bottom: -60px;left: 74px;"> -->
+		
+	</div>
+	
+	<!--覆盖层-->
+	<div class="black_overlay"></div>
+</div>
+
+
+<div style="position: absolute;z-index: 9999999;background: url(/vtour/images/bg.png) bottom right;background-size: 100% 100%;width: 100%;height:100%;" id="loginForm">
+	<div style="width: 300px;height: 300px;background: url(/vtour/images/login_div.png) bottom right;background-size: 100% 100%;position: absolute;top: 50%;left: 50%;margin-left: -150px;margin-top: -150px;text-align:center;">
+		<div class="inputCode">
+			<span style="float:left;width: 50px;line-height:26px;background: #F5C53D;color: #fff;height: 26px;display:inline-block;font-size:12px;border-radius:2px 0 0 2px;">激活码</span>
+			<input type="text" id="activeCode" style="text-align:center;float:right;width: 100px;height: 24px;border: 0;outline: none;border-radius:0 2px 2px 0;font-size:12px;" placeholder="请输入激活码">
+		</div>
+		<button id="sure" style="position:absolute;width: 60px;top: 200px;left: 50%;margin-left: -30px;border:none;outline:none;height: 26px;border-radius: 2px;background: #21BF10;color: #fff;box-shadow: 0 2px 2px rgba(0,0,0,0.5)">登录</button>
+	</div>
+	<img src="/vtour/images/YUNSHI.png" style="position: absolute;right: 50px;top: 40px;width: 64px;height: 64px;"/>
+</div>
+
+
+<script src="/vtour/tour.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/vtour/template-web.js"></script>
+<script src="/js/mui.js"></script>
+
+<div id="pano" style="width:100%;height:100%;">
+	<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
+	<script>
+		embedpano({swf:"/vtour/tour.swf", xml:"/vtour/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true});
+		/*定义控件*/
+		var krpano = document.getElementById("krpanoSWFObject");
+		var fov = 100, hlookat = 0, vlookat = 0;
+		function getScene(){
+			/*获取变量*/
+			fov = Number(krpano.get("view.fov"));
+			hlookat = Number(krpano.get("view.hlookat"));
+			vlookat = Number(krpano.get("view.vlookat"));
+			
+			console.log(krpano.get("xml.scene"), krpano.get("scene[get(xml.scene)].index") )
+		}
+		function setScene(){
+			krpano.set("view.fov", fov);
+			krpano.set("view.hlookat", hlookat);
+			krpano.set("view.vlookat", vlookat);
+		}
+		//切换场景
+		function krpanoLoadScene(p1, p2) {
+			//var sceneName = krpano.get("xml.scene");
+			console.log('切换场景');
+		}
+
+		function playAudio(obj){
+			var audio = document.getElementById("audio");
+			if(audio !== null){             
+			    //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+			   //alert(audio.paused);
+			  if(audio.paused){     
+				  audio.currentTime = 0;
+			      audio.play();//audio.play();// 这个就是播放  
+			      //$(obj).find("img").attr("src", "/vtour/images/music.png");
+			  }else{
+				   audio.pause();// 这个就是暂停
+				  // $(obj).find("img").attr("src", "/vtour/images/music.png");
+			  }
+			} 
+		}
+		
+		function playBtnAudio(){
+			var audio = document.getElementById("btnAudio");
+			if(audio !== null){             
+			  audio.currentTime = 0;
+		      audio.play();
+			} 
+		}
+		
+	</script>
+</div>
+
+<div style="position: absolute;z-index: 99999;top: 10px;right: 10px;">
+	<img src="" id="productLogo" style="width: 24px;height:24px;vertical-align: middle;border-radius: 24px;"><span id="productName" style="padding-left: 6px;font-size: 12px;"></span>
+</div>
+
+<div class="box1">
+    <div class="wrap">
+        <ul id="styleGfList">
+        </ul>
+    </div>
+</div>
+
+<div class="box2">
+    <div class="wrap">
+	<ul id="typeList">
+	</ul>
+	</div>
+</div>
+
+<div class="bar">
+	<div class="box4">
+	    <div class="wrap">
+			<ul id="ftypeList">
+			</ul>
+		</div>
+	</div>
+	<ul id="barList">
+		<!-- <li><a href="javascript:;" onclick="window.location.reload();"><img src="/krpano1/skin/icon-like.png"  style="height: 20px;"></a></li> -->
+		<li><a href="javascript:;" onclick="autorotate();"><img src="/vtour/images/stop.png"  style="height: 20px;"></a></li>
+		<li><a href="javascript:;" onclick="playAudio(this)"><img src="/vtour/images/music.png" style="height: 20px;"></a></li>
+		<li><a href="javascript:;" onclick="clickgyro()" 
+			style="display:block;background-image: url(/krpano/skin/vtourskin.png);width: 20px;height: 24px;
+				background-position: 1px -152px;background-size: 40px 300px;">&nbsp;</a></li>
+	</ul>
+</div>
+
+<div class="box3">
+    <div class="wrap">
+		<ul id="lastList">
+		</ul>
+	</div>
+</div>
+
+<div id="backAudioDiv" style="visibility: hidden;">
+	<audio id="audio" controls autoplay src="/vtour/mp3/music.mp3" loop></audio>
+	<audio id="btnAudio" controls src="/vtour/mp3/btnaudio.mp3"></audio>
+</div>
+
+<script id="styleGfTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li {{if i == 0}}class='active'{{/if}} data-id="{{scene.topId}}">
+			<a href="javascript:;" onclick="changeGf(this, '{{scene.topId}}')">
+				<img src="{{scene.topLogo}}" alt="">
+				<span>{{scene.topName}}</span>
+			</a>
+		</li>
+	{{/each}}
+</script>
+
+<script id="typeTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li {{if i == 0}}class='active'{{/if}} data-id="{{scene.leftId}}">
+			<a href="javascript:;" onclick="changeType(this, '{{scene.leftId}}')">
+				<img src="{{scene.leftLogo}}" alt="">
+				<span>{{scene.leftName}}</span>
+			</a>
+		</li>
+	{{/each}}
+</script>
+<script id="ftypeTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li {{if i == 0}}class='active'{{/if}} data-id="{{scene.romeId}}"><a href="javascript:;"  onclick="changeFtype(this, '{{scene.romeId}}')">{{scene.romeName}}</a></li>
+	{{/each}}
+</script>
+
+<script id="lastTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li  {{if i == 0}}class='active'{{/if}} data-id="{{scene.id}}" >
+			<a href="javascript:;" onclick="changeScene(this, '{{scene.qjt}}','{{scene.id}}');">
+				<img src="{{scene.colorLogo}}">
+				<span>{{scene.color}}</span>
+			</a>
+		</li>
+	{{/each}}
+</script>
+<script>
+var scenes = null,
+	zhiwen = false,
+	showFinger= false,
+	fingertext= '请扫描指纹';
+
+$(window).ready(function(){
+	rebuildSize();
+	
+	$("#sure").click(function(){
+		initData();
+	});
+	
+	var activeCode = localStorage.getItem("activeCode");
+	if( activeCode ){
+		$("#activeCode").val(activeCode);
+	}
+});
+
+function rebuildSize(){
+	var tw = $(".box1").width();
+	$(".box1").css("margin-left", -(tw/2));
+	
+	var ww = $(window).width();
+	var bw = $("#barList").width();
+	var ftypew = $("#ftypeList").width();
+	
+	var tw3 = $(".box3").width();
+	$(".box3").css("margin-left", (ww - tw3  ) / 2);
+	
+	var tw4 = $(".box4").width();
+	$(".box4").css("margin-left", -( tw4  ) / 2);
+}
+
+function initData(){
+	
+	if( !$("#activeCode").val() ){
+		mui.toast("请输入激活码");
+		return false;
+	}
+	
+	var deviceUuid = "";
+	if('Android' == plus.os.name) {
+		deviceUuid = plus.device.imsi + "";
+		if( !deviceUuid ){
+			deviceUuid =plus.device.uuid + "";
+		}
+	} else {
+		deviceUuid =plus.device.uuid + "";
+	}
+	
+	if( !deviceUuid ){
+		mui.toast("登录失败，请稍候再试");
+		return false;
+	}
+	
+	var d = localStorage.getItem("data");
+	mui.toast("数据 ");
+	if( d ){
+	mui.toast("数据 323423");
+		buildData(data);
+		return false;
+	}
+	
+	$.get("/vr/all",{activeCode: $("#activeCode").val(), deviceUuid: deviceUuid}, function(data){
+	  	if( data.code != 0 ){
+	  		mui.toast(data.msg);
+	  		return false;
+	  	}
+	  	
+	  	localStorage.setItem("activeCode", $("#activeCode").val());
+	  	localStorage.setItem("data", data);
+	  	buildData(data);
+  		//embedpano({swf:"/vtour/tour.swf", xml:"/vtour/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true, onready: krpanoReady});
+  		//krpanoReady(krpano);
+	});
+}
+
+function buildData(data){
+	data = data.data;
+  	
+  	$("#loginForm").hide();
+  	if( data.productName) {
+  		$("#productName").text(data.productName);
+  	} else {
+  		$("#productName").hide();
+  	}
+  	$("#productLogo").attr("src", data.logo);
+  	$("#audio").attr("src", data.musicUrl);
+		scenes = data.top;
+		getAllImages(scenes);
+		$("#styleGfList").html(template("styleGfTemplate", {scenes: scenes}));//默认加载国风类别
+		if( scenes.length > 0 ){
+			$("#typeList").html(template("typeTemplate", {scenes: scenes[0].left}));
+			if( scenes[0].left.length > 0 ){
+				$("#ftypeList").html(template("ftypeTemplate", {scenes: scenes[0].left[0].room}));
+				if( scenes[0].left[0].room.length > 0 ){
+					$("#lastList").html(template("lastTemplate", {scenes: scenes[0].left[0].room[0].color}));
+					if( scenes[0].left[0].room[0].color.length > 0 ){
+						changeSceneByName(scenes[0].left[0].room[0].color[0].id);
+					}
+				}
+			}
+		}
+		rebuildSize();
+}
+
+var firstScene = "";
+function getAllImages(scenes){
+	var xml = "";
+	for( var i = 0; i < scenes.length; i++ ){
+		for( var j = 0; j < scenes[i].left.length; j++ ){
+			var style = scenes[i].left[j];
+			for( var k = 0; k < style.room.length ; k++ ){
+				var tl = style.room[k];
+				for( var n = 0; n < tl.color.length ; n++ ){
+					var color = tl.color[n];
+					if( n == 0 ) firstScene = color.id;
+					var qjt = color.qjt;
+					console.log( qjt )
+					var qpt = qjt.substring(qjt.lastIndexOf("/") + 1, qjt.lastIndexOf("."));
+					//xml += '<scene name="'+color.id+'"><image><sphere url="'+color.qjt+'" /></image></scene>';
+					//var xml = '<scene name="'+color.id+'"><image><sphere url="/vtour/images/scene3.jpg"/></image></scene>';
+					//var xml = '<scene name="'+color.id+'" title="'+color.ColorName+'" onstart="" lat="" lng="" heading=""><view hlookat="0.0" vlookat="0.0" fovtype="MFOV"  fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" /><image><sphere url="/vtour/images/ttt'+iiii+'.jpg" /></image></scene>'
+					var xml = '<scene name="'+color.id+'" title="1" onstart=""   lat="" lng="" heading=""><view hlookat="0.0" vlookat="0.0" fovtype="MFOV"  fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" /><image><cube url="/files/qjt/vtour/panos/'+qpt+'.tiles/pano_%s.jpg" /></image></scene>';
+					krpano.call("loadxml(" + xml + ");");
+				}
+			}
+		}
+	}
+	krpano.call("skin_loadscene("+firstScene+");")
+	return xml;
+}
+
+var krpanoReady = function(krpano){
+	var xml = getAllImages(scenes);
+  	//var xml = '<scene name="scene_10"><image><sphere url="/vtour/images/scene1.jpg" /></image></scene>'
+  	krpano.call("loadxml(" + xml + ");loadscene("+firstScene+");")
+}
+
+function changeGf(obj, topId){
+	playBtnAudio();
+	$(obj).parents(".box1").find("li").removeClass("active");
+	$(obj).parents("li").addClass("active");
+	for( var i = 0; i < scenes.length; i++ ){
+		if( scenes[i].topId == topId ){
+			$("#typeList").html(template("typeTemplate", {scenes: scenes[i].left}));
+			if( scenes[i].left.length > 0 ){
+  				$("#ftypeList").html(template("ftypeTemplate", {scenes: scenes[i].left[0].room}));
+  				if( scenes[0].left[0].room.length > 0 ){
+  					$("#lastList").html(template("lastTemplate", {scenes: scenes[i].left[0].room[0].color}));
+  					if( scenes[i].left[0].room[0].color.length > 0 ){
+  						changeSceneByName(scenes[i].left[0].room[0].color[0].id);
+  					}
+  					rebuildSize();
+  					return;
+  				} else {
+  					$("#lastList").html("");
+  				}
+  			} else{
+  				$("#ftypeList").html("");
+  				$("#lastList").html("");
+  				return;
+  			}
+		}
+	}
+}
+
+function changeType(obj, styleId){
+	playBtnAudio();
+	$(obj).parents(".box2").find("li").removeClass("active");
+	$(obj).parents("li").addClass("active");
+	var firstId = $("#styleGfList li.active").attr("data-id");
+	for( var i = 0; i < scenes.length; i++ ){
+		if( scenes[i].topId == firstId ){
+			for( var j = 0; j < scenes[i].left.length; j++ ){
+				var style = scenes[i].left[j];
+				if( styleId == style.leftId){
+					$("#ftypeList").html(template("ftypeTemplate", {scenes: style.room}));
+					if( style.room.length > 0 ){
+	  					$("#lastList").html(template("lastTemplate", {scenes: style.room[0].color}));
+	  					if( style.room[0].color.length > 0 ){
+	  						changeSceneByName(style.room[0].color[0].id);
+	  					}
+	  					rebuildSize();
+	  				} else {
+	  					$("#lastList").html("");
+	  				}
+					return false;
+				}
+			}
+		}
+	}
+}
+
+function changeFtype(obj, typeId){
+	playBtnAudio();
+	$(obj).parents("#ftypeList").find("li").removeClass("active");
+	$(obj).parents("li").addClass("active");
+	var firstId = $("#styleGfList li.active").attr("data-id");
+	var secondId = $("#typeList li.active").attr("data-id");
+	for( var i = 0; i < scenes.length; i++ ){
+		if( scenes[i].topId == firstId ){
+			for( var j = 0; j < scenes[i].left.length; j++ ){
+				var style = scenes[i].left[j];
+				if( secondId == style.leftId){
+					for( var k = 0; k < style.room.length ; k++ ){
+						var tl = style.room[k];
+						if( tl.color.length > 0 ){
+							if( typeId == tl.romeId ){
+								$("#lastList").html(template("lastTemplate", {scenes: tl.color}));
+								if( tl.color.length > 0 ){
+			  						changeSceneByName(tl.color[0].id);
+			  					}
+								rebuildSize();
+								return;
+							}
+						} else {
+							$("#lastList").html("");
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+var iiii = 1;
+function changeScene(obj,url,sceneName){
+	playBtnAudio();
+	$(obj).parents("#lastList").find("li").removeClass("active");
+	$(obj).parents("li").addClass("active");
+	//var krpano = document.getElementById("krpanoSWFObject");
+  	getScene();
+	//var xml = '<scene name="'+name+'"><image><sphere url="'+url+'" /></image></scene>'
+	
+/* 	var xml = '<scene name="'+sceneName+'"><image><sphere url="/vtour/images/ttt'+i+'.jpg" /></image></scene>'
+	if( i == 1 ){
+		i = 2;
+	} else {
+		i = 1;
+	} 
+  	krpano.call("loadxml(" + xml + ");loadscene("+sceneName+");");*/
+  	krpano.call("skin_loadscene("+sceneName+");");
+  	setScene();
+}
+
+function changeSceneByName(sceneName){
+	getScene();
+  	krpano.call("skin_loadscene("+sceneName+");");
+  	setScene();
+}
+
+function autorotate(){
+	krpano.call("switch(autorotate.enabled);")
+}
+
+function clickgyro(){
+	//var krpano = document.getElementById("krpanoSWFObject");
+	krpano.call("switch(plugin[skin_gyro].enabled); if(plugin[skin_gyro].enabled, skin_showmap(false));");
+}
+
+//切换场景，并跳转到指定的全景图
+function loadpano(xmlname,sceneName) {
+    if(krpano) {    
+        //动态切换xml，xmlname为tour.xml传过来的值 
+        krpano.call("loadpano(" + xmlname + ", null, MERGE, BLEND(0.5));"); 
+         //sceneName为切换后加载的第一个场景
+        krpano.call("loadscene('" + sceneName + "')"); 
+    }
+}
+
+
+//H5 plus事件处理
+function plusReady(){
+	// 检查是否支持指纹识别
+	if(plus.fingerprint) {
+		if(!plus.fingerprint.isSupport()) {
+			fingertext = '此设备不支持指纹识别';
+			return;
+		}
+		if(!plus.fingerprint.isKeyguardSecure()) {
+			fingertext = '此设备未设置密码锁屏，无法使用指纹识别';
+			return;
+		}
+		if(!plus.fingerprint.isEnrolledFingerprints()) {
+			fingertext = '此设备未录入指纹，请到设置中开启';
+			return;
+		}
+		fingertext = '此设备支持指纹识别';
+	}else {
+		fingertext = '当前环境不支持指纹识别API，请更新到最新版本';
+	}
+	//$("#fingertext").text(fingertext);
+	
+	var activeCode = localStorage.getItem("activeCode");
+	if( activeCode ){
+		$(".finger-print").show();
+		fingerpring();
+	}
+	
+}
+document.addEventListener('plusready', plusReady, false);
+
+//指纹识别认证 
+function fingerpring() {
+	var waiting = null;
+	plus.fingerprint.authenticate(function(){
+		plus.nativeUI.closeWaiting();//兼容Android平台关闭等待框
+		//alert('指纹识别成功');
+		$(".finger-print").hide();
+		initData();//直接去登录 
+	}, function(e){
+		switch(e.code) {
+		case e.AUTHENTICATE_MISMATCH:
+		plus.nativeUI.toast('指纹匹配失败，请重新输入');
+		break;
+		case e.AUTHENTICATE_OVERLIMIT:
+		plus.nativeUI.closeWaiting();//兼容Android平台关闭等待框
+		//plus.nativeUI.alert('指纹识别失败次数超出限制，请使用其它方式进行认证');
+		break;
+		default:
+		plus.nativeUI.closeWaiting();//兼容Android平台关闭等待框
+		//plus.nativeUI.alert('指纹识别失败('+e.code+')，请重试');
+		break;
+		}
+	});
+	// Android平台弹出等待提示框 
+	if('Android'==plus.os.name) {
+		$(".finger-print").show();
+		//plus.nativeUI.showWaiting('指纹识别中...');
+	}
+}
+
+//取消指纹识别
+function cancelFingerpring() {
+	$(".finger-print").hide();
+	plus.fingerprint.cancel();
+}
+</script>
+
+</body>
+</html>

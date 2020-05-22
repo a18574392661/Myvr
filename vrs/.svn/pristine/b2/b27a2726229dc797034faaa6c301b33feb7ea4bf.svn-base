@@ -1,0 +1,480 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>krpano - 2</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=edge" />
+	<link href="https://cdn.bootcss.com/layer/2.3/skin/layer.css" rel="stylesheet">
+	<style>
+		@-ms-viewport { width:device-width; }
+		@media only screen and (min-device-width:800px) { html { overflow:hidden; } }
+		html { height:100%; }
+		body { height:100%; overflow:hidden; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#FFFFFF; background-color:#000000; }
+		li {
+			list-style:none;
+			font-size: 12px;
+			text-align:center;
+		}
+		li a{color: #fff;text-decoration: none;}
+		.box1 {
+			max-width:240px;
+			height:56px;
+			overflow:hidden;
+			position:absolute;
+			left:50%;
+			top:10px;
+			margin-left: -120px;
+		}
+		.box1 .wrap {
+			max-width:240px;
+            height:56px;
+            overflow-x:scroll;
+            overflow-y:hidden;
+		}
+		.box1 .wrap ul {
+			display:flex;
+			padding:0;
+			margin:0;
+		}
+		.box1 .wrap ul li {
+			margin: 0 5px;
+			height:48px;
+			box-sizing:border-box;
+		}
+		.box1 .wrap li img{
+			width: 48px;
+			height: 48px;
+		    display: block;
+		}
+		.wrap ul li span{
+			display:block;
+			text-align:center;
+			word-break:keep-all;           /* 不换行 */
+			white-space:nowrap;          /* 不换行 */
+			overflow:hidden;               /* 内容超出宽度时隐藏超出部分的内容 */
+			text-overflow:ellipsis;
+			margin-top: -20px;
+		}
+		
+		.box2  ul li span{width: 60px;}
+		.box2 {
+			height:180px;
+			width:56px;
+			overflow:hidden;
+			position:absolute;
+			left:10px;
+			top:50%;
+			margin-top: -90px;
+		}
+		.box2 .wrap {
+			height:180px;
+            width:56px;
+            overflow-x:hidden;
+            overflow-y:scroll;
+		}
+		.box2 .wrap ul {
+			padding:0;
+			margin:0;
+		}
+		.box2 .wrap ul li {
+			margin: 10px 0;
+			width:60px;
+			height:50px;
+		}
+		.box2 .wrap li img{
+			width: 48px;
+			height: 48px;
+		    display: block;
+		}
+		
+		.bar{width: 100%;height: 28px;background: rgba(0,0,0,0.3);position: absolute;left:0;bottom: 75px;}
+		.bar ul#ftypeList{height: 32px;float:left;}
+		#barList{display: inline-block;float: right;}
+		#barList,#ftypeList{height: 26px;margin:0;padding:0;}
+		#barList li{float:right;margin: 4px 8px;}
+		#ftypeList li{float: left;margin: 3px 8px;}
+		#ftypeList a{background: #000;padding:0 5px;border-radius: 4px;display:inline-block;height: 20px;margin-top:1px;line-height: 20px;}
+		
+		.box3 {
+			max-width:80%;
+			height:64px;
+			overflow:hidden;
+			position:absolute;
+			left:10px;
+			bottom:6px;
+		}
+		.box3 .wrap {
+			width:100%;
+            height:64px;
+            overflow-x:scroll;
+            overflow-y:hidden;
+		}
+		.box3 .wrap ul {
+			display:flex;
+			padding:0;
+			margin:0;
+		}
+		.box3 .wrap ul li {
+			margin: 0 5px;
+			height:64px;
+			box-sizing:border-box;
+		}
+		.box3 li a{height: 64px;display: block;}
+		.box3 .wrap li img{
+			width: 64px;
+			height: 64px;
+		    display: block;
+		}
+		.box3 .wrap ul li span{margin-top: -20px;}
+		.box1 li.active img,.box2 li.active img{padding: 2px;border: 2px solid #f00;border-radius: 4px;box-sizing:border-box;}
+		.box3 li.active img{padding: 2px;border: 2px solid #f00;border-radius: 4px;box-sizing:border-box;}
+		#ftypeList li.active a{color: #000;background: #fff;}
+	</style>
+</head>
+<body>
+
+<script src="/vtour/tour.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/vtour/template-web.js"></script>
+
+<div id="pano" style="width:100%;height:100%;">
+	<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
+	<script>
+		embedpano({swf:"/vtour/tour.swf", xml:"/vtour/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true});
+		/*定义控件*/
+		var krpano = document.getElementById("krpanoSWFObject");
+		var fov = 100, hlookat = 0, vlookat = 0;
+		function getScene(){
+			/*获取变量*/
+			fov = Number(krpano.get("view.fov"));
+			hlookat = Number(krpano.get("view.hlookat"));
+			vlookat = Number(krpano.get("view.vlookat"));
+			
+			console.log(krpano.get("xml.scene"), krpano.get("scene[get(xml.scene)].index") )
+		}
+		function setScene(){
+			krpano.set("view.fov", fov);
+			krpano.set("view.hlookat", hlookat);
+			krpano.set("view.vlookat", vlookat);
+		}
+		//切换场景
+		function krpanoLoadScene(p1, p2) {
+			//var sceneName = krpano.get("xml.scene");
+			console.log('切换场景');
+		}
+
+		function playAudio(obj){
+			console.log(obj)
+			var audio = document.getElementById("audio");
+			if(audio !== null){             
+			    //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+			   //alert(audio.paused);
+			  if(audio.paused){     
+				  audio.currentTime = 0;
+			      audio.play();//audio.play();// 这个就是播放  
+			      $(obj).find("img").attr("src", "/vtour/images/stop.jpg");
+			  }else{
+				   audio.pause();// 这个就是暂停
+				   $(obj).find("img").attr("src", "/vtour/images/play.jpg");
+			  }
+			} 
+		}
+	</script>
+</div>
+
+<div class="box1">
+    <div class="wrap">
+        <ul id="styleGfList">
+        </ul>
+    </div>
+</div>
+
+<div class="box2">
+    <div class="wrap">
+	<ul id="typeList">
+	</ul>
+	</div>
+</div>
+
+<div class="bar">
+	<ul id="ftypeList">
+	</ul>
+	<ul id="barList">
+		<li><a href="javascript:;" onclick="window.location.reload();"><img src="/krpano1/skin/icon-like.png"  style="height: 20px;"></a></li>
+		<li><a href="javascript:;" onclick="autorotate();"><img src="/krpano1/skin/icon-share.png"  style="height: 20px;"></a></li>
+		<li><a href="javascript:;" onclick="playAudio(this)"><img src="/vtour/images/stop.jpg" style="height: 20px;"></a></li>
+		<li><a href="javascript:;" onclick="clickgyro()" style="display:block;background-image: url(/krpano/skin/vtourskin.png);width: 20px;height: 24px;background-position: 0px -160px;background-size: 48px 320px;">&nbsp;</a></li>
+	</ul>
+</div>
+
+<div class="box3">
+    <div class="wrap">
+		<ul id="lastList">
+		</ul>
+	</div>
+</div>
+
+<div id="backAudioDiv" style="visibility: hidden;">
+	<audio id="audio" controls autoplay src="/vtour/mp3/music.mp3" loop></audio>
+</div>
+
+<script id="styleGfTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li {{if i == 0}}class='active'{{/if}} data-id="{{scene.BigTypeId}}">
+			<a href="javascript:;" onclick="changeGf(this, '{{scene.BigTypeId}}')">
+				<img src="{{scene.Pic}}" alt="">
+				<span>{{scene.BigTypeName}}</span>
+			</a>
+		</li>
+	{{/each}}
+</script>
+
+<script id="typeTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li {{if i == 0}}class='active'{{/if}} data-id="{{scene.StyleId}}">
+			<a href="javascript:;" onclick="changeType(this, '{{scene.StyleId}}')">
+				<img src="{{scene.PicUrl}}" alt="">
+				<span>{{scene.StyleName}}</span>
+			</a>
+		</li>
+	{{/each}}
+</script>
+<script id="ftypeTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li {{if i == 0}}class='active'{{/if}} data-id="{{scene.TypeId}}"><a href="javascript:;"  onclick="changeFtype(this, '{{scene.TypeId}}')">{{scene.TypeName}}</a></li>
+	{{/each}}
+</script>
+
+<script id="lastTemplate" type="text/html">
+	{{each scenes scene i}}
+		<li  {{if i == 0}}class='active'{{/if}} data-id="{{scene.ColorId}}" >
+			<a href="javascript:;" onclick="changeScene(this, '{{scene.QjpicUr}}','{{scene.ColorId}}');">
+				<img src="{{scene.PicUrl}}">
+				<span>{{scene.ColorName}}</span>
+			</a>
+		</li>
+	{{/each}}
+</script>
+<script>
+var scenes = null;
+$(window).load(function(){
+	rebuildSize();
+	initData();
+});
+
+function rebuildSize(){
+	var tw = $(".box1").width();
+	$(".box1").css("margin-left", -(tw/2));
+	
+	var ww = $(window).width();
+	var bw = $("#barList").width();
+	var ftypew = $("#ftypeList").width();
+	$("#ftypeList").css("margin-left", (ww - ftypew  ) / 2 );
+	
+	var tw3 = $(".box3").width();
+	$(".box3").css("margin-left", (ww - ftypew  ) / 2);
+}
+
+function initData(){
+	$.get("http://shapi.hncoon.com/api/GetStyleData.ashx?action=GetData", function(data){
+	  	var res = JSON.parse(data);
+	  	if( !res.IsError ){
+	  		scenes = res.Result;
+	  		getAllImages(scenes)
+	  		console.log( scenes );
+	  		$("#styleGfList").html(template("styleGfTemplate", {scenes: scenes}));//默认加载国风类别
+	  		if( scenes.length > 0 ){
+	  			$("#typeList").html(template("typeTemplate", {scenes: scenes[0].StyleList}));
+	  			if( scenes[0].StyleList.length > 0 ){
+	  				$("#ftypeList").html(template("ftypeTemplate", {scenes: scenes[0].StyleList[0].TyleList}));
+	  				if( scenes[0].StyleList[0].TyleList.length > 0 ){
+	  					$("#lastList").html(template("lastTemplate", {scenes: scenes[0].StyleList[0].TyleList[0].ColorList}));
+	  					if( scenes[0].StyleList[0].TyleList[0].ColorList.length > 0 ){
+	  						changeSceneByName(scenes[0].StyleList[0].TyleList[0].ColorList[0].ColorId);
+	  					}
+	  				}
+	  			}
+	  		}
+	  		rebuildSize();
+	  		//embedpano({swf:"/vtour/tour.swf", xml:"/vtour/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true, onready: krpanoReady});
+	  		//krpanoReady(krpano);
+	  	} else {
+	  		alert('数据加载异常');
+	  	}
+	});
+}
+
+var firstScene = "";
+function getAllImages(scenes){
+	var xml = "";
+	for( var i = 0; i < scenes.length; i++ ){
+		for( var j = 0; j < scenes[i].StyleList.length; j++ ){
+			var style = scenes[i].StyleList[j];
+			for( var k = 0; k < style.TyleList.length ; k++ ){
+				var tl = style.TyleList[k];
+				for( var n = 0; n < tl.ColorList.length ; n++ ){
+					var color = tl.ColorList[n];
+					if( n == 0 ) firstScene = color.ColorId;
+					//xml += '<scene name="'+color.ColorId+'"><image><sphere url="'+color.QjpicUr+'" /></image></scene>';
+					//var xml = '<scene name="'+color.ColorId+'"><image><sphere url="/vtour/images/scene3.jpg"/></image></scene>';
+					//var xml = '<scene name="'+color.ColorId+'" title="'+color.ColorName+'" onstart="" lat="" lng="" heading=""><view hlookat="0.0" vlookat="0.0" fovtype="MFOV"  fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" /><image><sphere url="/vtour/images/ttt'+iiii+'.jpg" /></image></scene>'
+					var xml = '<scene name="'+color.ColorId+'" title="1" onstart=""   lat="" lng="" heading=""><view hlookat="0.0" vlookat="0.0" fovtype="MFOV"  fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" /><image><cube url="/vtour/panos/'+iiii+'.tiles/pano_%s.jpg" /></image></scene>';
+					if( iiii == 1 ){
+						iiii = 2;
+					} else {
+						iiii = 1;
+					}
+					krpano.call("loadxml(" + xml + ");");
+				}
+			}
+		}
+	}
+	krpano.call("skin_loadscene("+firstScene+");")
+	return xml;
+}
+
+var krpanoReady = function(krpano){
+	var xml = getAllImages(scenes);
+	console.log( xml )
+  	//var xml = '<scene name="scene_10"><image><sphere url="/vtour/images/scene1.jpg" /></image></scene>'
+  	krpano.call("loadxml(" + xml + ");loadscene("+firstScene+");")
+}
+
+function changeGf(obj, bigTypeId){
+	$(obj).parents(".box1").find("li").removeClass("active");
+	$(obj).parents("li").addClass("active");
+	for( var i = 0; i < scenes.length; i++ ){
+		if( scenes[i].BigTypeId == bigTypeId ){
+			$("#typeList").html(template("typeTemplate", {scenes: scenes[i].StyleList}));
+			if( scenes[i].StyleList.length > 0 ){
+  				$("#ftypeList").html(template("ftypeTemplate", {scenes: scenes[i].StyleList[0].TyleList}));
+  				if( scenes[0].StyleList[0].TyleList.length > 0 ){
+  					$("#lastList").html(template("lastTemplate", {scenes: scenes[i].StyleList[0].TyleList[0].ColorList}));
+  					if( scenes[i].StyleList[0].TyleList[0].ColorList.length > 0 ){
+  						changeSceneByName(scenes[i].StyleList[0].TyleList[0].ColorList[0].ColorId);
+  					}
+  					rebuildSize();
+  					return;
+  				} else {
+  					$("#lastList").html("");
+  				}
+  			} else{
+  				$("#ftypeList").html("");
+  				$("#lastList").html("");
+  				return;
+  			}
+		}
+	}
+}
+
+function changeType(obj, styleId){
+	$(obj).parents(".box2").find("li").removeClass("active");
+	$(obj).parents("li").addClass("active");
+	var firstId = $("#styleGfList li.active").attr("data-id");
+	for( var i = 0; i < scenes.length; i++ ){
+		if( scenes[i].BigTypeId == firstId ){
+			for( var j = 0; j < scenes[i].StyleList.length; j++ ){
+				var style = scenes[i].StyleList[j];
+				if( styleId == style.StyleId){
+					$("#ftypeList").html(template("ftypeTemplate", {scenes: style.TyleList}));
+					if( style.TyleList.length > 0 ){
+	  					$("#lastList").html(template("lastTemplate", {scenes: style.TyleList[0].ColorList}));
+	  					if( style.TyleList[0].ColorList.length > 0 ){
+	  						changeSceneByName(style.TyleList[0].ColorList[0].ColorId);
+	  					}
+	  					rebuildSize();
+	  				} else {
+	  					$("#lastList").html("");
+	  				}
+					return false;
+				}
+			}
+		}
+	}
+}
+
+function changeFtype(obj, typeId){
+	console.log( typeId )
+	$(obj).parents("#ftypeList").find("li").removeClass("active");
+	$(obj).parents("li").addClass("active");
+	var firstId = $("#styleGfList li.active").attr("data-id");
+	var secondId = $("#typeList li.active").attr("data-id");
+	for( var i = 0; i < scenes.length; i++ ){
+		if( scenes[i].BigTypeId == firstId ){
+			for( var j = 0; j < scenes[i].StyleList.length; j++ ){
+				var style = scenes[i].StyleList[j];
+				if( secondId == style.StyleId){
+					for( var k = 0; k < style.TyleList.length ; k++ ){
+						var tl = style.TyleList[k];
+						if( tl.ColorList.length > 0 ){
+							if( typeId == tl.TypeId ){
+								$("#lastList").html(template("lastTemplate", {scenes: tl.ColorList}));
+								if( tl.ColorList.length > 0 ){
+			  						changeSceneByName(tl.ColorList[0].ColorId);
+			  					}
+								rebuildSize();
+								return;
+							}
+						} else {
+							$("#lastList").html("");
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+var iiii = 1;
+function changeScene(obj,url,sceneName){
+	console.log( url )
+	$(obj).parents("#lastList").find("li").removeClass("active");
+	$(obj).parents("li").addClass("active");
+	//var krpano = document.getElementById("krpanoSWFObject");
+  	getScene();
+	//var xml = '<scene name="'+name+'"><image><sphere url="'+url+'" /></image></scene>'
+	
+/* 	var xml = '<scene name="'+sceneName+'"><image><sphere url="/vtour/images/ttt'+i+'.jpg" /></image></scene>'
+	if( i == 1 ){
+		i = 2;
+	} else {
+		i = 1;
+	} 
+  	krpano.call("loadxml(" + xml + ");loadscene("+sceneName+");");*/
+  	krpano.call("skin_loadscene("+sceneName+");");
+  	setScene();
+}
+
+function changeSceneByName(sceneName){
+	getScene();
+  	krpano.call("skin_loadscene("+sceneName+");");
+  	setScene();
+}
+
+function autorotate(){
+	krpano.call("switch(autorotate.enabled);")
+}
+
+function clickgyro(){
+	//var krpano = document.getElementById("krpanoSWFObject");
+	krpano.call("switch(plugin[skin_gyro].enabled); if(plugin[skin_gyro].enabled, skin_showmap(false));");
+}
+
+//切换场景，并跳转到指定的全景图
+function loadpano(xmlname,sceneName) {
+    if(krpano) {    
+        //动态切换xml，xmlname为tour.xml传过来的值 
+        krpano.call("loadpano(" + xmlname + ", null, MERGE, BLEND(0.5));"); 
+         //sceneName为切换后加载的第一个场景
+        krpano.call("loadscene('" + sceneName + "')"); 
+    }
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>该商家核销记录</title>
+		<script src="/appPage/js/mui.min.js"></script>
+		<link href="/appPage/css/mui.min.css" rel="stylesheet" />
+		<link href="/appPage/css/iconfont.css" rel="stylesheet"/>
+		<link href="/appPage/css/common.css" rel="stylesheet"/>
+		<link href="/appPage/css/search.css" rel="stylesheet" />
+		<link href="/appPage/css/mui.picker.css" rel="stylesheet" />
+		<link href="/appPage/css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			.submit-form{margin: 0 auto;text-align: center;width: 100%;}
+			.submit-btn{width: 60%;height: 40px;border-radius: 40px;color: #FFFFFF;font-size: 18px;border: 0;background: linear-gradient(to right, #0895FF , #4972FE);}
+		
+			html,body,.mui-content{background-color: #ffffff;}
+			.mui-card-content-inner{padding: 0;margin-left: -4px;}
+			.mui-table-view .mui-media-object{width: 100px;height: 60px;line-height: 60px;max-width: 120px;}
+			
+			.mui-card .mui-card-content{font-family: "微软雅黑";}
+			.mui-card .mui-table-view{padding-bottom: 0px;}
+			.mui-card .mui-table-view-cell{padding: 6px 15px 4px 15px;}
+			.mui-table-view-cell.mui-media:after{height: 0px;}
+			.mui-card .school-title{font-size: 15px;color: #000000;}
+			.mui-card .school-lookdetail{color: #FF8A7D;font-size: 12px;}
+			.mui-card .school-distance{color: #6A6A6A;font-size: 13px;}
+			.mui-card .description{color: #BCBCBC;}
+			.mui-card .less{display: -webkit-box;white-space: normal;-webkit-line-clamp: 4;-webkit-box-orient: vertical;overflow: hidden;text-indent: 2rem;}
+			.mui-card .more{white-space: normal;}
+			.mui-card .look-more{text-align: center;padding-top: 10px;color: #FC9B14;}
+			.mui-table-view-cell>a:not(.mui-btn).mui-active{background: #FFFFFF;}
+			.teacher .teacher-img{width: 50px;height: 50px;border-radius: 100%;border: 2px solid #EC6246;}
+			.teacher .teacher-name{display: block;font-size: 11px;color: #ffffff;
+				width: 80%;height: 18px;line-height: 18px;background: linear-gradient(to right,  #fe8869 0%,#df362f 100%);border-radius: 18px;
+				margin: 0 auto;margin-top: -12px;z-index: 2;position: relative;}
+			.teacher .teacher-type{display: block;color: #A6A6A6;font-size: 12px;height: 30px;line-height: 30px;}
+			.clazz-li{border-bottom: 1px solid #f5f5f5;}
+			.clazz-li .mui-media-body{padding-bottom: 0px;}
+			.clazz-li{padding-top: 11px!important;}
+			.dh{
+				height: 26px;line-height: 26px;display: inline-block;
+				border-radius: 30px;
+				padding: 0 20px;font-size: 14px;
+				background: linear-gradient(to right, #0895FF , #4972FE);
+				color: #ffffff;
+				position: absolute;
+				top: 12px;
+				right: 15px;
+			}
+			.clazz-img{width: 40px!important;height: 40px!important;border-radius: 40px;}
+			.clazz-bm{background: rgb(255,151,61);display: inline-block;font-size: 11px;text-align: center;color: #ffffff;border-radius: 8px 6px 6px 0;padding: 1px 4px;}
+			.clazz-price-btn{background: #FFA600;display: inline-block;border-radius: 4px;color: #ffffff;font-size: 11px;padding: 2px 6px;}
+			.clazz-price{font-size: 14px;font-weight: bold;color: #D1352C;}
+			.description{font-size: 12px;}
+			.description .line{padding:0 2px;}
+			
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body{font-size: 13px;}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+			    border-right: 1px solid #F1F1F1;
+			    border-bottom: 1px solid #F1F1F1;
+			}
+			
+			.teacher-btns{height: 32px;font-size: 12px;display: flex;justify-content: space-between;align-items: center;}
+			.teacher-btns-item{height: 32px;line-height: 32px;width: 100%;text-align: center;}
+			.teacher-btns-icon{color: #666;font-size: 13px;vertical-align: middle;}
+			.teacher-btnstitle{color: #BCBCBC;vertical-align: middle;}
+			
+			.search-menu{width: 100%;height: 40px;position: fixed;top:44px;left:0;z-index: 10;background: #F6F6F6;padding: 0 10px;}
+			.search-menu .search-time{font-size: 16px;color: #0077eb;font-weight: bold;line-height: 40px;height: 40px;}
+			.search-menu .icon-gengduo{font-size: 16px;padding-left: 4px;color: #0077eb;font-weight: bloder;}
+			.con-header{background-color: #F6F6F6; height: 30px;}
+			.con-header-right{position: absolute; margin-top: 5px; right: 20px;font-size: 13px;color: #727272;}
+		</style>
+	</head>
+	<body>
+	<input type="hidden" id="sta" th:value="${sta}">
+	<input type="hidden" id="message" th:value="${message}">
+	<input type="hidden" id="uuid" th:value="${uuid}">
+		<header class="mui-bar mui-bar-nav">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left" style="color: #FFF;">
+				<span class="mui-icon mui-icon-left-nav"></span>
+			</button>
+			<h1 class="mui-title" id="pageTitle">拥有优惠券的学员</h1>
+		</header>
+		<div class="mui-content" style="padding: 10px;margin-top: 44px;">
+
+				<div style="position: fixed;top: 44px;left:0;width: 100%;padding: 10px;height: 200px;background: #fff;z-index:2;box-shadow: 0 0 3px rgba(0,0,0,0.22)">
+					<span style="color: #7F7F7F; font-size: 15px;">
+						<span>手机号码:<input id="tel" type="number" max="11" required="required" placeholder="请输入学员的手机号码"></span>
+						<br>
+						<span>优惠券码:<input id="code" type="text" max="11" required="required" placeholder="请输入优惠券"></span>
+	
+						<span><div  class="" style="color:#FF601C; min-width: 60px;max-width: 120px;padding: 4px 6px;margin:0 auto;  border-radius: 10px;text-align: center; background-color: #FFEEE7; font-size: 16px;" onclick="searchUserLog()">查询</div></span>
+					</span>
+				</div>
+				<div style="margin-top: 200px;margin-bottom: 50px;">
+				<ul class="mui-table-view" style="background: none;margin-top:20px;">
+
+					<li class="mui-table-view-cell cell-center" th:each="stu : ${list}" onclick="getInfo(this)">
+					    <div class="mui-media-body" style="padding-left: 5px; width: 100%;">
+					        <div class="student_info mui-pull-left" style="width: 100%;">
+					            <div class="student_info_detail" style="width: 100%;">
+					                <div class="cell-center space" style="">
+					                    <p>
+											<span style="color: #7F7F7F; font-size: 16px;">
+												<span th:text="${stu.userDO.username}" class="username"></span>
+													<div style="position: absolute; right: 5px;font-size: 14px;color: #f00; top: 5px;font-weigth: bold;">
+														剩余金额:<span  th:text="${stu.price}"></span>元
+													</div>
+											</span>
+										</p>
+					                    <p>
+											<span style="color: #666; font-size: 13px;" th:text="'优惠券编码:'+${stu.code}" th:attr="data-code=${stu.code}" class="userCouponCode"></span><br>
+											<span style="color: #999; font-size: 13px;" th:text="${#dates.format(stu.createdate,'yyyy-MM-dd HH:mm:ss')}"></span><br>
+										</p>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+					</li>
+					<!--使用-->
+			</ul>
+			</div>
+				<input type="hidden" id="busid" th:value="${busid}"/>
+			<center style="position: fixed;bottom:0;width: 100%;left:0;background: #ffffff;height: 50px;line-height: 50px;box-shadow: 0 0 3px rgba(0,0,0,0.22)">
+				<a style="color: #FF601C;font-size:16px;background: #FFEEE7;font-weight: bold;padding: 6px 15px;border-radius: 4px;" th:href="@{'/api/user/userBusPayLog?busid='+${busid}}">查看核销记录</a>
+			</center>
+		</div>
+		</div>
+
+		
+		<script src="/appPage/js/common.js"></script>
+		<script src="/appPage/js/jquery.min.js"></script>
+		<script src="/appPage/js/mui.picker.js"></script>
+		<script src="/appPage/js/mui.poppicker.js"></script>
+		<script src="/appPage/js/search.js"></script>
+		<script src="/appPage/js/template-web.js"></script>
+
+
+		<script >
+
+			function searchUserLog() {
+				var tel=$("#tel").val();
+				var code=$("#code").val();
+				if(tel===''||code===''){
+				    alert("请输入完整信息查询")
+				    return;
+
+				}
+
+				$.post("/api/user/searchUserLog",{"code":code,"tel":tel},function (data) {
+					if(data.success){
+							//跳转到 当前学员的 核销页面
+							location.href="/api/user/to_userBusStatusShowPage?busid="+$("#busid").val()+"&sid="+data.data.uid;
+
+					}else{
+						alert(data.message)
+
+					}
+
+
+                })
+            }
+
+		</script>
+		
+		<script>
+			mui.init({
+				swipeBack: false ,//启用右滑关闭功能
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style:'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			function getInfo(obj){
+				var couponCode = $(obj).find(".userCouponCode").attr("data-code");
+				var username = $(obj).find(".username").text();
+				$("#tel").val( username);
+				$("#code").val( couponCode);
+			}
+			
+			
+			//当前位置
+			function translatePoint(position){
+				currentLon = position.coords.longitude;
+			 	currentLat= position.coords.latitude;
+				getTeacherData(1, true, function(){
+					$(".mui-loading").remove();
+				});//默认加载第一页
+			}
+			
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				getTeacherData(1, true, function(){
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+					mui.toast('数据已刷新');
+					mui('#pullrefresh').pullRefresh().refresh(true); 
+				});
+			}
+			
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				var currentPageNum = +$("#teacherContainer").attr("data-pagenum");//当前页面
+				getTeacherData(currentPageNum+1, false, function(){
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh(_data.length == count);//refresh completed
+				});
+			}
+			
+			
+			
+			
+		</script>
+
+	<script>
+		$(function () {
+			var message=$("#message").val();
+            var sta=$("#sta").val();
+            var uuid=$("#uuid").val();
+            //alert(uuid);
+			if(message!=''&&message!=null){
+			    if(sta!=''&&sta!=null){
+			        //防止重复刷新弹框
+			        $.post("/api/user/toNotLoad",{"sta":sta,"uuid":uuid},function (data) {
+						//alert(data.success);
+			            if(data.success==true){
+						    alert(message);
+						}
+                    })
+				}
+
+
+
+			}
+		})
+	</script>
+	</body>
+</html>

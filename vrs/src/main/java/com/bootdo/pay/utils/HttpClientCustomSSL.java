@@ -1,0 +1,68 @@
+package com.bootdo.pay.utils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+public class HttpClientCustomSSL {
+
+   /**
+    * 发送公钥的http请求以及企业支付到银行卡的http请求
+    * 
+    */
+   public static String httpClientResultGetPublicKey(String xml) throws Exception {
+      StringBuffer reultBuffer = new StringBuffer();
+
+      SSLConnectionSocketFactory sslsf = ReadSSl.getInstance().readCustomSSL();
+
+      HttpPost httpPost = new HttpPost("https://fraud.mch.weixin.qq.com/risk/getpublickey");
+      CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+      StringEntity myEntity = new org.apache.http.entity.StringEntity(xml, "UTF-8");
+      myEntity.setContentType("text/xml;charset=UTF-8");
+      myEntity.setContentEncoding("UTF-8");
+      httpPost.setHeader("Content-Type", "text/xml; charset=UTF-8");
+      httpPost.setEntity(myEntity);
+
+      CloseableHttpResponse response = null;
+      java.io.InputStream inputStream = null;
+      InputStreamReader inputStreamReader = null;
+      BufferedReader bufferedReader = null;
+      try {
+         response = httpclient.execute(httpPost);
+         HttpEntity entity = response.getEntity();
+         if (entity != null) {
+            inputStream = entity.getContent();
+            inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            bufferedReader = new BufferedReader(inputStreamReader);
+            String str = null;
+            while ((str = bufferedReader.readLine()) != null) {
+            	//System.out.println(str);
+               reultBuffer.append(str);
+            }
+         }
+      } catch (ClientProtocolException e) {
+         e.printStackTrace();
+      } catch (IOException e) {
+         e.printStackTrace();
+      } finally {
+
+         httpclient.close();
+         response.close();
+         bufferedReader.close();
+         inputStreamReader.close();
+         inputStream.close();
+         inputStream = null;
+      }
+
+      return reultBuffer.toString();
+   }
+}

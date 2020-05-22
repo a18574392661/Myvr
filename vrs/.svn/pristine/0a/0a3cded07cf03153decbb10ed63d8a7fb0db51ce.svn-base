@@ -1,0 +1,202 @@
+package com.bootdo.vrs.service.impl;
+
+import com.bootdo.common.utils.StringUtils;
+import com.bootdo.system.dao.UserDao;
+import com.bootdo.system.domain.UserDO;
+import com.bootdo.vrs.common.MessageConstantVrs;
+import com.bootdo.vrs.dao.PaydetailesDao;
+import com.bootdo.vrs.dao.ProDao;
+import com.bootdo.vrs.dao.UserImgclsDao;
+import com.bootdo.vrs.domain.PaydetailesDO;
+import com.bootdo.vrs.domain.ProDO;
+import com.bootdo.vrs.domain.UserImgclsDO;
+import com.bootdo.vrs.service.ProService;
+import com.bootdo.vrs.service.UserImgclsService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+@Service
+@Transactional
+public class UserImgclsServiceImpl implements UserImgclsService {
+	@Autowired
+	private UserImgclsDao userImgclsDao;
+
+	@Autowired
+	private UserDao userDao;
+
+	@Autowired
+	private PaydetailesDao paydetailesDao;
+
+	@Autowired
+	private ProDao proDao;
+
+	@Autowired
+	private ProService proService;
+	
+	@Override
+	public UserImgclsDO get(Integer id){
+		return userImgclsDao.get(id);
+	}
+	
+	@Override
+	public List<UserImgclsDO> list(Map<String, Object> map){
+		return userImgclsDao.list(map);
+	}
+	
+	@Override
+	public int count(Map<String, Object> map){
+		return userImgclsDao.count(map);
+	}
+	
+	@Override
+	public int save(UserImgclsDO userImgcls){
+		return userImgclsDao.save(userImgcls);
+	}
+	
+	@Override
+	public int update(UserImgclsDO userImgcls){
+		return userImgclsDao.update(userImgcls);
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public int remove(Integer id){
+		//先查询是否是自己的图
+		UserImgclsDO userImgclsDo =userImgclsDao.get(id);
+		//自己的图库表里面删除
+		 ProDO proDO=proDao.get(userImgclsDo.getCid());
+		 if (proDO!=null) {
+			 if ((userImgclsDo.getUid() + "").equals(proDO.getUid() + "")) {
+				 //删除传的图
+				 int c = proDao.remove(proDO.getId());
+				 //删除拥有这套图1的
+				 int c1 = proDao.delUsetImg(proDO.getId() + "");
+				return  1;
+			 }
+		 }
+		return userImgclsDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(Integer[] ids){
+		return userImgclsDao.batchRemove(ids);
+	}
+
+	@Override
+	public void saveMyPro(UserImgclsDO userImgclsDO) {
+		ProDO proDO=proService.get(userImgclsDO.getCid());
+		if (proDO==null){
+			throw  new  RuntimeException(MessageConstantVrs.PRO_DEL_ADMIN);
+		}
+
+
+		int count=0;
+		//先查询是否会员
+		UserDO userDO=userDao.get(Long.parseLong(userImgclsDO.getUid()+""));
+		if (userDO.getIsVip()!=null&&userDO.getIsVip()==0){
+			//判断是否免费
+
+			if (proDO.getPayState()==1){
+				throw  new  RuntimeException(MessageConstantVrs.USER_PRO_NOT_VIP);
+			}
+			//不是1会员查数量
+		 	int ucount=userImgclsDao.getUserVrPro(userImgclsDO.getUid());
+		 	//查询非会员上传3数量限制
+			 PaydetailesDO paydetailesDO=paydetailesDao.get(2);
+			 count=paydetailesDO!=null&&paydetailesDO.getCount()!=null?paydetailesDO.getCount():10;
+			 if (ucount>=count){
+			 	throw  new  RuntimeException(MessageConstantVrs.USER_PRO_ERRORVIP+count+" 张");
+			 }
+		}
+
+		//没输入昵称添加图片的名字1
+		if (StringUtils.isBlank(userImgclsDO.getName())||"null".equals(userImgclsDO.getName())){
+			userImgclsDO.setName(proService.get(Integer.parseInt(userImgclsDO.getUid()+"")).getName());
+		}
+
+		int userCount=userImgclsDao.getUserProCount(userImgclsDO);
+		if (userCount>0){
+			throw  new  RuntimeException(MessageConstantVrs.USER_PRO_DISBELE);
+		}
+
+		//是会员 或者已经没到10张添加图库
+		int resultCount=userImgclsDao.save(userImgclsDO);
+		if (resultCount<=0){
+			throw  new  RuntimeException(MessageConstantVrs.USER_PRO_ERROR);
+		}
+
+
+
+	}
+
+	@Override
+	public PageInfo<UserImgclsDO> to_userPro(Integer uid,Integer page,Map<String,Object> parent) {
+		PageHelper.startPage(page,9);
+		List<UserImgclsDO> list=userImgclsDao.list(parent);
+		PageInfo<UserImgclsDO> pageinfo=new PageInfo<UserImgclsDO>(list);
+		pageinfo.setPrePage(pageinfo.getPrePage()<=0?1:pageinfo.getPrePage());
+		pageinfo.setNextPage(pageinfo.getNextPage()<=0?pageinfo.getPages():pageinfo.getNextPage());
+		return pageinfo;
+	}
+
+	@Override
+	public int batchUser(String ids, String proid) {
+		if (StringUtils.isBlank(ids)||StringUtils.isBlank(proid)){
+			throw new RuntimeException(MessageConstantVrs.ERROR);
+		}
+
+		String[] sz=ids.split(",");
+		for (String uid : sz) {
+			UserImgclsDO userImgclsDO=new UserImgclsDO();
+			userImgclsDO.setUid(Integer.parseInt(uid));
+			userImgclsDO.setCreeatedate(new Date());
+			userImgclsDO.setCid(Integer.parseInt(proid));
+			int count=userImgclsDao.save(userImgclsDO);
+
+			if (count<=0){
+				throw new RuntimeException(MessageConstantVrs.ERROR);
+			}
+		}
+
+
+		return 1;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public int fpuserImg(String[] imgs, String[] uids) {
+		for (String uid : uids) {
+			if (StringUtils.isBlank(uid)||"null".equals(uid)){
+				continue;
+			}
+
+			userImgclsDao.delUserImg(uid);
+			//删除1用户的图片
+			for (String img : imgs) {
+				ProDO proDO=proDao.get(Integer.parseInt(img));
+				Map<String,Object> results=new HashMap<>();
+				results.put("uid",uid);
+				results.put("imgid",img);
+				results.put("name",proDO.getName());
+				userImgclsDao.insertUserimgs(results);
+			}
+
+
+		}
+
+
+		return 1;
+	}
+
+
+}

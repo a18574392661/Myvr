@@ -1,0 +1,608 @@
+<!DOCTYPE html><!-- Required tag for HTML5 -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keyword" content="">
+    <meta name="description" content="">
+    <!-- Incluse css and media files -->
+    <link rel="icon" type="image/png" href="#"><!-- favicon icon -->
+
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/manager/house/css/all.min.css">-->
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/css/manager/house/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/color.css">
+    <!-- REVOLUTION STYLE SHEETS -->
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/settings.css" />
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/navigation.css" />
+    <link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+    <title>定制设计</title>
+	<style>
+		.index-button{background-color:#DA231B ; color: #FFFFFF; border: none; border-radius: 5px; }
+		.head{margin-top: 5px;}
+		.dom{border: 0; appearance:none;}
+		.index-button2{background-color:#E47919 ; color: #FFFFFF; border: none; border-radius: 5px; width: 80px}
+		.help{margin-left: 10px;}
+		.roundness{border:solid 1px #000000; width: 18px;height: 18px;background-color:yellow;border-radius: 50%;-moz-border-radius: 50%;-webkit-border-radius: 50%;}
+		.index{margin-left: 5%;}
+		.index-first{margin-left: 5%;}
+		.index-first-button{background-color:#FFFFFF ; color: #2281B8; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.index-two-button{background-color:#2281B8 ; color: #FFFFFF; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.sousou{background-color: #2281B8; border:1px solid #2281B8;}
+		.fangan{background-color: #71706E; width: 300px; height: 1px; position: absolute; margin-top: 30px; margin-left: -305px;}
+		.fangan2{background-color: #71706E; width: 300px; height: 1px; position: absolute;margin-top: 30px; margin-left: 197px;}
+		 #page li{
+		    cursor:pointer;
+		}
+		.text-with-hr {
+		    text-align: center;
+		    position: relative;
+		    z-index: 2;
+		}
+		.text-with-hr:before {
+		    position: absolute;
+		    content: '';
+		    top: 20px;
+		    left: 0px;
+		    width: 100%;
+		    border-bottom: 1px solid #EF9A4A;
+		    z-index: -1;
+		}
+		.text-with-hr span {
+		    display: inline-block;
+		    background: white;
+			margin-top: -8px;
+		    padding: 10px;
+		}
+		.col-xs-5ths, .col-sm-5ths, .col-md-5ths, .col-lg-5ths {
+			position: relative;
+			min-height: 1px;
+			padding-right: 10px;
+			padding-left: 10px;
+		}
+		
+		@media ( min-width : 768px) {
+			.col-sm-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 992px) {
+			.col-md-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 1200px) {
+			.col-lg-5ths {
+				width: 20%;
+				float: left;
+			}
+	</style>
+
+	<style>
+		#krpanoSWFObject{min-height: 300px;border-radius: 10px;}
+	</style>
+
+
+</head>
+<body>
+
+<script type="text/javascript" src="/vrH5/assets/js/jquery.min.js"></script>
+<script src="/h5pano/tour.js"></script>
+
+			 <!--页面抽取-->
+			<!-- <ul th:replace="vrs/manager/house/head::pageheader"></ul>-->
+
+<div class="theme-layout">
+
+	<div class="se-pre-con"></div><!-- loader -->
+	<header role="banner">
+		<div class="topbar" style="background-color: #FFFFFF;">
+			<div class="container">
+				<input type="hidden" id="ste" th:value="${ste}">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+					</div>
+					<div class="col-md-6 text-right">
+						<!--     <a href="#" class="log-in-out get-login-register"><input type="button" value="立即体验" class="index-button head" /></a>-->
+						<ul class="socials">
+							<!--<li>
+								<select class="dom">
+									<option>客户端下载</option>
+								</select>&nbsp;&nbsp;&nbsp;&nbsp;
+							</li>-->
+
+							<li>
+								<div class="head help" style="cursor: pointer;" onclick="down()">客户端下载</div>
+							</li>
+
+							<script>
+								function down() {
+									location.href="/vrs/houses/to_down";
+								}
+							</script>
+
+
+							<li>
+								<div class="head" style="color: #C5C5C5;">|<div>
+							</li>
+							<li>
+								<div class="head" style="cursor: pointer;">帮助中心</div>
+							</li>
+							<li>
+								<div class="head" style="color: #C5C5C5;">|<div>
+							</li>
+							<!--   <li>
+                                   <div class="head help" style="cursor: pointer;">消息<font color="red">3</font></div>
+                               </li>-->
+
+							<li>
+								<div class="head help roundness"></div>
+							</li>
+							<li>
+								<div class="head" th:if="${username !=null}"><span  th:text="${username}"></span></div>
+
+								<div class="head" th:if="${username == null}" style="cursor: pointer;"><a href="/vrs/user/login">登陆</a><a  data-toggle="modal" data-target="#showModel" href="" style="margin-left: 1rem;">注册</a></div>
+							</li>
+
+							<li th:if="${username !=null}">
+								<div class="head" ><a href="/vrs/user/to_outLogin" style="cursor: pointer;">退出</a></div>
+							</li>
+
+							<li>
+								<div class="head" onclick="to_vip()" style="cursor: pointer;">开通会员</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="full-menu-height"></div>
+		<div class="main-bar stick">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-3">
+						<div class="logo">
+							<a href="#">
+								<img src="/vrH5/assets/images/logo.jpg" alt="">
+							</a>
+						</div>
+					</div>
+					<div style="width: 800px;">
+						<nav role="navigation">
+							<div class="main-menu">
+								<ul>
+									<li th:id="'mu'+${mu.id}" class="menu-item-has-children" th:each="mu : ${maps.menu}" ><a   title="" th:href="${mu.hrefs}" th:text="${mu.name}">首页</a>
+										<!-- <ul>
+                                             <li th:each="chi : ${mu.childTiles}"><a  th:text="${chi.name}" th:href="${chi.hrefs}"></a></li>
+                                         </ul>-->
+									</li>
+								</ul>
+
+							</div>
+						</nav>
+					</div>
+
+					<div class="col-md-3 text-right" style="position: absolute; right: 10px;">
+						<a href="/vrs/user/to_userPro" class="butn1 butn-light">我的方案</a>
+						<a target="_blank" href="/login" class="butn1 butn-light" >上架云视</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</header>
+
+
+
+	<main role="main" >
+		<section  style="padding: 0 15%;">
+			<div class="main-slider">
+				<div id="demo" class="carousel slide" data-ride="carousel">
+					<!-- 指示符 -->
+					<ul class="carousel-indicators" >
+						<li data-target="#demo"  th:each="lb,sta : ${maps.lbList}" th:data-slide-to="${sta.index}"  th:class="${sta.index==0?'active':''}"  ></li>
+
+					</ul>
+
+
+					<!-- 轮播图片 -->
+					<div class="carousel-inner">
+						<div    th:class="${sta.index==0?'carousel-item active':'carousel-item'}" th:each="lb ,sta : ${maps.lbList}">
+							<img src="https://static.runoob.com/images/mix/img_fjords_wide.jpg" style="width: 100%;  height: 350px;" th:src="${lb.img}" th:onclick="'javascript:lbDetail('+${lb.id}+');'" >
+						</div>
+					</div>
+					<!-- 左右切换按钮 -->
+					<a class="carousel-control-prev" href="#demo" data-slide="prev">
+						<span class="carousel-control-prev-icon"></span>
+					</a>
+					<a class="carousel-control-next" href="#demo" data-slide="next">
+						<span class="carousel-control-next-icon"></span>
+					</a>
+
+				</div>
+			</div>
+		</section><!-- slider -->
+	</main>
+
+
+
+
+	<script>
+
+
+		function lbDetail(pid) {
+
+			location.href="/pro/h5/queryLbByid?id="+pid;
+		}
+
+
+		function to_vip(){
+			location.href="/pro/h5/queryVip"
+		}
+	</script>
+
+
+
+</div>
+
+
+
+<!--href="" data-toggle="modal" data-target="#showModel"-->
+			<section style="padding-top: 80px;">
+				<div class="text-with-hr">
+				    <span style="font-size: 25px;">为您精选全景方案</span>
+				</div>
+			</section>
+			
+			<section>
+
+				<input type="hidden" id="vs" th:value="${val}">
+			    <div class="block no-bottom">
+			        <div class="container">
+			    		<ul style="margin-top: -10%;margin-left: 15px;">
+			    			<li th:each="cls,sta:${listCls}" th:id="'shang'+${sta.index}">
+			    				<font size="5" color="#000000"><b th:text="${cls.name}">风格</b></font>&nbsp;
+								<span th:each="cs : ${cls.childs}" >
+									<input type="checkbox" name="cids" th:value="${cs.id}"  th:checked="${cs.checked}">
+
+
+
+								 	 <font th:color="${cs.heightColor=='red'?'red':'#9D9D9D'}"  th:text="${cs.name }+'/'"  for="a1"  th:id="${cs.id}+'cs'"  th:onclick="'javascript:ff('+${cs.id}+','+${sta.index}+');'">现代简约 / 新中式 / 极简 / 地中海 / 美式 / 北欧 / 简欧</font>
+								</span>
+
+
+			    			</li>
+
+			    		</ul>
+			        </div>
+			    </div>
+			</section>
+			
+			<section style="padding-top: 10px;">
+				<div class="block no-bottom">
+					<div class="container">
+						 <ul style="margin-top: -10%;">
+
+							<li style="margin-top: 20px;" >
+								<div class="container">
+								<div class="row">
+									<!--th:each="pro :${proList}"-->
+									<div class="col-sm-4"  style="margin-top: 3rem;" th:each="pro,sta :${proList}">
+
+
+										<span th:if="${sta.index==0}">
+											<input type="hidden" id="qjt" th:value="${pro.qjtfile}">
+												<input type="hidden" id="mid" th:value="${pro.id}">
+										<!--	<span style="color: #0f3e68;text-align: center; margin-top: 3rem;" th:onclick="'javascript:showProDetail('+${pro.id}+');'" >查看详情</span>-->
+											<div id="pano" style="width:100%;height:100%;min-height: 300px;"  onclick="to_det()">
+											<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
+											<script>
+												embedpano({swf:"/h5pano/tour.swf", xml:"/h5pano/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true});
+												/*定义控件*/
+												var krpano = document.getElementById("krpanoSWFObject");
+												/*******************动态数据获取*******************/
+														//d902bcc4927747d49739656a27b6db34.jpg
+												var name = "aa3456345";
+												//7bc378b8704a441496a6ff6a438dd77a.tiles
+												var sd_path2 ="/files/qjt/vtour/panos/"+$("#qjt").val();
+												var xml = '<scene name="'+name+'" title="1" onstart=""   lat="" lng="" heading="">' +
+														'<view hlookat="0.0" vlookat="0.0" fovtype="MFOV"  fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" /><image ><cube url="'+ sd_path2 + '/pano_%s.jpg"/></image></scene>';
+
+												//if( !krpano ) krpano = document.getElementById("krpanoSWFObject");
+
+												krpano.call("loadxml(" + xml + ");");//切换场景
+												krpano.call("skin_loadscene("+name+");");//加载某个场景
+
+											</script>
+
+
+
+											</div>
+
+										</span>
+										<span th:if="${sta.index !=0}">
+										<img  th:src="${pro.img}"  th:onclick="'javascript:to_Search('+${pro.id}+');'" style="width:300px;height:320px;">
+										</span>
+
+									   <!--	<img  th:src="${pro.img}"  th:onclick="'javascript:to_Search('+${pro.id}+');'" style="width:300px;height:300px;">-->
+
+									</div>
+										</div>
+
+
+								</div>
+								</div>
+							</li>
+
+
+						</ul>
+					</div>
+				</div>
+			</section>
+
+<div class="modal" id="showModel"   role="dialog" aria-labelledby="myModalLabel"  >
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 50rem;height: 50rem;"  >
+			<div class="modal-header">
+
+				<h4 class="modal-title" id="myModalLabel" style="text-align: center;">
+
+					注册用户
+
+				</h4>
+			</div>
+			<div class="modal-body">
+
+				<form role="form">
+					<div class="form-group">
+						<label for="mobile">手机号码:</label>
+						<input type="number" class="form-control input-lg"      maxlength="11" minlength="11" id="mobile" placeholder="手机号码" required>
+					</div>
+					<div class="form-group" style="margin-top: 3rem;">
+						<label for="password">密码:</label>
+						<input type="password" class="form-control input-lg" id="password" placeholder="请输入密码" required>
+					</div>
+					<div class="form-group" style="margin-top: 3rem;">
+						<label for="password2">确认密码:</label>
+						<input type="password" class="form-control input-lg" id="password2" placeholder="请确认密码" size="" required>
+					</div>
+
+				<!--	<div class="form-group" style="margin-top: 3rem;">
+						<label for="rid">级别:</label>
+						<select class="form-control  input-lg" id="rsh5" required="">
+							<option value="">请选择</option>
+						</select>
+					</div>-->
+
+
+
+				</form>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<input type="button" class="btn btn-primary" onclick="register()" value="确定注册"/>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+			<section class="text">
+				<div class="info-box">
+				    <section style="margin-top: 80px;">
+				    	<div class="block no-gap overlap-75">
+				    		<div class="container text-center">
+				    			<nav aria-label="Page navigation example">
+				    			  <ul class="pagination" th:if="${pages gt 0}">
+				    			    <li class="page-item"><a class="page-link"  th:href="'javascript:toPage('+${prePage}+');'">上一页</a></li>
+
+				    			         <li  th:class="${i==page?'page-item active':'page-item'}" th:each="i:${#numbers.sequence(1,pages)}"><a  th:href="'javascript:toPage('+${i}+');'" class="page-link" href="#"   th:text="${i}">1</a></li>
+
+				    			   	 	<li class="page-item"><a class="page-link"  th:href="'javascript:toPage('+${nextPage}+');'">下一页</a></li>
+
+				    			  </ul>
+				    			</nav>
+				    		</div>
+				    	</div>
+				    </section>
+				</div>
+			</section>
+
+
+			 <section style="margin-top: 80px; padding-bottom: 100px;">
+				 <div class="block no-gap overlap-75">
+					 <div class="container">
+						 <div class="info-box">
+							 <font color="#AEAEAE">云视+，更多大家居行业正在选择我们</font>
+						 </div>
+						 <ul>
+							 <li>
+								 <div class="container" style="margin-top: 20px;">
+									 <div class="row">
+
+										 <div class="col-sm-5ths"  th:each="log : ${maps.logList}">
+											 <div style="width: 150px; height: 70px; float: left;" >
+
+												 <font color="#000000" style="position: absolute; margin-top: 30px; margin-left: 55px;" >
+
+													 <img th:src="${log.src}"  th:onclick="'javascript:member_edit(\''+${log.getHref()}+'\')'"  width="200" height="200"    style="margin-top: 2rem;"/>
+												 </font>
+											 </div>
+										 </div>
+
+									 </div>
+								 </div>
+							 </li>
+						 </ul>
+					 </div>
+				 </div>
+			 </section>
+
+
+
+			</main>
+
+
+
+		<script>
+
+			function to_det(){
+				var id=$("#mid").val();
+
+				var len=$("input[name='cids']:checked").length;
+				var str="";
+
+				$("input[name='cids']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+					str+=this.value;
+					if(len-1>i){
+						str+=",";
+
+					}
+
+
+				});
+				location.href="/pro/h5/proDetailed?id="+id+"&cids="+str;
+			}
+
+function showProDetail(id) {
+	var len=$("input[name='cids']:checked").length;
+	var str="";
+
+	$("input[name='cids']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+		str+=this.value;
+		if(len-1>i){
+			str+=",";
+
+		}
+
+
+	});
+
+
+	location.href="/pro/h5/proDetailed?cids="+str+"&id="+id;
+
+}
+
+
+
+
+
+			function toPage(page) {
+				//还需要凭拼接条件过去
+				var val=$("#vs").val();
+
+				location.href="/pro/h5/queryCls1Pro?page="+page+"&parent="+val;
+
+			}
+
+			function  proDetailed(pid) {
+				//去详情页面
+        		 location.href="/pro/h5/proDetailed?id=1";
+			}
+
+			function ff(id,index) {
+
+
+			//	alert(index)
+				//	alert("aaa"+id+"//"+index);
+				//当前行的其他标签字体复原
+			//	debugger;
+
+					//var shang=$("#"+index+"shang");//
+				var shang=$("#shang"+index);
+				//alert(shang.children("span").length)
+				var f = shang.children("span");
+
+				for(var i = 0;i < f.length;i++	){
+					$(shang.children("span")[i]).children("font").css("color","#9D9D9D")
+
+
+					$(shang.children("span")[i]).children("input").attr("checked",false)
+				}
+
+
+
+				$("#"+id+"cs").prev().attr("checked","true")
+
+				$("#"+id+"cs").css("color",'red');
+
+
+				cheboxValuePage(1)
+				//alert(str);
+				//带页码过去
+
+
+
+			}
+
+			function  cheboxValuePage(page) {
+				var len=$("input[name='cids']:checked").length;
+				var str="";
+
+				$("input[name='cids']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+					str+=this.value;
+					if(len-1>i){
+						str+=",";
+
+					}
+
+
+				});
+
+				//页码传过去 家条件串1
+				location.href='/pro/h5/queryCls1Pro?parent='+str;
+			}
+
+
+			function  to_Search(proid) {
+				var str="";
+				var len=$("input[name='cids']:checked").length;
+				$("input[name='cids']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+					str+=this.value;
+					if(len-1>i){
+						str+=",";
+
+					}
+
+
+				});
+
+				location.href="/pro/h5/proDetailed?cids="+str+"&id="+proid;
+			}
+		</script>
+
+<!--<script type="text/javascript" src="/js/appjs/vrs/manager/house/assets/js/jquery.min.js"></script>-->
+    <script type="text/javascript" th:src="@{/js/appjs/vrs/manager/house/assets/js/script.js}"></script>
+<script type="text/javascript" src="/js/appjs/vrs/manager/house/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/appjs/vrs/commons/categorycommon.js}"></script>
+			 <script type="text/javascript" src="/js/appjs/common.js"></script>
+
+
+		<script>
+			$(function () {
+
+				$(":checkbox").hide();
+				var i=$("#ste").val();
+				$("#mu"+i).css("color","red");
+			})
+
+		</script>
+</body>
+</html>

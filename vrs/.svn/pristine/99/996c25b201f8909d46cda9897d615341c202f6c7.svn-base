@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.ImgsSytDao">
+
+	<resultMap id="imgsAll" type="com.bootdo.vrs.domain.ImgsSytDO">
+	   <id property="id" column="id"/>
+			   <result column="img" property="img"></result>
+		<result column="sort" property="sort"></result>
+		<result column="updateDatee" property="updatedatee"></result>
+		<result column="cid" property="cid"></result>
+
+	</resultMap>
+
+	<resultMap id="imgProsAll" type="com.bootdo.vrs.domain.ImgsSytDO" extends="imgsAll" autoMapping="true">
+		<association property="proDO" javaType="com.bootdo.vrs.domain.ProDO">
+			<result column="p.name" property="name"></result>
+			<result column="p.code" property="code"></result>
+			<result column="p.img" property="img"></result>
+			<result column="p.id" property="id"></result>
+		</association>
+
+	</resultMap>
+
+	<select id="get" resultType="com.bootdo.vrs.domain.ImgsSytDO">
+		select pid,`id`,`img`,`sort`,`updateDatee`,`cid` from vrs_imgs_syt where id = #{value}
+	</select>
+
+	<select id="list" resultMap="imgProsAll">
+
+		SELECT sty.*,p.img as 'p.img',p.id as 'p.id',IFNULL(sty.cid,false) as 'checked' from vrs_pro p left join vrs_imgs_syt sty
+		on p.id=sty.pid
+
+      <!--  <where>  -->
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="updatedatee != null and updatedatee != ''"> and updateDatee = #{updatedatee} </if>
+		  		  <if test="cid != null and cid != ''"> and sty.cid = #{cid} </if>
+		  		<!--</where>-->
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by sty.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_pro
+		 <!--<where>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="updatedatee != null and updatedatee != ''"> and updateDatee = #{updatedatee} </if>
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		</where>-->
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.ImgsSytDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_imgs_syt
+		(
+			`img`, 
+			`sort`, 
+			`updateDatee`, 
+			`cid`,
+			`pid`
+		)
+		values
+		(
+			#{img}, 
+			#{sort}, 
+			#{updatedatee}, 
+			#{cid},
+			#{pid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.ImgsSytDO">
+		update vrs_imgs_syt 
+		<set>
+			<if test="img != null">`img` = #{img}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="updatedatee != null">`updateDatee` = #{updatedatee}, </if>
+			<if test="cid != null">`cid` = #{cid},</if>
+			<if test="pid != null">`pid` = #{pid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_imgs_syt where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_imgs_syt where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+	<select id="querySyImg" parameterType="Integer" resultType="com.bootdo.vrs.domain.ImgsSytDO">
+
+		SELECT sty.*,p.img as 'pimg',p.id as 'p.id' from vrs_pro p left join vrs_imgs_syt sty
+		on p.id=sty.pid
+		WHERE sty.cid=#{proid}
+
+
+	</select>
+</mapper>

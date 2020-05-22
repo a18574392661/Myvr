@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.ImgClsDao">
+
+	<resultMap id="cls1All" type="com.bootdo.vrs.domain.ImgClsDO" autoMapping="true">
+ 	 <id column="id" property="id"></id>
+		<result property="name" column="name"></result>
+		<result property="pid" column="pid"></result>
+		<result property="status" column="status"></result>
+		<result property="img" column="imgimg"></result>
+		<result property="cid" column="cid"></result>
+		<result property="title" column="title"></result>
+		<result property="createdate" column="createDate"></result>
+		<result property="updatedate" column="updateDate"></result>
+	</resultMap>
+
+
+	<resultMap id="cls1AndTypeAll" type="com.bootdo.vrs.domain.ImgClsDO" extends="cls1All">
+			<association property="titleClsDO"  javaType="com.bootdo.vrs.domain.TitleClsDO">
+			 <result property="name" column="tit.name" ></result>
+			</association>
+
+<!--
+		<association property="imgClsDO"  javaType="com.bootdo.vrs.domain.ImgClsDO">
+			<result property="name" column="p.name"></result>
+		</association>-->
+
+	</resultMap>
+
+	<select id="get" resultType="com.bootdo.vrs.domain.ImgClsDO">
+		select pid,cid,img,`id`,`name`,`title`,`createDate`,`status`,`updateDate` from vrs_img_cls where id = #{value}
+	</select>
+
+	<select id="list" 	resultMap="cls1AndTypeAll">
+
+
+
+		<!--select  titles.name as 'tit.name',cls1.* from vrs_img_cls cls1
+		INNER join vrs_title_cls titles
+		on cls1.cid=titles.id-->
+
+
+		select  titles.name as 'tit.name',cls1.* from vrs_img_cls cls1
+		INNER join vrs_title_cls titles
+		on cls1.cid=titles.id
+		left join vrs_img_cls p
+		on cls1.pid=p.id
+
+
+
+        <where>  
+		  		  <if test="id != null and id != ''"> and cls1.id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and cls1.name like '%${name}%' </if>
+		  		  <if test="title != null and title != ''"> and cls1.title = #{title} </if>
+		  		  <if test="createdate != null and createdate != ''"> and cls1.createDate = #{createdate} </if>
+		  		  <if test="status != null and status != ''"> and cls1.status = #{status} </if>
+		  		  <if test="updatedate != null and updatedate != ''"> and cls1.updateDate = #{updatedate} </if>
+			  		 <if test="pid != null and pid != ''"> and cls1.pid = #{pid} </if>
+		 and cls1.status!=0
+
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by cls1.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_img_cls
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="updatedate != null and updatedate != ''"> and updateDate = #{updatedate} </if>
+			 and status!=0
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.ImgClsDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_img_cls
+		(
+			`name`, 
+			`title`, 
+			`createDate`, 
+			`status`, 
+			`updateDate`,
+			pid,
+			img,
+			cid
+		)
+		values
+		(
+			#{name}, 
+			#{title}, 
+			now(),
+			#{status}, 
+			#{updatedate},
+			#{pid},
+			#{img},
+			#{cid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.ImgClsDO">
+		update vrs_img_cls 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="title != null">`title` = #{title}, </if>
+			<if test="createdate != null">`createDate` = #{createdate}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="updatedate != null">`updateDate` = #{updatedate}, </if>
+			<if test="pid != null">`pid` = #{pid}, </if>
+			<if test="img != null">`img` = #{img}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_img_cls where id = #{value}
+		<!--update vrs_img_cls set status=0 where id=#{value}-->
+	</delete>
+	
+	<delete id="batchRemove">
+		/*delete from vrs_img_cls where id in */
+		update vrs_img_cls set status=0 where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+</mapper>

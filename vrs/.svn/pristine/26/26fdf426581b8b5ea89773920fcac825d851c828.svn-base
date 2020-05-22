@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.UserImgclsDao">
+<resultMap id="UserImgAll" type="com.bootdo.vrs.domain.UserImgclsDO">
+	 	<id column="id" property="id"></id>
+		<result column="cid" property="cid"></result>
+		<result column="name" property="name"></result>
+		<result column="creeateDate" property="creeatedate"></result>
+		<result column="uid" property="uid"></result>
+</resultMap>
+
+
+
+	<resultMap id="UserImgProAll" type="com.bootdo.vrs.domain.UserImgclsDO" extends="UserImgAll">
+
+
+		<association property="proDO"  javaType="com.bootdo.vrs.domain.ProDO"  autoMapping="true">
+			<result column="pro.name" property="name"></result>
+			<result column="pro.code" property="code"></result>
+			<result column="pro.img" property="img"></result>
+			<result column="pro.simg" property="simg"></result>
+			<result column="pro.payState" property="payState"></result>
+		</association>
+
+			<association property="userDO" javaType="com.bootdo.vrs.domain.UserDO" autoMapping="true">
+				<result column="isvip" property="isvip"></result>
+				<result column="uname" property="username"></result>
+			</association>
+
+	</resultMap>
+
+
+	<select id="get"  resultMap="UserImgProAll">
+		select `name`,`id`,`uid`,`cid`,`creeateDate` from vrs_user_imgcls where id = #{value}
+	</select>
+
+
+	<select id="list"  resultMap="UserImgProAll" parameterType="java.util.Map">
+		select pro.payState as 'pro.payState',u.username as 'uname',u.isVip as 'isvip',pro.img as 'pro.img',pro.simg as 'pro.simg',pro.`code` as 'pro.code',pro.`name` as 'pro.name',img.* from vrs_user_imgcls  img
+		left join vrs_pro pro
+		on img.cid=pro.id
+		left join sys_user u
+		on img.uid=u.user_id
+
+        <where>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and img.uid = #{uid} </if>
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <if test="creeatedate != null and creeatedate != ''"> and creeateDate = #{creeatedate} </if>
+					<if test="name != null and name != ''"> or img.name like  '%${name}%'
+					 or pro.code =#{name}
+					</if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by img.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+
+	<select id="getUserImg" resultType="com.bootdo.vrs.domain.ProDO" parameterType="string">
+			select pro.* from vrs_pro pro
+left join vrs_user_imgcls u
+on pro.uid=u.uid
+<where>
+	<if test="uid !=null and uid!='' ">
+			and u.uid=#{uid}
+	</if>
+</where>
+
+
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_user_imgcls
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <if test="creeatedate != null and creeatedate != ''"> and creeateDate = #{creeatedate} </if>
+			 	<if test="name != null and name != ''"> and name = #{name} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.UserImgclsDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_user_imgcls
+		(
+			`uid`, 
+			`cid`, 
+			`creeateDate`,
+			`name`
+		)
+		values
+		(
+			#{uid}, 
+			#{cid}, 
+			#{creeatedate},
+			#{name}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.UserImgclsDO">
+		update vrs_user_imgcls 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="cid != null">`cid` = #{cid}, </if>
+			<if test="creeatedate != null">`creeateDate` = #{creeatedate}</if>
+			<if test="name != null">`name` = #{name}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_user_imgcls where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_user_imgcls where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

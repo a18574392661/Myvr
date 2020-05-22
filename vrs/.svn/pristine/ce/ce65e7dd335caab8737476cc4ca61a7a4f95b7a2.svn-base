@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+	<style>
+		.content-div{float: left; margin-left: 5px;border-right: 1px solid #ECECEC;height: 100px;width: 30%;border-bottom: 1px solid #ECECEC;}
+		.class-imgone{margin-left: 15px;width: 64px;height: 64px;}
+		.class-fontone{margin-left: 30px;}
+		.content-div-two{float: left;border-right: 1px solid #ECECEC;height: 100px;width: 35%;border-bottom: 1px solid #ECECEC;}
+		.class-imgtwo{margin-left: 30px;width: 64px;height: 64px;}
+		.class-fonttwo{margin-left: 45px;}
+		.content-div-three{float: left;height: 100px;width: 32%;border-bottom: 1px solid #ECECEC;}
+		body{bgcolor="#ECECEC"}
+		.div-body{background-color: #fff;width: 100%;height: 1000px;}
+	</style>
+	
+</head>
+<body>
+	<div class="div-body">
+		<div class="content-div" th:each="c : ${list}" th:onclick="'javascript:to_kc('+${c.id}+')'">
+			<img th:src="${c.img}" class="class-imgone" />
+			<font class="class-fontone" th:text="${c.cname}" >语文</font>
+
+		</div>
+
+	</div>
+
+<script>
+	function to_kc(cid) {
+
+		location.href="/h5/curr/to_cnameDays?cid="+cid
+	}
+</script>
+</body>
+</html>

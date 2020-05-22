@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.ProDao">
+
+	<resultMap id="proAll" type="com.bootdo.vrs.domain.ProDO" autoMapping="true">
+		<id 	column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="pricce" property="pricce"></result>
+		<result column="count" property="count"></result>
+		<result column="createDate" property="createdate"></result>
+		<result column="typeid" property="typeid"></result>
+		<result column="status" property="status"></result>
+		<result column="img" property="img"></result>
+		<result column="cid" property="cid"></result>
+		<result column="sort" property="sort"></result>
+		<result column="updateDate" property="updateDate"></result>
+
+		<result column="simg" property="simg"></result>
+		<result column="code" property="code"></result>
+		<result column="payState" property="payState"></result>
+
+	</resultMap>
+
+	<!-- getAll 分类查询 -->
+	<select id="getAll" resultType="com.bootdo.vrs.domain.ProDO">
+		select * from vrs_pro 
+		<where>
+			and status=1
+			<if test="typeid != null and typeid != ''">
+				and typeid = #{typeid}  
+			</if>
+			<if test="cid != null and cid != ''">
+				and cid = #{cid}  
+			</if>
+		</where>
+		order by
+		createDate desc
+	</select>
+
+
+
+	<resultMap id="proAllCls" type="com.bootdo.vrs.domain.ProDO" extends="proAll">
+			<association property="imgCls2DO"  javaType="com.bootdo.vrs.domain.ImgCls2DO" autoMapping="true" >
+				<result column="c.name" property="name"></result>
+			</association>
+
+		<!--字典分类名称-->
+		<association property="titleClsDO"  javaType="com.bootdo.vrs.domain.TitleClsDO" autoMapping="true" >
+			<result column="t.name" property="name"></result>
+		</association>
+
+	</resultMap>
+
+	<select id="get" resultType="com.bootdo.vrs.domain.ProDO">
+		select payState,code,simg,sort,updateDate,typeid,id,`name`,`pricce`,`count`,`createDate`,`status`,`img`,`cid` from vrs_pro where id = #{value}
+	</select>
+
+	<select id="list"  resultMap="proAllCls">
+	<!--	select `id`,`name`,`pricce`,`count`,`createDate`,`status`,`img`,`cid` from vrs_pro-->
+	<!--	select  cls.`name`,pro.`id`,pro.`name`,pro.`pricce`,pro.`count`,pro.`createDate`,pro.`status`,pro.`img`,pro.`cid` from vrs_pro pro
+		INNER JOIN vrs_title_cls cls on pro.typeid=cls.id
+		and   pro.typeid=#{typeid} and status!=0-->
+
+		select  cls2.`name` as 'c.name',cls.`name` as 't.name',pro.payState,pro.simg,pro.code,pro.sort,pro.updateDate,pro.`id`,pro.`name`,pro.`pricce`,pro.`count`,pro.`createDate`,pro.`status`,pro.`img`,pro.`cid` from vrs_pro pro
+		INNER JOIN vrs_title_cls cls on pro.typeid=cls.id
+		INNER JOIN ${tableName}  cls2
+		on pro.cid=cls2.id
+		and   pro.typeid=#{typeid}
+
+		  		  <if test="id != null and id != ''"> and por.id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and pro.name like '%${name}%' </if>
+		  		  <if test="pricce != null and pricce != ''"> and pro.pricce = #{pricce} </if>
+		  		  <if test="count != null and count != ''"> and pro.count = #{count} </if>
+		  		  <if test="createdate != null and createdate != ''"> and por.createDate = #{createdate} </if>
+		  		  <if test="status != null and status != ''"> and pro.status = #{status} </if>
+		  		  <if test="img != null and img != ''"> and pro.img = #{img} </if>
+		  		  <if test="cid != null and cid != ''"> and pro.cid = #{cid} </if>
+
+				<if test="uid != null and uid != ''"> and pro.uid = #{uid} </if>
+
+			<!--一定有值-->
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+				select count(1) from vrs_pro pro
+		INNER JOIN vrs_title_cls cls on pro.typeid=cls.id
+		INNER JOIN ${tableName}  cls2
+		on pro.cid=cls2.id
+		and   pro.typeid=#{typeid}
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and pro.name  like '%${name}%' </if>
+		  		  <if test="pricce != null and pricce != ''"> and pro.pricce = #{pricce} </if>
+		  		  <if test="count != null and count != ''"> and pro.count = #{count} </if>
+		  		  <if test="createdate != null and createdate != ''"> and pro.createDate = #{createdate} </if>
+		  		<!--  <if test="status != null and status != ''"> and pro.status = #{status} </if>-->
+		  		  <if test="img != null and img != ''"> and pro.img = #{img} </if>
+			 <if test="cid != null and cid != ''"> and pro.cid = #{cid} </if>
+			 <if test="status != null and status != ''"> and pro.status = #{status} </if>
+
+			 <if test="payState != null and payState != ''"> and pro.payState = #{payState} </if>
+			 <if test="uid != null and uid != ''"> and pro.uid = #{uid} </if>
+		  		</where>
+
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.ProDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_pro
+		(
+			`name`, 
+			`pricce`, 
+			`count`, 
+			`createDate`, 
+			`status`, 
+			`img`, 
+			`cid`,
+			typeid,
+			sort,
+			updateDate,
+			code,
+			simg,
+			payState,
+			uid
+		)
+		values
+		(
+			#{name}, 
+			#{pricce}, 
+			#{count}, 
+			#{createdate}, 
+			#{status}, 
+			#{img}, 
+			#{cid},
+			#{typeid},
+			#{sort},
+			#{updateDate},
+			#{code},
+			#{simg},
+			#{payState},
+			#{uid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.ProDO">
+		update vrs_pro 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="pricce != null">`pricce` = #{pricce}, </if>
+			<if test="count != null">`count` = #{count}, </if>
+			<if test="createdate != null">`createDate` = #{createdate}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="img != null">`img` = #{img}, </if>
+			`cid` = #{cid}, <!--有可能是null-->
+			<if test="typeid != null">`typeid` = #{typeid},</if>
+		<if test="updateDate != null">`updateDate` = #{updateDate},</if>
+			<if test="sort != null">`sort` = #{sort},</if>
+			<if test="simg != null">`simg` = #{simg},</if>
+			<if test="payState != null">`payState` = #{payState},</if>
+			<if test="code != null">`code` = #{code}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+
+	<delete id="remove">
+		delete from vrs_pro where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_pro where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+	<select id="queryTypeProCls"  parameterType="string" resultType="com.bootdo.vrs.domain.ProDO">
+	select * from (
+		 select por.*,cen.c1id from vrs_pro por
+INNER join vrs_pro_cen_cls cen
+on por.id=cen.proid
+WHERE por.typeid=#{typeid} and por.status=1
+		<if test="cids !=null and cids !='' ">
+			 and cen.c1id in ${cids}
+		</if>
+		ORDER BY por.sort,por.updateDate) c
+		group by c.id
+	</select>
+
+	<select id="quertSearchPro" parameterType="string" resultType="com.bootdo.vrs.domain.ProDO">
+		select * from vrs_pro
+		<where>
+			and status=1
+			<if test="name !='' and name !=null ">
+				and name like '%${name}%' or code = #{name}
+
+			</if>
+
+		</where>
+
+	</select>
+
+	<resultMap id="queryProTitleAll" type="com.bootdo.vrs.domain.ProDO" extends="proAll">
+		<!--  <collection property="" javaType="java.util.Map" autoMapping="true">
+
+
+		  </collection>-->
+	</resultMap>
+
+	<select id="listProTie"  parameterType="java.util.Map" resultType="com.bootdo.vrs.domain.ProDO">
+
+		<!--select * from vrs_pro WHERE cid is  null-->
+		<!--SELECT p.*,cen.c1id,c.`name` from vrs_pro p
+		left join vrs_pro_cen_cls cen
+		on p.id=cen.proid
+		INNER JOIN vrs_img_cls c
+		on cen.c1id=c.id
+		WHERE p.cid is NULL-->
+		
+		select * from (
+			SELECT p.*,cen.c1id,group_concat(c.name) as 'cname' from vrs_pro p
+			left join vrs_pro_cen_cls cen
+			on p.id=cen.proid
+			INNER JOIN vrs_img_cls c
+			on cen.c1id=c.id
+			GROUP BY p.id
+			HAVING p.cid is NULL
+				<if test="id != null and id != ''"> and p.id = #{id} </if>
+				<if test="name != null and name != ''"> and p.name = '%${name}%' </if>
+				<if test="pricce != null and pricce != ''"> and p.pricce = #{pricce} </if>
+				<if test="status != null and status != ''"> and p.status = #{status} </if>
+				<if test="payState != null and payState != ''"> and p.payState = #{payState} </if>
+		<if test="uid != null and uid != ''"> and p.uid = #{uid} </if>
+				<if test="offset != null and limit != null">
+					limit #{offset}, #{limit}
+				</if>
+		) temp
+		<where>
+			<!-- 查询一级分类下面的所有子分类 -->
+			<if test="subids != null and subids.size() > 0"> 
+				and c1id in 
+				<foreach item="id" collection="subids" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
+		</where>
+		
+	</select>
+
+	<select id="countlistProTie"  parameterType="java.util.Map" resultType="int">
+		<!--select count(1) from vrs_pro where cid=null-->
+
+		<!--select count(1) from vrs_pro WHERE cid is  null-->
+		select count(1) from (
+		SELECT p.*,cen.c1id,group_concat(c.name) as 'cname' from vrs_pro p
+		left join vrs_pro_cen_cls cen
+		on p.id=cen.proid
+		INNER JOIN vrs_img_cls c
+		on cen.c1id=c.id
+		GROUP BY p.id
+		HAVING p.cid is NULL
+		<if test="id != null and id != ''"> and p.id = #{id} </if>
+		<if test="name != null and name != ''"> and p.name = '%${name}%' </if>
+		<if test="pricce != null and pricce != ''"> and p.pricce = #{pricce} </if>
+		<if test="uid != null and uid != ''"> and p.uid = #{uid} </if>
+		<if test="status != null and status != ''"> and p.status = #{status} </if>
+		<if test="payState != null and payState != ''"> and p.payState = #{payState} </if>
+
+		)
+		aa
+		<where>
+			<!-- 查询一级分类下面的所有子分类 -->
+			<if test="subids != null and subids.size() > 0"> 
+				and c1id in 
+				<foreach item="id" collection="subids" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+</mapper>

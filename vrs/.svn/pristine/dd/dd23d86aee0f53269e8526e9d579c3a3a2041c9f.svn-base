@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+	.control-label{height: 46px;line-height: 40px;}
+</style>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+
+
+							<!--避免选择二级分类-->
+
+
+
+
+							<div class="form-group" style="text-align: center;width: 100%;">
+								<!--<label class="col-sm-3 layui-form-label">批量上传全景图：</label>-->
+								<div class="col-sm-8" >
+									<input type="hidden" name="slide_show" class="multiple_show_img" value="">
+
+									<input id="simg1" name="simg" class="form-control" type="hidden">
+								<div class="layui-upload" width="100%">
+									<div>
+										<span type="button" class="layui-btn" id="multiple_img_upload" onclick="to_user()">选择子账号
+									</span>
+										全选：
+										<input name="qx" id="qx" onclick="qxs()" type="checkbox">
+									</div>
+
+
+
+
+										<div class="layui-upload-list" id="div-slide_show" style="margin-left: 1rem; border: 1px solid red">
+
+										</div>
+
+								<!--	</blockquote>-->
+								</div>
+								</div>
+
+								</div>
+								<div id="context">
+
+								</div>
+
+
+
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	<script src="/js/layui.js"></script>
+
+	<script>
+		$("#context").hide();
+			//查询当前登录用户的图库
+		var context=$("#div-slide_show");
+		$.get("/vrs/userImgcls/myImg",function (data) {
+			for (let i = 0; i <data.length ; i++) {
+				var del='<input type="checkbox" name="ids" id="c'+i+'"  value="'+data[i].id+'" class=\'form-control\' >';
+				var cons='';
+				if(i>10){
+					cons="<div style='margin-top: 3rem;margin-left: 2rem; ' class='col-md-1'  id='cs"+i+"'>"+del+"<a ondblclick='prodea("+data[i].id+")'><img onclick='xz("+i+")' src='"+data[i].simg+"'  width='80px' height='80px'></a></div>";
+				}else{
+
+					cons="<div class='col-md-1'   style='margin-top: 1rem;margin-left: 2rem;' id='cs"+i+"'>"+del+"<a  ondblclick='prodea("+data[i].id+")'><img  onclick='xz("+i+")' src='"+data[i].simg+"'  width='80px' height='80px'> </a></div>";
+				}
+				context.append(cons)
+			}
+
+		})
+
+		function xz(i) {
+
+			var bol=$("#c"+i).prop("checked");
+			$("#c"+i).prop("checked",!bol);
+		}
+
+		function to_user() {
+
+			//不是会员无法选择
+			$.get("/userallot/user/getYUNUserIsvips",function (data) {
+				if (data.code==0) {
+
+					var len=$("input[name='ids']:checked").length;
+					if (len<=0){
+						layer.msg("请选择要分配的图片!");
+					}
+
+					var str="";
+					$("input[name='ids']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+						str+=this.value;
+						if(len-1>i){
+							str+=",";
+
+						}
+
+					});
+
+					if (str!=""&&str!=null){
+						//去用户页面
+						layer.open({
+							type : 2,
+							title : '选择用户',
+							maxmin : true,
+							shadeClose : false, // 点击遮罩关闭层
+							area : [ '800px', '520px' ],
+							content : "/vrs/userImgcls/to_user?ids=" + str // iframe的url
+						});
+
+					}
+
+				}
+				else{
+
+					layer.msg("非会员用户无法分配图!");
+				}
+
+
+			})
+
+
+
+		}
+
+		function qxs() {
+			var s=$("#qx").prop("checked");
+		//	alert(s);
+
+
+
+			$("input[name='ids']").each(function(i,checkbox){//把所有被选中的复选框的值存入数组
+		checkbox.checked=s;
+			});
+
+		}
+
+		function prodea(id) {
+			var inex=layer.open({
+				type : 2,
+				title : '详细图片',
+				maxmin : true,
+				shadeClose : false, // 点击遮罩关闭层
+				area : [ '800px', '520px' ],
+				content : '/vrs/imgDetalies/to_detail?cid='+id // iframe的url
+			});
+			layer.full(inex);
+		}
+
+</script>
+</body>
+</html>

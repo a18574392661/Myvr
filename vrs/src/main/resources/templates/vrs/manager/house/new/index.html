@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> </title>
+    <link href="/vrH5/newVr/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vrH5/newVr/css/animate.min.css" rel="stylesheet">
+    <link href="/vrH5/newVr/css/style.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="/vrH5/newVr/css/style-lun.css">
+
+
+<script src="/js/jquery.min.js"></script>
+
+</head>
+<body id="page-top">
+
+
+
+
+<div th:replace="vrs/manager/house/new/comms/head::tit"></div>
+
+
+<div th:replace="vrs/manager/house/new/comms/head::lbtAll"></div>
+
+
+
+
+	<!--<div th:replace="vrs/manager/house/new/comms/head::cen"></div>-->
+
+
+
+		<section class="gray-section contact">
+			<div class="container" th:each="menuPro ,sta : ${maps.indexMenu}" th:id="'con'+${sta.index}">
+				<input type="hidden" th:value="2" th:id="'page'+${sta.index}">
+				<a  th:href="${menuPro.hrefs}"><p class="gray-section-title"  th:text="${menuPro.name}">定制设计</p></a>
+					<p>
+						<span th:text="${(menuPro.tname !='' && menuPro.tname !=null)?menuPro.tname:'家居/分格/大小'}"></span>
+						<a class="change" th:onclick="'javascript:huan('+${menuPro.id}+','+${sta.index}+');'">
+
+							<img  src="/vrH5/newVr/img/huan.png" width="15px" />
+							换一批
+						</a>
+					</p>
+
+								<div  class="col-sm-4" style="margin-left: -14px;" th:each="pro : ${menuPro.proDo2}">
+									<div style="width: 355px;height: 200px;">
+										<img   th:onclick="'javascript:to_proDetail('+${pro.id}+');'" th:src="${pro.simg}" src="/vrH5/newVr/img/1.jpg" width="355px" height="200px" >
+										<div class="gray-section-img">
+											<img src="/vrH5/newVr/img/manyou.png" width="15px" />
+											<span style="font-size: 10px;">全屋漫游 ></span>
+										</div>
+									</div>
+									<div class="imgs-title">
+										<div style="width: 100%;">
+											<span class="img-title" th:text="${pro.name}">140方现代四居</span>
+											<p class="img-content">
+												<!--用户头像-->
+												<img src="/vrH5/newVr/img/0.jpg" class="user-img" th:src="${pro.src}"/>
+												<span th:text="${pro.uname}">张三</span>
+												<span class="partition">|</span>
+												<span th:text="${pro.context}" >3室2厅</span>
+
+												<span class="look" th:text="${pro.sum}+'浏览'"></span>
+											</p>
+										</div>
+									</div>
+							</div>
+
+	   	 </div>
+		
+		
+
+	<!--	</div>-->
+		
+		
+		<!-- 底部 -->
+
+		<div th:replace="vrs/manager/house/new/comms/foot::footlog"></div>
+
+
+
+		
+	</section>
+
+
+
+		<script src="/js/jquery.min.js"></script>
+		<!--	<script src="/vrH5/newVr/js/lun/jquery-1.11.3.min.js"></script>-->
+
+
+
+
+
+
+
+		<script src="/vrH5/newVr/js/pace.min.js"></script>
+<script src="/vrH5/newVr/js/bootstrap.min.js"></script>
+<script src="/vrH5/newVr/js/classie.js"></script>
+<script src="/vrH5/newVr/js/cbpAnimatedHeader.js"></script>
+<script src="/vrH5/newVr/js/wow.min.js"></script>
+<script src="/vrH5/newVr/js/inspinia.js"></script>
+<script type="text/javascript" src="/js/appjs/common.js"></script>
+
+</div>
+</div>
+
+<script>
+
+	/*换一批显示另外三个*/
+	function huan(tid,page) {
+		//页码 默认第二页(下一页)
+		var idval=$("#page"+page).val();
+		var con=$("#con"+page);
+		$(con).find("div.col-sm-4").remove();
+
+		$.get("/pro/h5/nextTitPro",{"tid":tid,"page":idval},function (data) {
+				var list=data.list;
+				var nextPage=data.nextPage;
+			$("#page"+page).val(nextPage);
+			//	alert(list.length+"//"+nextPage);
+			for (let i = 0; i <list.length ; i++) {
+					con.append('<div  class="col-sm-4" style="margin-left: -14px;" >\n' +
+							'\t\t\t\t\t\t\t\t\t<div style="width: 355px;height: 200px;">\n' +
+							'\t\t\t\t\t\t\t\t\t\t<img   onclick="to_proDetail('+list[i].id+')" src="'+list[i].simg+'"  width="355px" height="200px" >\n' +
+							'\t\t\t\t\t\t\t\t\t\t<div class="gray-section-img">\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t<img src="/vrH5/newVr/img/manyou.png" width="15px" />\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t<span style="font-size: 10px;">全屋漫游 ></span>\n' +
+							'\t\t\t\t\t\t\t\t\t\t</div>\n' +
+							'\t\t\t\t\t\t\t\t\t</div>\n' +
+							'\t\t\t\t\t\t\t\t\t<div class="imgs-title">\n' +
+							'\t\t\t\t\t\t\t\t\t\t<div style="width: 100%;">\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t<span class="img-title" >'+list[i].name+'</span>\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t<p class="img-content">\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t\t<!--用户头像-->\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t\t<img src="'+list[i].src+'" class="user-img" />\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t\t<span>'+list[i].uname+'</span>\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t\t<span class="partition">|</span>\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t\t<span  >'+list[i].context+'</span>\n' +
+							'\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t\t<span class="look">'+list[i].sum+'浏览</span>\n' +
+							'\t\t\t\t\t\t\t\t\t\t\t</p>\n' +
+							'\t\t\t\t\t\t\t\t\t\t</div>\n' +
+							'\t\t\t\t\t\t\t\t\t</div>\n' +
+							'\t\t\t\t\t\t\t</div>')
+			}
+		})
+
+	}
+
+</script>
+</body>
+
+</html>

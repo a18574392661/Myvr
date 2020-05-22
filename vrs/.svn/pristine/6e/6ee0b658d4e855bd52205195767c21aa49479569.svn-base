@@ -1,0 +1,153 @@
+package com.bootdo.vrs.service.impl;
+
+import com.bootdo.common.utils.StringUtils;
+import com.bootdo.school.util.RedisUtil;
+import com.bootdo.vrs.common.MessageConstantVrs;
+import com.bootdo.vrs.dao.ProDao;
+import com.bootdo.vrs.dao.TitleClsDao;
+import com.bootdo.vrs.domain.TitleClsDO;
+import com.bootdo.vrs.service.TitleClsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+
+import java.util.List;
+import java.util.Map;
+
+
+
+@Service
+public class TitleClsServiceImpl implements TitleClsService {
+	@Autowired
+	private TitleClsDao titleClsDao;
+
+	@Autowired
+	private  ProDao proDao;
+
+	@Autowired
+	private RedisUtil redisUtil;
+	
+	@Override
+	public TitleClsDO get(Integer id){
+		return titleClsDao.get(id);
+	}
+	
+	@Override
+	public List<TitleClsDO> list(Map<String, Object> map){
+		List<TitleClsDO> list=titleClsDao.list(map);
+		for (TitleClsDO titleClsDO : list) {
+			List<TitleClsDO> chilid=titleClsDao.titleAll(titleClsDO.getId()+"");
+			titleClsDO.setChildTiles(chilid);
+		}
+
+		return list;
+	}
+	
+	@Override
+	public int count(Map<String, Object> map){
+		return titleClsDao.count(map);
+	}
+	
+	@Override
+	public int save(TitleClsDO titleCls){
+		titleCls.setStatus(1);
+		//typeid 查询最大id+
+		Integer maxId=titleClsDao.queryTieleMaxTypeId();
+		titleCls.setTypeid(maxId);
+		if (titleCls.getPid()==null){
+			titleCls.setPid(0);
+		}
+		delRedis();
+		return titleClsDao.save(titleCls);
+	}
+	
+	@Override
+	public int update(TitleClsDO titleCls){
+		delRedis();
+		return titleClsDao.update(titleCls);
+	}
+	
+	@Override
+	public int remove(Integer id){
+
+		delRedis();
+		return titleClsDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(Integer[] ids){
+		delRedis();
+
+		return titleClsDao.batchRemove(ids);
+	}
+
+	@Override
+	public List<TitleClsDO> titleAll(String pid) {
+		List<TitleClsDO> list=titleClsDao.titleAll(pid);
+
+
+
+		return list;
+	}
+
+	@Override
+	public TitleClsDO queryTypeId(Integer typeid) {
+		return titleClsDao.queryTypeId(typeid);
+	}
+
+
+	@Override
+	public List<TitleClsDO> queryListType(Map<String, Object> map) {
+		List<TitleClsDO> titleListt=titleClsDao.queryListType(map);
+		List<Integer> listChecked=null;
+		System.out.println("草拟吗"+map.get("id"));
+		//查询选中的
+		if (!("null".equals(map.get("id")+""))&&!StringUtils.isEmpty(String.valueOf(map.containsKey("id")))){
+			listChecked= proDao.queryProAndTitle(Integer.parseInt(map.get("id")+""));
+		}
+
+
+
+
+
+		for (TitleClsDO titleClsDO : titleListt) {
+				if (listChecked!=null&&listChecked.size()>0) {
+					for (Integer tid : listChecked) {
+						if (titleClsDO.getId() == tid) {
+							titleClsDO.setCheckeds(true);
+
+						}
+					}
+				}
+
+		}
+
+
+
+		return titleListt;
+	}
+
+	@Override
+	public List<TitleClsDO> querylist(Map map) {
+		return titleClsDao.querylist(map);
+	}
+
+
+	//同步缓存
+	public  void delRedis(){
+		Jedis jedis=redisUtil.getJedis();
+
+		try {
+			jedis.del(MessageConstantVrs.MENULIST);
+
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		finally {
+			if (jedis!=null)
+				jedis.close();
+		}
+
+	}
+}

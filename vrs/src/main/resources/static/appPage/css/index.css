@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#header{
+    background-color: #0077eb ;
+}
+#area_select select{
+    background: url("") no-repeat center;
+}
+.serchInput{
+    background-color: #fff;
+    border-radius: 25%;
+}

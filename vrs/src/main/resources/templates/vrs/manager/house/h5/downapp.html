@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>下载云世家App</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<style>
+			body{background: #ffffff;}
+			*{margin: 0;padding: 0;}
+			.openjt{
+				width: 3rem;
+				height: 5rem;
+				position: fixed;
+				top: 0;
+				right: 2rem;
+				z-index: 2;
+			}
+			.browser{
+				width: 10rem;
+				height: 6rem;
+				top: 5rem;
+				right: 0;
+				position: fixed;
+				z-index: 2;
+			}
+			.item{padding: 8px 20px;border-radius: 10px;}
+			.icon{height:24px;vertical-align: middle;}
+			.title{display: inline-block;line-height: 32px;vertical-align: middle;font-size: 14px;text-align: center;}
+		</style>
+	</head>
+
+	<body>
+		<div style="width: 100%;">
+			
+			<div style="margin-top: 0px;text-align: center;">
+				<img src="/vrH5/assets/images/logo.jpg" style="width: 40%; height: 40%; display: block;margin: 0 auto; margin-top: 20px;"/>
+			</div>
+			
+			<div style="padding: 30px 0;border-bottom: 1px solid #e5e5e5;">
+				<div class="item" onclick="toDownLoad('ios');" style="width: 29%;margin-left: 5%;text-align: center;float: left;background: #333333;box-shadow: 0 0 10px #333333;">
+					<img src="/vrH5/img/ico1.png" class="icon"/>
+					<span class="title" style="color: #ffffff;"> iphone 下载</span>
+				</div>
+				<!--onclick="toDownLoad('android');"-->
+				<div class="item"  style="width: 29%;margin-right: 5%;text-align: center;float: right;background: #0077EB;box-shadow: 0 0 10px #0077EB;" onclick="toDownLoad('android');">
+					<img src="/vrH5/img/ico2.png" class="icon" />
+					<span class="title" style="color: #ffffff;">Android下载</span>
+				</div>
+			<!--<a target="_blank" href="http://ysjvr.cn/files/qjt/e865c25e92e54a29bc7d8812fb23dd4b.jpg" download="http://ysjvr.cn/files/qjt/e865c25e92e54a29bc7d8812fb23dd4b.jpg">下载</a>-->
+				<div style="clear:both"></div>
+			</div>
+			
+		<!--	<div style="text-align: center;font-weight: bold;font-size: 22px;margin: 20px auto;font-family:楷体" th:text="${ht.name}"></div>
+			<div style="margin: 20px 15px;" id="messageId" th:utext="${ht.content}">-->
+			<div style="text-align: center;font-weight: bold;font-size: 22px;margin: 20px auto;font-family: 黑体;" >云世家说明</div>
+			<div style="margin: 20px 15px;" id="messageId">
+				<font face="微软雅黑">
+					家居配色实际上就是家居的色彩搭配，色彩搭配是家居装饰中的第一要素。当考虑装扮爱家时，一开始就要有一个整体的配色方案，以此确定装修色调和家具以及家饰品的选择。如果能将色彩运用和谐，便可随心所欲地装扮自己的家。这些都离不开基础的配色。 基础的配色是有技巧的，比方说橙色！在印象中，橙色是一种很霸道、很难讨好的颜色，一个不好，就俗落了。所以如果橙色与蓝色系搭配，就可搭配出超现实与复古风味的视觉感受。这两种色系原本属于强烈的对比色系，只要在双方的色度上有些变化，让这两种色彩能给予空间一种新的生命。所以颜色搭配一定要适中。
+					另外家居配色也要遵循以下几点： [1]
+					1、空间配色不得超过三种，其中白色、黑色不算色。
+					2、金色、银色可以与任何颜色相配衬。金色不包括黄色，银色不包括灰白色。
+					3、家用配色在没有设计师指导下最佳配色灰度是：墙浅，地中，家私深。
+					4 、厨房不要使用暖色调，黄色色系除外。
+					5、不要深绿色的地砖。
+					6、不要把不同材质但色系相同的材料放在一起。否则，你会有一半的机会会犯错！
+					7、想制造明快现代的家居品味，那么你就不要选用那些印有大花小花的东西(植物除外)，尽量使用素色的设计。
+					8、天花板的颜色必须浅于或与墙面同色。当墙面的颜色为深色设计时，天花板必须采用浅色。天花板的色系只能是白色或与墙面同色系者。
+					9、空间非封闭惯穿的，必须使用同一配色方案。不同的封闭空间，可以使用不同的配色方案。
+					10、本"定律"如果用于家居以外，90%可能错误！
+					释义：
+					什么叫灰度？很简单，把你要用的颜色用黑白复印机印出来比一下就行了。不管是暖色系还是冷色系，必然有它的灰度的。
+					什么叫素色：就是纯单色。
+					什么叫色系：接近的同色。
+					在一般的室内设计中，都会限制使用颜色在三种之内。当然，这不是一种绝对，由于专业的室内设计师熟悉更深层次的色彩关系，用色可能超出三种，但一般只会超出一种或两种。
+					限制三种颜色的定义：
+					1、同一个相对封闭空间内的三种颜色，包括天花、墙面、地面和家私。客厅和主人房可以有各成系统的的不同配色，但如果客厅和餐厅是连在一起的，视为同一空间。
+					2、白色、黑色、灰色、金色、银色不计算在三种颜色的限制之内。但金色和银色一般不能同时存在，只能在同一空间使用金或银的一种。
+					3、图案类以其呈现色为准。例如一块花布有多种颜色，由于色彩有多种关系，所以专业上以主要呈现色为准。办法是眯着眼睛看，即可看出其主要色调。但如果一个大型的图案的个别色块很大的话，同样得视为一种色。
+					色彩搭配，健康生活：
+					颜色，传递着人们的情感和个性，而不同的色彩又影响我们的行为、感觉、爱好，或者使人们融入一个特定的环境。从时装到生活，色彩带给我们变化。越来越多的油漆品牌在色彩上下功夫，根据颜色的色相和意境，把颜色分类，让你自由调配一个色彩的时尚窝。
+					蓝色，是一种令人产生遐想的色彩。传统的蓝色常常成为现代装饰设计中热带风情的体现。蓝色还具有调节神经、镇静安神的作用。蓝色清新淡雅，与各种水果相配也很养眼，但不宜用在餐厅或是厨房，蓝色的餐桌或餐垫上的食物，总是不如暖色环境看着有食欲；同时不要在餐厅内装白炽灯或蓝色的情调灯，科学实验证明，蓝色灯光会让食物看起来不诱人。但作为卫浴间的装饰却能强化神秘感与隐私感。
+					黑白配的房间很有现代感，是一些时尚人士的首选。但如果在房间内把黑白等比使用就显得太过花哨了，长时间在这种环境里，会使人眼花缭乱，紧张、烦躁，让人无所适从。最好以白色为主，局部以其他色彩为点缀，空间变得明亮舒畅，同时兼具品位与趣味。
+					紫色，给人的感觉似乎是沉静的、脆弱纤细的，总给人无限浪漫的联想，追求时尚的人最推崇紫色。但大面积的紫色会使空间整体色调变深，从而产生压抑感。建议不要放在需要欢快气氛的居室内或孩子的房间中，那样会使得身在其中的人有一种无奈的感觉。如果真的很喜欢，可以在居室的局部作为装饰亮点，比如卧房的一角、卫浴间的帷帘等小地方。
+					粉红色，大量使用容易使人心情烦躁。有的新婚夫妇为了调节新居气氛，喜欢用粉红色制造浪漫。但是，浓重的粉红色会让人精神一直处于亢奋状态，过一段时间后，居住其中的人心情会产生莫名其妙的心火，容易拌嘴，引起烦躁情绪。建议粉红色作为居室内装饰物的点缀出现，或将颜色的浓度稀释，淡淡的粉红色墙壁或壁纸能让房间转为温馨。
+					中国人认为红色是吉祥色，从古至今，新婚的喜房就都是满眼红彤彤的。红色还具有热情、奔放的含义，充满燃烧的力量。但居室内红色过多会让眼睛负担过重，产生头晕目眩的感觉，即使是新婚，也不能长时间让房间处于红色的主调下。建议选择红色在软装饰上使用，比如窗帘、床品，靠包等，而用淡淡的米色或清新的白色搭配，可以使人神清气爽，更能突出红色的喜庆气氛。
+					橘红色又或是橙色，是生气勃勃、充满活力的颜色，是收获的季节里特有的色彩。把它用在卧室则不容易使人安静下来，不利于睡眠。但将橙色用在客厅则会营造欢快的气氛。同时，橙色有诱发食欲的作用，所以也是装点餐厅的理想色彩。将橙色和巧克力色或米黄色搭配在一起也很舒畅，巧妙的色彩组合是追求时尚的年轻人的大胆尝试。
+				</font>
+			</div>
+			<div id="isShowContainer" style="position: fixed;top:0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.5);z-index:1;">
+				<img class="openjt" src="/vrH5/img/openjt.png">
+				<img  class="browser" src="/vrH5/img/openonbrowser.png" />
+			</div>
+		</div>
+		
+		<script src="/js/jquery.min.js?v=2.1.4"></script>
+		<script th:inline="javascript">
+
+		function toDownLoad(client){
+
+			location.href="/vrs/houses/downs";
+
+		//	$.get("/vrs/houses/downs", function(r){
+				///files/qjt/e865c25e92e54a29bc7d8812fb23dd4b.jpg
+				//location.href ="http://ysjvr.cn/files/qjt/e865c25e92e54a29bc7d8812fb23dd4b.jpg"; //r.url;
+
+		//	});
+
+		/*	$.get("/vrs/houses/checkVersion?client="+client, function(r){
+				///files/qjt/e865c25e92e54a29bc7d8812fb23dd4b.jpg
+				//location.href ="http://ysjvr.cn/files/qjt/e865c25e92e54a29bc7d8812fb23dd4b.jpg"; //r.url;
+				location.href="/vrs/houses/downs"
+			});*/
+		}
+		
+		if( !isWeiXin() ){
+			document.getElementById("isShowContainer").style.display = "none"
+		}
+	  
+		//判断是否是微信浏览器的函数
+		function isWeiXin(){
+		  //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+		  var ua = window.navigator.userAgent.toLowerCase();
+		  //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+		    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+		        return true;
+		    }else{
+		    	return false;
+		    }
+		}
+</script>
+		
+		
+		
+	</body>
+
+</html>

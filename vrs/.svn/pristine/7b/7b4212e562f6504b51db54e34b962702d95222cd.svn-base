@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.UserShopDao">
+
+
+	<resultMap id="shopAll" type="com.bootdo.vrs.domain.UserShopDO"  >
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="count" property="count"></result>
+		<result column="createDate" property="createdate"></result>
+		<result column="proid" property="proid"></result>
+		<result column="uid" property="uid"></result>
+	</resultMap>
+
+
+	<resultMap id="shopUserAll" type="com.bootdo.vrs.domain.UserShopDO"  extends="shopAll">
+		<association property="proDO" javaType="com.bootdo.vrs.domain.ProDO" autoMapping="true">
+			<result column="pname" property="name"></result>
+			<result column="pcode" property="code"></result>
+			<result column="psimg" property="simg"></result>
+			<result column="pimg" property="img"></result>
+			<result column="payState" property="payState"></result>
+		</association>
+
+		<association property="userDO" javaType="com.bootdo.vrs.domain.UserDO" autoMapping="true">
+				<result column="isvip" property="isvip"></result>
+		</association>
+
+	</resultMap>
+
+
+	<select id="get" resultMap="shopUserAll">
+		<!--select `id`,`name`,`proid`,`uid`,`count`,`createDate` from vrs_user_shop where id = #{value}-->
+		select u.isVip as 'isvip',p.payState as 'payState',p.`name` as 'pname',p.`code` as 'pcode',p.simg as 'psimg',p.img as 'pimg',s.* from vrs_user_shop s
+		left join vrs_pro p
+		on s.proid=p.id
+		left join sys_user u
+		on s.uid=u.user_id
+		where s.id=#{value}
+	</select>
+
+
+	<select id="list"  resultMap="shopUserAll">
+	<!--	select `id`,`name`,`proid`,`uid`,`count`,`createDate` from vrs_user_shop-->
+		select u.isVip as 'isvip',p.payState as 'payState',p.`name` as 'pname',p.`code` as 'pcode',p.simg as 'psimg',p.img as 'pimg',s.* from vrs_user_shop s
+		left join vrs_pro p
+		on s.proid=p.id
+		left join sys_user u
+		on s.uid=u.user_id
+		<where>
+		  		  <if test="id != null and id != ''"> and s.id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and s.name like '%${name}%' </if>
+		  		  <if test="proid != null and proid != ''"> and proid = #{proid} </if>
+		  		  <if test="uid != null and uid != ''"> and s.uid = #{uid} </if>
+		  		  <if test="count != null and count != ''"> and count = #{count} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by s.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_user_shop
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="proid != null and proid != ''"> and proid = #{proid} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="count != null and count != ''"> and count = #{count} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.UserShopDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_user_shop
+		(
+			`name`, 
+			`proid`, 
+			`uid`, 
+			`count`, 
+			`createDate`
+		)
+		values
+		(
+			#{name}, 
+			#{proid}, 
+			#{uid}, 
+			#{count}, 
+			#{createdate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.UserShopDO">
+		update vrs_user_shop 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="proid != null">`proid` = #{proid}, </if>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="count != null">`count` = #{count}, </if>
+			<if test="createdate != null">`createDate` = #{createdate}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_user_shop where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_user_shop where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

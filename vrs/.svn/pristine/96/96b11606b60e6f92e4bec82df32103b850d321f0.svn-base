@@ -1,0 +1,479 @@
+package com.bootdo.vrs.controller;
+
+import com.bootdo.common.controller.BaseController;
+import com.bootdo.common.utils.PageUtils;
+import com.bootdo.common.utils.Query;
+import com.bootdo.common.utils.R;
+import com.bootdo.vrs.dao.ImgCls4Dao;
+import com.bootdo.vrs.dao.ImgClsDao;
+import com.bootdo.vrs.dao.ProDao;
+import com.bootdo.vrs.dao.UserImgclsDao;
+import com.bootdo.vrs.domain.ImgClsDO;
+import com.bootdo.vrs.domain.ImgclsImgsDO;
+import com.bootdo.vrs.domain.ProDO;
+import com.bootdo.vrs.domain.TitleClsDO;
+import com.bootdo.vrs.service.*;
+import org.apache.commons.collections.map.HashedMap;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 海报价格图
+ * 
+ * @author chglee
+ * @email 1992lcg@163.com
+ * @date 2020-04-13 10:19:40
+ */
+ 
+@Controller
+@RequestMapping("/vrs/pro")
+public class ProController extends BaseController {
+	@Autowired
+	private ProService proService;
+
+	@Autowired
+	private TitleClsService titleClsService;
+	@Autowired
+	private ImgClsService imgClsService;
+	
+	@Autowired
+	private ImgCls3Service imgCls3Service;
+
+	@Autowired
+	private  ProDao proDao;
+
+	@Autowired
+	private ImgCls4Dao imgCls4Dao;
+
+	@Autowired
+	private UserAllotService userAllotService;
+
+	@Autowired
+	private UserImgclsDao userImgclsDao;
+
+	@Autowired
+	private  ImgClsDao imgClsDao;
+
+
+
+	@ResponseBody
+	@RequestMapping("/test11")
+	public String test11(){
+
+
+		return "hellow!";
+	}
+
+
+	@GetMapping()
+	@RequiresPermissions("vrs:pro:pro")
+	String Pro(Model map){
+
+		saveTitName(map);
+
+		map.addAttribute("ulist",userAllotService.list(null));
+		return "vrs/pro/pro";
+	}
+
+	@GetMapping("/pro2")
+	@RequiresPermissions("vrs:pro:pro")
+	String Pro2(Model model){
+		saveTitName(model);
+		model.addAttribute("cls",imgCls4Dao.list(null));
+   model.addAttribute("dx", titleClsService.queryTypeId(1));
+		model.addAttribute("ulist",userAllotService.list(null));
+		return "vrs/pro/pro2";
+	}
+
+
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("vrs:pro:pro")
+	public PageUtils list(@RequestParam Map<String, Object> params,Model model){
+		//查询id为1的typeid的1数据
+		//查询列表数据 //查询了字典表
+		if (params.get("typeid")!=null){
+			String typeid=params.get("typeid")+"";
+			TitleClsDO titleClsDO=titleClsService.queryTypeId(Integer.parseInt(typeid));
+			params.put("typeid",titleClsDO.getId());
+		}
+		
+		if(params.get("cid")!=null && !"".equals(params.get("cid").toString())) {
+			params.put("cid",params.get("cid"));
+		}
+
+		if (getUserId()!=1&&getUserId()!=138){
+			params.put("uid",getUserId());
+		}
+
+        Query query = new Query(params);
+		List<ProDO> proList = proService.list(query);
+
+		int total = proService.count(query);
+		PageUtils pageUtils = new PageUtils(proList, total);
+		return pageUtils;
+	}
+
+	@ResponseBody
+	@GetMapping("/listProTie")
+	@RequiresPermissions("vrs:pro:pro")
+	public PageUtils listProTie(@RequestParam Map<String, Object> params){
+		//查询id为1的typeid的1数据
+		//查询列表数据 //查询了字典表
+
+		if (getUserId()!=1&&getUserId()!=138){
+			params.put("uid",getUserId());
+		}
+
+	 	Query query = new Query(params);
+	 	//二级联动
+		List<ProDO> proList = proService.listProTie(query);
+		//查询出之后查标签
+		int total = proDao.countlistProTie(query);
+		PageUtils pageUtils = new PageUtils(proList, total);
+		return pageUtils;
+	}
+
+
+	//去批量上传的界面
+	@GetMapping("/addUploads")
+	@RequiresPermissions("vrs:pro:add")
+	public String addUploads(ModelMap model){
+		Map<String,Object> map=new HashedMap();
+		map.put("pid","0");
+		map.put("status","1");
+		map.put("isfull","1");
+		map.put("typeid","0");
+		model.addAttribute("typeCls",titleClsService.queryListType(map));
+		//查询二级分类
+		List<ImgClsDO> list=imgClsService.imgClsPars("0");
+		for (int i = 0; i <list.size() ; i++) {
+			List<ImgClsDO> childs=imgClsService.imgClsPars(list.get(i).getId()+"");
+			list.get(i).setChilds(childs);
+		}
+
+		model.addAttribute("list",list);
+
+
+		return  "vrs/pro/proUploads";
+	}
+
+
+	@GetMapping("/add")
+	@RequiresPermissions("vrs:pro:add")
+	String add(Model model
+	){
+		Map<String,Object> map=new HashedMap();
+		map.put("pid","0");
+		map.put("status","1");
+		map.put("isfull","1");
+		map.put("typeid","0");
+	  	model.addAttribute("typeCls",titleClsService.queryListType(map));
+		//查询二级分类
+		List<ImgClsDO> list=imgClsService.imgClsPars("0");
+		for (int i = 0; i <list.size() ; i++) {
+			List<ImgClsDO> childs=imgClsService.imgClsPars(list.get(i).getId()+"");
+			list.get(i).setChilds(childs);
+		}
+
+
+
+		model.addAttribute("list",list);
+		return "vrs/pro/add";
+	}
+
+
+	//查看详细图验证是否被删除
+	@GetMapping("/getProVrity")
+	@ResponseBody
+	boolean getProVrity(Integer cid){
+		ProDO proDO= proService.get(cid);
+		if (proDO==null){
+			return  false;
+		}
+
+		return  true;
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("vrs:pro:edit")
+	String edit(@PathVariable("id") Integer id,Model model){
+		ProDO pro = proService.get(id);
+		model.addAttribute("pro", pro);
+
+		Map<String,Object> map=new HashedMap();
+		map.put("pid",0);
+		map.put("status",1);
+		map.put("isfull",1);
+		map.put("typeid",0);
+
+		map.put("id",id);
+		List<TitleClsDO> titleListt=titleClsService.queryListType(map);
+
+		model.addAttribute("typeCls",titleListt);
+		String[] checks=imgClsService.queryProCeebnCls(id);
+		//查询二级分类
+		List<ImgClsDO> list=imgClsService.imgClsPars("0");
+		for (int i = 0; i <list.size() ; i++) {
+			List<ImgClsDO> childs=imgClsService.imgClsPars(list.get(i).getId()+"");
+			//子id 等于1选中的的
+			for (int j = 0; j <checks.length ; j++) {
+				//等于则选中
+				if (Long.parseLong(checks[j])==list.get(i).getId()){
+					list.get(i).setChecked(true);
+				}
+			}
+			list.get(i).setChilds(childs);
+		}
+		
+		//获取这个id的所属分类
+		List<Map<String, Object>> categoryStr = imgClsService.qeuryCategoryByProId(id);
+		StringBuilder str = new StringBuilder();
+		for (Map<String, Object> map2 : categoryStr) {
+			if(map2 != null && map2.get("cid") != null) {
+				str.append(map2.get("cid").toString()+",");
+			}
+		}
+		if(str.length() > 0) {
+			String substring = str.substring(0, str.length()-1);
+			model.addAttribute("categorystr",substring);
+		}else {
+			model.addAttribute("categorystr","-1");
+		}
+
+		if (checks!=null&&checks.length>0){
+			String pid=checks[0];
+			//懒得优化了 出效果就行了
+			ImgClsDO imgClsDO=imgClsDao.get(Long.parseLong(pid));
+			ImgClsDO imgClsDO2=imgClsDao.get(Long.parseLong(imgClsDO.getPid()+""));
+			model.addAttribute("pid",imgClsDO2.getPid());//一级父id
+		}
+
+
+
+		model.addAttribute("list",list);
+
+	    return "vrs/pro/edit";
+	}
+
+
+	//编辑异步选中
+	@ResponseBody
+	@RequestMapping("/to_editClsChecked")
+	public List<ImgClsDO>  to_editClsChecked(String id){
+  		Map<String,Object> ms=new HashMap<>();
+
+		String[] checks=imgClsService.queryProCeebnCls(Integer.parseInt(id));
+		String pid=checks[0];
+		//懒得优化了 出效果就行了
+		ImgClsDO imgClsDO=imgClsDao.get(Long.parseLong(pid));
+		ImgClsDO imgClsDO2=imgClsDao.get(Long.parseLong(imgClsDO.getPid()+""));
+		//ms.put("pid",imgClsDO2.getPid());//一级父id
+
+		List<ImgClsDO> list=imgClsService.imgClsPars(imgClsDO2.getPid()+"");
+		for (int i = 0; i <list.size() ; i++) {
+			List<ImgClsDO> childs=imgClsService.imgClsPars(list.get(i).getId()+"");
+			//子id 等于1选中的的
+			for (int j = 0; j <checks.length ; j++) {
+				//等于则选中
+				if (Long.parseLong(checks[j])==list.get(i).getId()){
+					list.get(i).setChecked(true);
+				}
+			}
+			list.get(i).setChilds(childs);
+		}
+		//ms.put("list",list);//一级父id
+
+		return  list;
+	}
+
+	/**
+	 * 保存
+	 */
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("vrs:pro:add")
+	public R save(ProDO pro){
+
+
+		try {
+
+			pro.setUid(getUserId());
+
+			if (pro.getImgs()==null||pro.getImgs().length==0) {
+				pro.setCreatedate(new Date());
+				//pro.setStatus(1);
+				proService.save(pro);
+			}
+			else {
+				//批量上传
+				proService.saves(pro);
+			}
+			return R.ok();
+		}
+		catch (RuntimeException e){
+
+			e.printStackTrace();
+			return R.error(e.getMessage());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return R.error();
+		}
+
+
+	}
+
+
+	/**
+	 * 修改
+	 */
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("vrs:pro:edit")
+	public R update( ProDO pro){
+		try {
+			proService.update(pro);
+			return R.ok();
+		}
+		catch (RuntimeException e){
+			e.printStackTrace();
+			return R.error(e.getMessage());
+
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return R.error(e.getMessage());
+		}
+
+
+	}
+	
+	/**
+	 * 删除
+	 */
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("vrs:pro:remove")
+	public R remove( Integer id){
+		if(proService.remove(id)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("vrs:pro:batchRemove")
+	public R remove(@RequestParam("ids[]") Integer[] ids){
+		proService.batchRemove(ids);
+		return R.ok();
+	}
+
+
+	/*
+	批量修改 是否 免费 问展示
+	 */
+
+
+	@PostMapping( "/updateStatus")
+	@ResponseBody
+	public R updateStatus(@RequestParam("ids[]") Integer[] ids,String status,String paystatus){
+			StringBuilder tj=new StringBuilder();
+		try {
+			if (ids==null||ids.length<=0)
+			{
+				return  R.error();
+			}
+			tj.append("(");
+			for (int i = 0; i <ids.length ; i++) {
+				tj.append(ids[i]);
+				if (ids.length-1>i){
+					tj.append(",");
+				}
+
+			}
+			tj.append(")");
+
+
+			proDao.updateStatus(tj.toString(),status,paystatus);
+			return R.ok();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+
+		return R.error();
+	}
+
+
+	@RequestMapping("/queryCls")
+	@ResponseBody
+	@RequiresPermissions("vrs:pro:pro")
+	public  List<ImgClsDO> queryCls(@RequestParam(defaultValue ="0") String pid){
+		return imgClsService.imgClsPars(pid);
+	}
+
+
+	//查询4个名字
+	public void saveTitName(Model map){
+		List<TitleClsDO > titleClsDOS=titleClsService.titleAll("0");
+		for (TitleClsDO titleClsDO : titleClsDOS) {
+				if (titleClsDO.getId()==2){
+				map.addAttribute("dinzhi",titleClsDO.getName());
+				}else if (titleClsDO.getId()==3){
+					map.addAttribute("huanse",titleClsDO.getName());
+				}
+				else if (titleClsDO.getId()==4){
+					map.addAttribute("mengchuang",titleClsDO.getName());
+				}
+				else if (titleClsDO.getId()==5){
+					map.addAttribute("huace",titleClsDO.getName());
+				}
+		}
+
+
+	}
+
+
+	@ResponseBody
+	@RequestMapping("/test")
+	public  Map test(@RequestParam Map<String, Object> params){
+
+		System.out.println("---------------------------------------");
+		System.out.println(params.get("name")+"名字");
+		System.out.println(params.get("age")+"年龄");
+		return  params;
+	}
+
+
+	@ResponseBody
+	@RequestMapping("/searchUserPro")
+	public  R searchUserPro(Integer id){
+		ProDO proDO=proDao.get(id);
+		if (proDO!=null){
+			int c=userImgclsDao.searchUserPro(proDO);
+			if (c>0){
+			return 	R.error();
+
+			}
+		}
+
+
+		return R.ok();
+	}
+
+
+}

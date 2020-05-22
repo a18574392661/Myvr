@@ -1,0 +1,198 @@
+package com.bootdo.vrs.domain;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+
+
+/**
+ * 
+ * 
+ * @author chglee
+ * @email 1992lcg@163.com
+ * @date 2020-04-26 10:25:17
+ */
+public class PayorderLogDO implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	//
+	private Long id;
+	//订单编号
+	private String ordercode;
+	//支付金额
+	private BigDecimal price;
+	//核销后的金额
+	private BigDecimal hprice;
+	//支付状态
+	private Integer status;
+	//支付备注
+	private String remark;
+	//1 微信 2支付宝
+	private Integer paysta;
+	//用户id
+	private Long uid;
+	//创建订单时间
+	private Date createdate;
+	//回调码
+	private String tradeno;
+	private  UserDO userDO;
+
+	private Integer month;
+
+	private  Date payDate;
+	private  String context;
+
+	public Date getPayDate() {
+		return payDate;
+	}
+
+	public void setPayDate(Date payDate) {
+		this.payDate = payDate;
+	}
+
+	public String getContext() {
+		return context;
+	}
+
+	public void setContext(String context) {
+		this.context = context;
+	}
+
+	public Integer getMonth() {
+		return month;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+
+	public UserDO getUserDO() {
+		return userDO;
+	}
+
+	public void setUserDO(UserDO userDO) {
+		this.userDO = userDO;
+	}
+
+	/**
+	 * 设置：
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	/**
+	 * 获取：
+	 */
+	public Long getId() {
+		return id;
+	}
+	/**
+	 * 设置：订单编号
+	 */
+	public void setOrdercode(String ordercode) {
+		this.ordercode = ordercode;
+	}
+	/**
+	 * 获取：订单编号
+	 */
+	public String getOrdercode() {
+		return ordercode;
+	}
+	/**
+	 * 设置：支付金额
+	 */
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+	/**
+	 * 获取：支付金额
+	 */
+	public BigDecimal getPrice() {
+		return price;
+	}
+	/**
+	 * 设置：核销后的金额
+	 */
+	public void setHprice(BigDecimal hprice) {
+		this.hprice = hprice;
+	}
+	/**
+	 * 获取：核销后的金额
+	 */
+	public BigDecimal getHprice() {
+		return hprice;
+	}
+	/**
+	 * 设置：支付状态
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	/**
+	 * 获取：支付状态
+	 */
+	public Integer getStatus() {
+		return status;
+	}
+	/**
+	 * 设置：支付备注
+	 */
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	/**
+	 * 获取：支付备注
+	 */
+	public String getRemark() {
+		return remark;
+	}
+	/**
+	 * 设置：1 微信 2支付宝
+	 */
+	public void setPaysta(Integer paysta) {
+		this.paysta = paysta;
+	}
+	/**
+	 * 获取：1 微信 2支付宝
+	 */
+	public Integer getPaysta() {
+		return paysta;
+	}
+	/**
+	 * 设置：用户id
+	 */
+	public void setUid(Long uid) {
+		this.uid = uid;
+	}
+	/**
+	 * 获取：用户id
+	 */
+	public Long getUid() {
+		return uid;
+	}
+	/**
+	 * 设置：创建订单时间
+	 */
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
+	}
+	/**
+	 * 获取：创建订单时间
+	 */
+	public Date getCreatedate() {
+		return createdate;
+	}
+	/**
+	 * 设置：回调码
+	 */
+	public void setTradeno(String tradeno) {
+		this.tradeno = tradeno;
+	}
+	/**
+	 * 获取：回调码
+	 */
+	public String getTradeno() {
+		return tradeno;
+	}
+}

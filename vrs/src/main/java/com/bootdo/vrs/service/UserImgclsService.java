@@ -1,0 +1,39 @@
+package com.bootdo.vrs.service;
+
+import com.bootdo.vrs.domain.UserImgclsDO;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 加入我的云视
+ * 
+ * @author chglee
+ * @email 1992lcg@163.com
+ * @date 2020-04-22 19:52:53
+ */
+public interface UserImgclsService {
+	
+	UserImgclsDO get(Integer id);
+	
+	List<UserImgclsDO> list(Map<String, Object> map);
+	
+	int count(Map<String, Object> map);
+	
+	int save(UserImgclsDO userImgcls);
+	
+	int update(UserImgclsDO userImgcls);
+	
+	int remove(Integer id);
+	
+	int batchRemove(Integer[] ids);
+
+	public  void saveMyPro(UserImgclsDO userImgclsDO);
+
+	PageInfo<UserImgclsDO> to_userPro(Integer uid,Integer page,Map<String,Object> map);
+
+	int batchUser(String ids,String proid);
+
+	int fpuserImg(String[] imgs,String[] uids);
+}

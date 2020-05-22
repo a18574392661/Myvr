@@ -1,0 +1,141 @@
+<!DOCTYPE html><!-- Required tag for HTML5 -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keyword" content="">
+    <meta name="description" content="">
+    
+    <link href="../css/component.css" rel="stylesheet">
+   
+    <title>会员页面</title>
+	
+	<link rel="stylesheet" href="../css/component.css">
+	<style>
+		.fangan{background-color: #71706E; width: 300px; border-radius: 40px; background-color: #EA9C49; height: 50px; border: 0px;}
+		.fangan1{background-color: #71706E; width: 300px; height: 1px; position: absolute; margin-top: -40px; margin-left: -200px;}
+		.fangan2{background-color: #71706E; width: 300px; height: 1px; position: absolute;margin-top: 30px; margin-left: 197px;}
+		.common{background-color: #71706E; border: 0px; width: 150px; height: 50px;}
+		.yunshi{background-color: #EF9A49; border: 0px; width: 150px; height: 50px;}
+		.buyvip_button{border-radius: 20px; border: 0px; background-color: #FCF5EB;color: #DDC79A; width: 100%; height: 30px;}
+		.font_shu{writing-mode: tb-rl;}
+		.rosered{color: #C82A7A;}
+		.buy{border-radius: 20px; border: 0px; background-color: #DBA857;color: #FFFFFF; width: 100%; height: 30px;}
+		
+	</style>
+</head>
+<body bgcolor="#383431">
+    <div class="theme-layout text-center">
+		<div style="text-align: center; margin-top: 50px;">
+			<h1 style="color: #EF9A4A;">云世家会员·方案无限选</h1>
+		</div>
+		<div style="text-align: center;">
+			<font style="color: #FFFFFF; font-size: 10px;">根据近一年用户数据，开通会员预计能为你<b>每月节省￥6080.0?</b></font>
+		</div>
+		<div style="text-align: center; margin-top: 30px;">
+			<a href="javascript:;" class="md-trigger btn btn-primary btn-sm" data-modal="modal-1"><input type="button" value="立即开通会员" class="fangan" /></a>
+		</div>
+		<div class="md-modal md-effect-1" id="modal-1">
+		  <div class="md-content">
+			  <img src="../img/guanbi.png" style="margin-left: 95%;" class="md-close btn-sm btn-primary"/>
+		    <font size="5" color="#000000" style="margin-left: 10px;"><b>购买会员</b></font>&nbsp;
+			<font size="3">账号：xxxxxx</font>
+		    <div class="text-center">
+		      <input type="button" class="buyvip_button" value="开通会员尊享放肆渲染,每月为您节省3070元" />
+		    </div>
+			<div style="margin-top: -20px;">
+				<font class="font_shu rosered">新用户</font>
+				<font class="rosered" size="5"><b>1280元/</b></font>
+				<font class="rosered">年开通后台</font>
+				<font size="3">次年:</font>
+				<font size="5"><b>480</b></font>
+				<font size="3">元/服务费(无年费)</font>
+			</div>
+			<div style="margin-top: -30px;">
+				<font size="2">二维码扫码邀请开通会员,立即返现,一级返现</font>
+				<font size="3" class="rosered">380</font>
+				<font size="3">元</font>
+				<font size="2">二级返现</font>
+				<font size="3" class="rosered">120</font>
+				<font size="3">元</font>
+			</div>
+			<font size="5" style="margin-left: 10px;"><b>购买企业账号</b></font>
+			<div>
+				<font>1主账号后台</font>
+				<font size="5"><b>20</b></font>
+				<font>个子账号</font>
+				<font class="rosered" size="5" style="margin-left: 20px;"><b>12800</b></font>
+			</div>
+			<div style="margin-top: -30px;">
+				<font size="2">二维码扫码邀请开通会员,立即返现,一级返现</font>
+				<font size="3" class="rosered">1280</font>
+				<font size="3">元</font>
+				<font size="2">二级返现</font>
+				<font size="3" class="rosered">400</font>
+				<font size="3">元</font>
+			</div>
+			<div>
+				<font size="2">应付金额：</font>
+				<font class="rosered" style="position: absolute; right: 10px;" size="5"><b>￥9.9</b></font>
+			</div>
+			<div>
+				<font size="2">支付方式：</font>
+				<img src="../img/zhifubao.png" style="position: absolute; right: 40px;" />
+				<img src="../img/wechat.png" style="position: absolute; right: 10px;" />
+			</div>
+			<div class="text-center">
+				<input type="button" class="buy" value="立即支付" />
+			</div>
+			
+			<div class="text-center">
+				点击"立即支付"表示您已同意<a href="#">《会员协议》</a>
+			</div>
+		  </div>
+		</div>
+		<!-- <div style="text-align: center; margin-top: 30px; margin-left: 31%;">
+			<div style="float: left; background-color: #71706E; width: 150px; height: 150px; margin-left: 15px; margin-top: 15px;"><font style="position: absolute; margin-top: 50px; margin-left: -15px;">无需<br>设计</font></div>
+			<div style="float: left; background-color: #71706E; width: 150px; height: 150px; margin-left: 15px; margin-top: 15px;"><font style="position: absolute; margin-top: 50px; margin-left: -25px;">多媒体<br>展示</font></div>
+			<div style="float: left; background-color: #71706E; width: 150px; height: 150px; margin-left: 15px; margin-top: 0px;"><font style="position: absolute; margin-top: 50px; margin-left: -15px;">销售<br>成单</font></div>
+			<div style="float: left; background-color: #71706E; width: 150px; height: 150px; margin-left: 15px; margin-top: 15px;"><font style="position: absolute; margin-top: 50px; margin-left: -15px;">海量<br>更新</font></div>
+		</div> -->
+		<div style="text-align: center; margin-top: 30px; margin-left: 32%;">
+			<div style="float: left; background-color: #71706E; width: 150px; height: 150px; margin-left: 15px; margin-top: 15px;"><font style="position: absolute; margin-top: 50px; margin-left: -15px;">无需<br>设计</font></div>
+			<div style="float: left; background-color: #71706E; width: 150px; height: 150px; margin-left: 15px; margin-top: 15px;"><font style="position: absolute; margin-top: 50px; margin-left: -25px;">多媒体<br>展示</font></div>
+			<div style="float: left; background-color: #71706E; width: 150px; height: 150px; margin-left: 15px; margin-top: 0px;"><font style="position: absolute; margin-top: 50px; margin-left: -15px;">销售<br>成单</font></div>
+			<div style="float: left; background-color: #71706E; width: 150px; height: 150px; margin-left: 15px; margin-top: 15px;"><font style="position: absolute; margin-top: 50px; margin-left: -15px;">海量<br>更新</font></div>
+		</div>
+		
+		<div style="clear: both;">
+			
+		</div>
+		
+		<div style="text-align: center; margin-top: 100px;">
+			
+			<h1 style="color: #EF9A4A;">
+				<!-- <hr size="1" noshade style="border:1px solid #EF9A4A; width: 500px; position: absolute; left:-380px; right:0; margin: auto; margin-top: 20px;">
+				 -->
+				 <hr style="border:1px solid #EF9A4A;" />
+				 <div style="background-color: #383431; position: absolute; margin-top: -40px; left:50%; margin-left:-110px; ;">
+					<font style="font-weight: 100;">/ /</font>
+					<font style="margin-top: -100px;">/特权对比/</font>
+					<font style="font-weight: 100;">/ /</font>
+				</div>
+				<div style=" border-left:1px solid #EF9A4A; width: 1px; height: 400px;position: absolute; margin-top: 19px; left: 50%;">
+					<input type="button" value="云视用户" class="yunshi" style="margin-left: 25px;" />
+				</div>
+			</h1>
+		</div>
+		
+		<div style="text-align: center; margin-left: -200px; margin-top: 35px;">
+			<input type="button" value="普通用户" class="common" />
+		</div>
+		
+	</div>
+		
+    <script src="../js/classie.js"></script>
+    <script src="../js/modalEffects.js"></script>
+	
+	
+</body>
+</html>

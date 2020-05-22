@@ -1,0 +1,37 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : d
+Source Server Version : 50725
+Source Host           : localhost:3306
+Source Database       : company
+
+Target Server Type    : MYSQL
+Target Server Version : 50725
+File Encoding         : 65001
+
+Date: 2020-04-11 23:07:41
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for vrs_img_cls
+-- ----------------------------
+DROP TABLE IF EXISTS `vrs_img_cls`;
+CREATE TABLE `vrs_img_cls` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL COMMENT '0 删除 1正常',
+  `updateDate` datetime DEFAULT NULL,
+  `img` varchar(255) DEFAULT NULL COMMENT '首页图',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of vrs_img_cls
+-- ----------------------------
+INSERT INTO `vrs_img_cls` VALUES ('1', '名称分类标题', '标题', '2020-04-07 21:22:07', '1', '2020-04-11 23:00:44', '/files/business/ef2d2a550bf240b99efbbd1d72504878.jpg');
+INSERT INTO `vrs_img_cls` VALUES ('2', 'dasdas啊啊', null, '2020-04-11 22:34:13', '1', null, '/files/cls/7d2b0b7006b2433fa360dbf8993a3947.jpg');

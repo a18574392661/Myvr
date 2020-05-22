@@ -1,0 +1,694 @@
+<!DOCTYPE html><!-- Required tag for HTML5 -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keyword" content="">
+    <meta name="description" content="">
+    <!-- Incluse css and media files -->
+    <link rel="icon" type="image/png" href="#"><!-- favicon icon -->
+    <!--<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/bootstrap.min.css">-->
+
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/vrH5/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/color.css">
+	<link rel="stylesheet" href="/vrH5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vrH5/css/owl.carousel.css">
+	<link rel="stylesheet" href="/vrH5/css/owl.transitions.css">
+	<link rel="stylesheet" href="/vrH5/css/animate.css">
+	<link rel="stylesheet" href="/vrH5/css/venobox.css">
+	<link rel="stylesheet" href="/vrH5/css/meanmenu.min.css">
+	<link rel="stylesheet" href="/vrH5/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/vrH5/css/themify-icons.css">
+	<link rel="stylesheet" href="/vrH5/style.css">
+	<link rel="stylesheet" href="/vrH5/css/component.css">
+	
+    <!-- REVOLUTION STYLE SHEETS -->
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/settings.css" />
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/navigation.css" />
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <title>会员页面</title>
+	<style>
+		.index-button{background-color:#DA231B ; color: #FFFFFF; border: none; border-radius: 5px; }
+		.head{margin-top: 5px;}
+		.dom{border: 0; appearance:none;}
+		.index-button2{background-color:#E47919 ; color: #FFFFFF; border: none; border-radius: 5px; width: 80px}
+		.help{margin-left: 10px;}
+		.roundness{border:solid 1px #000000; width: 18px;height: 18px;background-color:yellow;border-radius: 50%;-moz-border-radius: 50%;-webkit-border-radius: 50%;}
+		.index{margin-left: 5%;}
+		.index-first{margin-left: 5%;}
+		.index-first-button{background-color:#FFFFFF ; color: #2281B8; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.index-two-button{background-color:#2281B8 ; color: #FFFFFF; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.sousou{background-color: #2281B8; border:1px solid #2281B8;}
+		.fangan{background-color: #71706E; width: 300px; height: 1px; position: absolute; margin-top: 30px; margin-left: -305px;}
+		.fangan2{background-color: #71706E; width: 300px; height: 1px; position: absolute;margin-top: 30px; margin-left: 197px;}
+		 #page li{
+		    cursor:pointer;
+		}
+		.text-with-hr {
+		    text-align: center;
+		    position: relative;
+		    z-index: 2;
+		}
+		.text-with-hr:before {
+		    position: absolute;
+		    content: '';
+		    top: 20px;
+		    left: 0px;
+		    width: 100%;
+		    border-bottom: 1px solid #EF9A4A;
+		    z-index: -1;
+		}
+		.text-with-hr span {
+		    display: inline-block;
+		    background: white;
+			margin-top: -8px;
+		    padding: 10px;
+		}
+		.col-xs-5ths, .col-sm-5ths, .col-md-5ths, .col-lg-5ths {
+			position: relative;
+			min-height: 1px;
+			padding-right: 10px;
+			padding-left: 10px;
+		}
+		.top{
+			margin-top: 15px;
+			margin-left: 20px;
+			float: left;
+			position: relative;
+		}
+		@media ( min-width : 768px) {
+			.col-sm-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 992px) {
+			.col-md-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 1200px) {
+			.col-lg-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		.fangan{}
+		.fangan1{background-color: #71706E; width: 300px; height: 1px; position: absolute; margin-top: -40px; margin-left: -200px;}
+		.fangan2{background-color: #71706E; width: 300px; height: 1px; position: absolute;margin-top: 30px; margin-left: 197px;}
+		.common{background-color: #71706E; border: 0px; width: 150px; height: 50px;}
+		.yunshi{background-color: #EF9A49; border: 0px; width: 150px; height: 50px;}
+		.buyvip_button{border-radius: 20px; border: 0px; background-color: #FCF5EB;color: #DDC79A; width: 100%; height: 30px;}
+		.font_shu{writing-mode: tb-rl;}
+		.rosered{color: #C82A7A;}
+		.buy{border-radius: 20px; border: 0px; background-color: #DBA857;color: #FFFFFF; width: 30%; height: 40px;}
+		.black_overlay{
+		    display: none; 
+		    position: absolute; 
+		    top: 0%; 
+		    left: 0%; 
+		    width: 100%; 
+		    height: 100%; 
+		    background-color: black; 
+		    z-index:1001; 
+		    -moz-opacity: 0.8; 
+		    opacity:.80; 
+		    filter: alpha(opacity=88); 
+		} 
+		.white_content { 
+		    display: none; 
+		    position: absolute; 
+		    top: 25%;
+		    left: 5%; 
+		    width: 90%; 
+		    height: 50%; 
+		    padding: 20px; 
+			border-radius: 20px;
+		    background-color: white; 
+		    z-index:1002; 
+		    overflow: auto; 
+		} 
+		
+	</style>
+</head>
+<body>
+
+
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+
+<div class="theme-layout">
+	<script type="text/javascript" src="/vrH5/assets/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+<!--	<div th:replace="vrs/manager/house/html/zc::zc"></div>-->
+	<div class="se-pre-con"></div><!-- loader -->
+	<header role="banner">
+		<div class="topbar" style="background-color: #FFFFFF;">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+
+					</div>
+					<div class="col-md-6 text-right">
+					<!--	<a href="#" class="log-in-out get-login-register"><input type="button" value="立即体验" class="index-button head" /></a>-->
+						<ul class="socials">
+							<!--<li>
+								<select class="dom" style="cursor: pointer;" >
+									<option>客户端下载</option>
+								</select>&nbsp;&nbsp;&nbsp;&nbsp;
+							</li>-->
+
+
+							<li>
+								<div class="head help" style="cursor: pointer;" onclick="down()">客户端下载</div>
+							</li>
+
+							<script>
+								function down() {
+									location.href="/vrs/houses/to_down";
+								}
+							</script>
+
+							<li>
+								<div class="head" style="color: #C5C5C5;">|<div>
+							</li>
+							<li>
+								<div class="head" style="cursor: pointer;">帮助中心</div>
+							</li>
+							<li>
+								<div class="head" style="color: #C5C5C5;">|<div>
+							</li>
+						<!--	<li>
+								<div class="head help" style="cursor: pointer;">消息<font color="red">3</font></div>
+							</li>-->
+							<li>
+								<div class="head help roundness" ></div>
+							</li>
+							<li>
+
+								<div class="head" th:if="${username !=null}"><span  th:text="${username}"></span></div>
+								<div class="head" th:if="${username == null}"
+								><a href="/vrs/user/login">登陆</a>
+									<a  href="" data-toggle="modal" data-target="#showModel"   style="margin-left: 1rem;">注册</a>
+								</div>
+
+							<li th:if="${username !=null}">
+								<div class="head" ><a href="/vrs/user/to_outLogin">退出</a></div>
+							</li>
+
+
+							</li>
+							<li>
+								<div class="head" onclick="to_vip()" style="cursor: pointer;">开通会员</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!--页面抽取-->
+		<div class="modal" id="showModel"   role="dialog" aria-labelledby="myModalLabel"  >
+			<div class="modal-dialog">
+				<div class="modal-content" style="width: 50rem;height: 50rem;"  >
+					<div class="modal-header">
+
+						<h4 class="modal-title" id="myModalLabel" style="text-align: center;">
+							注册用户
+						</h4>
+					</div>
+					<div class="modal-body">
+
+						<form role="form">
+							<div class="form-group">
+								<label>手机号码:</label>
+								<input type="number" class="form-control" maxlength="11" minlength="11" id="mobile" placeholder="手机号码" required>
+							</div>
+							<div class="form-group" style="margin-top: 3rem;">
+								<label >密码:</label>
+								<input type="password" class="form-control" id="password" placeholder="请输入密码" required>
+							</div>
+							<div class="form-group" style="margin-top: 3rem;">
+								<label >确认密码:</label>
+								<input type="password" class="form-control" id="password2" placeholder="请确认密码" required>
+							</div>
+
+							<!--<div class="form-group" style="margin-top: 3rem;">
+                                <label for="rid">级别:</label>
+                                <select class="form-control" id="rsh5" required="">
+                                    <option value="">请选择</option>
+
+                                </select>
+
+
+                            </div>-->
+
+
+
+						</form>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+						</button>
+						<input type="button" class="btn btn-primary" onclick="register()" value="确定注册"/>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+
+		<div class="full-menu-height"></div>
+		<div class="main-bar stick">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-3">
+						<div class="logo">
+							<a href="#">
+								<img src="/vrH5/assets/images/logo.jpg" alt="">
+							</a>
+						</div>
+					</div>
+					<div style="width: 800px;">
+						<nav role="navigation">
+							<div class="main-menu">
+								<ul>
+									<li class="menu-item-has-children" th:each="mu : ${maps.menu}"><a  title="" th:href="${mu.hrefs}" th:text="${mu.name}">首页</a>
+										<!--<ul th:if="${mu.childTiles != null }">
+											<li th:each="chi : ${mu.childTiles}"><a th:text="${chi.name}" th:href="${chi.hrefs}"></a></li>
+										</ul>-->
+									</li>
+								</ul>
+
+							</div>
+						</nav>
+					</div>
+
+					<div class="col-md-3 text-right" style="position: absolute; right: 10px;">
+						<a href="/vrs/user/to_userPro" class="butn1 butn-light">我的方案</a>
+						<a target="_blank" href="/index" class="butn1 butn-light" >上架云视</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="responsive-header">
+		<div class="topbar" style="background-color: #FFFFFF;">
+			<div class="container">
+				<div class="row align-items-center">
+
+					<div class="col-md-6 text-right">
+						<!--<a href="#" class="log-in-out get-login-register">
+							<input type="button" value="立即体验" class="index-button" style="position: absolute; font-size: 2px; margin-top: 0px;" />
+						</a>-->
+						<ul class="socials">
+						<!--	<li>
+								<select class="dom" style="font-size: 12px;">
+									<option>客户端下载</option>
+								</select>
+							</li>-->
+
+							<li>
+								<div class="head" style="color: #C5C5C5;font-size: 5px;">|<div>
+							</li>
+							<li>
+								<div class="head" style="font-size: 5px;cursor:pointer;">帮助中心</div>
+							</li>
+							<li>
+								<div class="head" style="color: #C5C5C5;font-size: 5px;">|<div>
+							</li>
+							<!-- <li>
+                                <div class="head roundness"></div>
+                            </li> -->
+							<li>
+								<div class="head" style="font-size: 5px;">会员名</div>
+							</li>
+							<li>
+								<div class="head" style="font-size: 5px;">开通会员</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="full-menu-height"></div>
+		<div class="main-bar stick">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-4 col-sm-3">
+						<div class="logo">
+							<a href="#">
+								<img src="/vrH5/assets/images/logo.png" alt="">
+							</a>
+						</div>
+					</div>
+					<div class="col-8 col-sm-9 text-right">
+
+                            <span class="resp-btn">
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="menu-wraper">
+		<div class="side-menu">
+                <span class="close-menu">
+                    <i class="fa fa-times"></i>
+                </span>
+			<ul>
+				<li class="menu-item-has-children"><a href="index.html" title="">首页</a></li>
+				<li class="menu-item-has-children"><a href="html/custom_design.html" title="">定制设计</a></li>
+				<li class="menu-item-has-children"><a href="#" title="">换色系统</a></li>
+				<li class="menu-item-has-children"><a href="#" title="">门窗设计</a></li>
+				<li class="menu-item-has-children"><a href="#" title="">高端画册</a> </li>
+				<li class="menu-item-has-children"><a href="#" title="">品牌墙</a> </li>
+				<li><a href="contact.html" title="">全景导购</a>
+					<ul>
+						<li><a href="blog.html" title="">软件介绍</a></li>
+						<li><a href="blog-detail.html" title="">门店导购</a></li>
+					</ul>
+				</li>
+			</ul>
+			<div class="side-meta topbar style2">
+				<ul class="topbar-contact">
+
+				</ul>
+				<ul class="socials">
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+        <main role="main">
+
+			<div class="container" style="background-color: #383431;">
+				<div style="text-align: center; margin-top: 50px;">
+					<h4 style="color: #EF9A4A;">云世家会员·方案无限选</h4>
+				</div>
+				<div style="text-align: center;">
+					<font style="color: #FFFFFF; font-size: 10px;">根据近一年用户数据，开通会员预计能为你<b>每月节省￥6080.0?</b></font>
+				</div>
+				<div href = "javascript:void(0)" style="text-align: center; margin-top: 30px;">
+					<a  onclick="document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"  class="md-trigger btn btn-primary btn-sm" style="background-color: #EA9C49; width: 300px; height: 50px; border-radius: 40px; border: 0px;">
+						<font style="position: absolute; margin-top: 15px; margin-left: -40px;color:#ffffff;">立即开通会员</font>
+					</a>
+				</div>
+				
+				<div id="light" class="white_content md-effect-1">
+					 <img src="/vrH5/img/guanbi.png" style="right: 25px; position: absolute;"  onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"/>
+					 <div style="height: 30px;"></div>
+					 <font size="5" color="#000000" style="margin-left: 10px;"><b>购买会员</b></font>&nbsp;
+					 <font size="4" th:if="${username != null}">账号：<span th:value="${username}"></span></font>
+					<font size="4" th:if="${username == null}"><a href="/vrs/user/login">请登录</a></font>
+					 <div class="text-center">
+					   <input type="button" class="buyvip_button" value="开通会员尊享放肆渲染,每月为您节省3070元" th:value="${vip.title}"/>
+					 </div>
+					 <div style="margin-top: 0px;" th:utext="${vip.texts}">
+					 	<font class="font_shu rosered">新用户</font>
+					 	<font class="rosered" size="5"><b>1280元/</b></font>
+					 	<font class="rosered">年开通后台</font>
+					 	<font size="4">次年:</font>
+					 	<font size="5"><b>480</b></font>
+					 	<font size="4">元/服务费(无年费)</font>
+						<div>
+						<font size="1">二维码扫码邀请开通会员，立即返现，一级返现</font>
+						<font size="4" class="rosered">380</font>
+						<font size="4">元，</font>
+						<font size="1">二级返现</font>
+						<font size="4" class="rosered">120</font>
+						<font size="4">元</font>
+						</div>
+						<div style="padding-top: 20px;padding-bottom: 10px; margin-left: -10px;">
+							<font size="5" style="margin-left: 10px;" color="#000000"><b>购买企业账号</b></font>
+						</div>
+						<font>1主账号后台</font>
+						<font size="5"><b>20</b></font>
+						<font>个子账号</font>
+						<font class="rosered" size="5" style="margin-left: 20px;"><b>12800</b></font>
+						<div style="margin-left: 8px;">
+							<font size="1">二维码扫码邀请开通会员,立即返现,一级返现</font>
+							<font size="3" class="rosered">1280</font>
+							<font size="4">元</font>
+							<font size="1">二级返现</font>
+							<font size="3" class="rosered">400</font>
+							<font size="3">元</font>
+						</div>
+						<div style="margin-top: 10px;">
+							<font size="2">应付金额：</font>
+							<font class="rosered" style="position: absolute; right: 10px;" size="5"><b th:text="${vip.price}">￥9.9</b></font>
+						</div>
+						<hr />
+						<div>
+							<font size="2">支付方式：</font>
+							<img src="/vrH5/img/zhifubao.png" style="position: absolute; right: 40px;" />
+							<img src="/vrH5/img/wechat.png" style="position: absolute; right: 10px;" />
+						</div>
+						<div class="text-center" style="margin-top: 30px;">
+							<input type="button" class="buy" value="立即支付" />
+						</div>
+						
+						<div class="text-center">
+							点击"立即支付"表示您已同意<a href="#">《会员协议》</a>
+						</div>
+					 </div>
+
+					<input type="hidden" id="ck" >
+					<input type="hidden" id="sta"  value="2">
+					 <div style="margin: 0px auto;width: 255px;margin-top:290px;height: 100px">
+
+					 	<div>
+					 		<font size="2" style="float: left">开通时长：</font>
+							<font class="rosered" style="right: 10px;" size="2"><b >
+								<div class='vip' style="margin-right: 15px;float: left;" th:each="prs,sta : ${vipPrices}">
+									<input type="radio" name="viptime" th:id="'c'+${sta.index}" th:value="${prs.id}"/><span th:text="${prs.remker}" th:onclick="'javascript:to_price('+${sta.index}+');'"></span>
+
+									<input type="hidden" th:value="${prs.price}" th:id="'p'+${sta.index}">
+
+								</div>
+							</b></font>
+					 	</div>
+
+
+					 	<div style="margin-top: 10px;clear:both">
+							<font size="2">应付金额：</font>
+							<font class="rosered" style="right: 10px;" size="5" ><b id="ps">￥0</b></font>
+						</div>
+					 	<div>
+							<font size="2">支付方式：</font>
+							<input type="radio" name="sta" value="2" checked onclick="sta(this)"/>
+							<img src="/vrH5/img/zhifubao.png" style="right: 40px;" />
+
+							<input type="radio" name="sta" value="1" onclick="sta(this)"/>
+							<img src="/vrH5/img/wechat.png" style="right: 10px;" />
+						</div>
+					 </div>
+					 <div  style="margin: 0px auto;text-align: center;margin-top: 2rem;">
+							<input type="button" class="buy" value="立即支付"  onclick="to_pay()"/>
+					</div>
+				</div> 
+				
+				
+				
+				
+				
+				
+				<div id="fade" class="black_overlay"></div> 
+				<div class="md-modal md-effect-1 " id="light">
+				  <div class="md-content" style="background-color: #EEEEEE;">
+					  <img src="/vrH5/img/guanbi.png" style="margin-left: 90%;" class="md-close btn-sm"/>
+				    <font size="5" color="#000000" style="margin-left: 10px;"><b>购买会员</b></font>&nbsp;
+					<font size="3">账号:<span th:text="${username}"></span></font>
+				    <div class="text-center">
+				      <input type="button" class="buyvip_button" value="开通会员尊享放肆渲染,每月为您节省3070元" th:value="${vip.title}"/>
+				    </div>
+					<div style="margin-top: -20px;" th:utext="${vip.texts}">
+						<font class="font_shu rosered">新用户</font>
+						<font class="rosered" size="5"><b>1280元/</b></font>
+						<font class="rosered">年开通后台</font>
+						<font size="3">次年:</font>
+						<font size="5"><b>480</b></font>
+						<font size="3">元/服务费(无年费)</font>
+					</div>
+
+
+
+					<div>
+						<font size="2">应付金额：</font>
+						<font class="rosered" style="position: absolute; right: 10px;" size="5"><b th:text="${vip.price}">￥9.9</b></font>
+					</div>
+					<div>
+						<font size="2">支付方式：</font>
+						<img src="/vrH5/img/zhifubao.png" style="position: absolute; right: 40px;" />
+						<img src="/vrH5/img/wechat.png" style="position: absolute; right: 10px;" />
+					</div>
+					<div class="text-center">
+						<input type="button" class="buy" value="立即支付" />
+					</div>
+					
+					<div class="text-center">
+						点击"立即支付"表示您已同意<a href="#">《会员协议》</a>
+					</div>
+				  </div>
+				</div>
+				<div style="text-align: center; margin-top: 30px; margin-left: 20%;width: 100%;height: 100%;overflow: hidden; ">
+					<div class="top" onmouseenter="animatefn(this,1)" id="top1"  onmouseout="animatefn(this,0)" style="cursor:pointer;color: #000000;padding-top:50px; background-color: #71706E; width: 150px; height: 150px;">无需<br>设计</font></div>
+					<div class="top" onmouseenter="animatefn(this,1)" id="top2" onmouseout="animatefn(this,0)" style="cursor:pointer;color: #000000;padding-top:50px; background-color: #71706E; width: 150px; height: 150px;">多媒体<br>展示</font></div>
+					<div class="top" onmouseenter="animatefn(this,1)" id="top3" onmouseout="animatefn(this,0)" style="cursor:pointer;color: #000000;padding-top:50px; background-color: #71706E; width: 150px; height: 150px;">销售<br>成单</font></div>
+					<div class="top" onmouseenter="animatefn(this,1)" id="top4" onmouseout="animatefn(this,0)" style="cursor:pointer;color: #000000;padding-top:50px;background-color: #71706E; width: 150px; height: 150px;">海量<br>更新</div>
+				</div>
+				<div style="clear: both;">
+					
+				</div>
+				<div style="text-align: center; margin-top: 100px;">
+					
+					<h4 style="color: #EF9A4A;">
+						<!-- <hr size="1" noshade style="border:1px solid #EF9A4A; width: 500px; position: absolute; left:-380px; right:0; margin: auto; margin-top: 20px;">
+						 -->
+						 <hr style="border:1px solid #EF9A4A;" />
+						 <div style="background-color: #383431; position: absolute; margin-top: -30px; left:52%; margin-left:-110px; ;">
+							<font style="font-weight: 100;">/ /</font>
+							<font style="margin-top: -100px;">/特权对比/</font>
+							<font style="font-weight: 100;">/ /</font>
+						</div>
+						<div style=" cursor: pointer;border-left:1px solid #EF9A4A; width: 1px; height: 400px;position: absolute; margin-top: 19px; left: 50%;">
+							<!-- <input type="button" value="云视用户" class="yunshi" style="margin-left: 25px; color: #000000;" /> -->
+							<input type="button" onmouseenter="msgfnr(this,1)" onmouseout="msgfnr(this,0)"  value="云视用户1" class="common" style="margin-left: 25px; color: #000000; font-size: 10px;" />
+						</div>
+					</h4>
+				</div>
+				
+				<div style="text-align: center; margin-left: -200px; margin-top: 31px;cursor: pointer;">
+					<input type="button" onmouseenter="msgfnl(this,1)" onmouseout="msgfnl(this,0)" value="普通用户" class="common" style="color: #000000;font-size: 10px;font-weight: bold;" />
+				</div>
+				<div style="height:400px;">
+					<div id="msgl" style="width: 50%;margin-top:5px;float: left;display: none;color: white;" th:text="${vip.usertext}">
+							fdsfsafsdfsda
+					</div>
+					<div id="msgr" style="width: 50%;margin-top:5px;float: right;display: none;padding-left: 20px;color: white;" th:text="${vip.vipusertext}">
+						sfsafsdafsdafsdf
+					</div>
+				</div>
+			</div>
+		</main>
+            
+       
+
+   <script type="text/javascript" src="/vrH5/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/vrH5/assets/js/script.js"></script>
+	<script src="/vrH5/js/classie.js"></script>
+    <script src="/vrH5/js/modalEffects.js"></script>
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+
+
+	<script>
+		function to_price(index) {
+			var b=$("#c"+index).prop("checked")
+			$("#c"+index).prop("checked",!b);
+			var ps=$("#p"+index).val();
+
+			$("#ck").val($("#c"+index).val());
+
+			$("#ps").html("￥"+ps);
+
+		}
+
+		function sta(dx) {
+
+			$("#sta").val(dx.value);
+		}
+
+	</script>
+   
+   <script type="text/javascript">
+   
+	   	function animatefn(obj,flag){
+	   		if(flag == 1){
+	   			var id = $(obj).attr("id");
+	   			$("#"+id).animate({"top":"-15px"},250);
+	   		}else{
+	   			var id = $(obj).attr("id");
+	   			$("#"+id).animate({"top":"0px"},250);
+	   		}
+	   	}
+	   	
+	   	
+	   	function msgfnl(obj,flag){
+		   	  if(flag == 1){
+		   		$("#msgl").fadeIn(800);
+		   	  }else{
+		   		$("#msgl").fadeOut(800);
+		   	  }
+	   	}
+	   	
+		function msgfnr(obj,flag){
+		   	  if(flag == 1){
+		   		$("#msgr").fadeIn(800);
+		   	  }else{
+		   		$("#msgr").fadeOut(800);
+		   	  }
+	   	}
+
+
+	   	function to_pay() {
+           //获得选中的开通时长的id
+
+
+			$.get("/vrs/user/getUserVerity",function (data) {
+				if(data.success==false){
+					alert(data.message);
+					location.href="/vrs/user/login?url=/pro/h5/queryVip";
+					return;
+				}
+				else{
+
+					var cks=$("#ck").val();
+					var sta=$("#sta").val();
+					if(cks===''){
+						alert("请选择开通时长!");
+						return;
+					}
+					location.href="/vrs/pay/to_pay?vid="+cks+"&sta="+sta;
+
+
+				}
+
+			})
+
+
+		}
+	</script>
+   
+   
+    
+</body>
+</html>

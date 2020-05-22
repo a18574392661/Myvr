@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="footlog">
+
+
+<div class="di">
+    <div class="col-sm-5" style="margin-left: 520px;">
+
+        <img  width="100" height="50"  class="shangbiao" th:each="log : ${maps.logList}"   th:src="${log.src}"   th:onclick="'javascript:member_edit(\''+${log.getHref()}+'\')'" >
+
+    </div>
+
+</div>
+
+</html>

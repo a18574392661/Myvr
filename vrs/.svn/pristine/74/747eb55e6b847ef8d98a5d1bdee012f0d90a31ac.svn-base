@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> </title>
+    <link href="/vrH5/newVr/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vrH5/newVr/css/animate.min.css" rel="stylesheet">
+    <link href="/vrH5/newVr/css/style.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="/vrH5/newVr/css/style-lun.css">
+
+
+<script src="/js/jquery.min.js"></script>
+
+</head>
+<body id="page-top">
+
+
+
+
+<div th:replace="vrs/manager/house/new/comms/head::tit"></div>
+
+
+<div id="inSlider" class="carousel slide carousel-fade" data-ride="carousel" th:fragment="lbtAll">
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <div class="container">
+                <div class="row">
+                    <div class="text-center" style="margin-top: 100px;">
+                        <h1 class="head-title">云视网·导购神器</h1>
+                        <input id="name" class="sou" placeholder="按照风格、户型、空间、编号搜索" />
+                        <img src="/vrH5/newVr/img/sousuo.jpg" class="suo" onclick="search()" />
+                        <h5 class="h5">热门搜索：画册设计  画册定制  极简设计  阳光房</h5>
+
+                        <div class="poster-main B_Demo" style="margin-top:50px">
+                            <div class="poster-btn poster-prev-btn"></div>
+                            <ul class="poster-list" id="cnm">
+
+
+                            </ul>
+                            <div class="poster-btn poster-next-btn"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!--<div th:replace="vrs/manager/house/new/comms/head::lbtAll"></div>-->
+
+
+
+	<!--	<div th:replace="vrs/manager/house/new/comms/head::cen"></div>
+-->
+
+    <section class="gray-section contact">
+      <!--  <div class="container" th:each="menuPro : ${maps.indexMenu}">-->
+        <div class="container">
+
+
+            <div class="col-sm-4" style="margin-left: -14px;"    >
+                <div style="width: 355px;height: 200px;">
+                    <img   src="/vrH5/newVr/img/1.jpg" width="355px" height="200px" >
+                    <div class="gray-section-img">
+                        <img src="/vrH5/newVr/img/manyou.png" width="15px" />
+                        <span style="font-size: 10px;">全屋漫游 ></span>
+                    </div>
+                </div>
+                <div class="imgs-title" >
+                    <div style="width: 100%;">
+                        <span class="img-title" >140方现代四居</span>
+                        <p class="img-content">
+                            <!--用户头像-->
+                            <img src="/vrH5/newVr/img/0.jpg" class="user-img" />
+                            <span>张三</span>
+                            <span class="partition">|</span>
+                            <span >3室2厅</span>
+                            <span class="look">4.1万浏览</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-sm-4" style="margin-left: -14px;"    >
+                <div style="width: 355px;height: 200px;">
+                    <img   src="/vrH5/newVr/img/1.jpg" width="355px" height="200px" >
+                    <div class="gray-section-img">
+                        <img src="/vrH5/newVr/img/manyou.png" width="15px" />
+                        <span style="font-size: 10px;">全屋漫游 ></span>
+                    </div>
+                </div>
+                <div class="imgs-title" >
+                    <div style="width: 100%;">
+                        <span class="img-title" >140方现代四居</span>
+                        <p class="img-content">
+                            <!--用户头像-->
+                            <img src="/vrH5/newVr/img/0.jpg" class="user-img" />
+                            <span>张三</span>
+                            <span class="partition">|</span>
+                            <span >3室2厅</span>
+                            <span class="look">4.1万浏览</span>
+                        </p>
+                    </div>
+                </div>
+
+
+
+
+
+
+        </div>
+
+
+      <!--  </div>-->
+
+
+		<section class="gray-section contact">
+
+
+
+
+		<div th:replace="vrs/manager/house/new/comms/foot::footlog"></div>
+
+
+
+		
+	</section>
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+<script src="/vrH5/newVr/js/pace.min.js"></script>
+<script src="/vrH5/newVr/js/bootstrap.min.js"></script>
+<script src="/vrH5/newVr/js/classie.js"></script>
+<script src="/vrH5/newVr/js/cbpAnimatedHeader.js"></script>
+<script src="/vrH5/newVr/js/wow.min.js"></script>
+<script src="/vrH5/newVr/js/inspinia.js"></script>
+<script type="text/javascript" src="/js/appjs/common.js"></script>
+
+<script src="/vrH5/newVr/js/lun/PicCarousel.js" ></script>
+
+
+
+<script>
+    $.ajax
+    ({
+        cache: false,
+        async: false,   //
+        dataType: 'json', type: 'post',
+        url: "/pro/h5/queryLbAll",
+        success: function (data)
+        {
+
+
+
+            for (var j = 0; j <data.length ; j++) {
+                $("#cnm").append('<li  height="290px" class="poster-item"><img  src="'+data[j].img+'" onclick="lbDetail('+data[j].id+')" width="100%" height="290px"></li>')
+
+            }
+        }
+
+
+
+    });
+
+</script>
+<script>
+
+
+    $(".A_Demo").PicCarousel("init");
+    $(".B_Demo").PicCarousel({
+        "width":1000,
+        "height":300,
+        "posterWidth":520,
+        "posterHeight":300,
+        "scale":0.9,
+        "speed":500,
+        "autoPlay":true,
+        "delay":1000,
+        "verticalAlign":"top"
+    });
+
+
+    function search(){
+        var name=$("#name").val();
+        location.href='/pro/h5/quertSearchPro?name='+name;
+
+    }
+
+
+</script>
+
+</body>
+
+</html>

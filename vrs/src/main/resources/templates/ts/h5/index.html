@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/tsH5/css/base.css">
+    <link rel="stylesheet" href="/tsH5/css/app.css" type="text/css" />
+
+	<link href="/tsH5/css/app.css" rel="stylesheet"/>
+	<link href="/tsH5/css/mui.min.css" rel="stylesheet"/>
+	<link href="/tsH5/css/mui.picker.css" rel="stylesheet" />
+	<link href="/tsH5/css/mui.poppicker.css" rel="stylesheet" />
+	<link href="/tsH5/css/mui.dtpicker.css" rel="stylesheet" />
+	<style>
+		.jiangtai{
+			width: 100px; height: 50px;border:1px solid black;background-color: #0099FF;border-radius: 0 0 100px 100px;margin: 0 auto;
+		}
+		.mui-dtpicker-title h5{padding:8px 0!important;}
+	</style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="box">
+            <div class="header">
+				<input type="hidden"  id="dq" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd')}" >
+				<p>姓名：<span th:text="${name}"></span></p>
+				<p>手机：<span th:text="${tel}"></span></p>
+				<p  id='demo4' data-options='{"type":"date"}' class="btn mui-btn mui-btn-block" style="width: 2rem;line-height: 18px;">
+					选择日期:
+					<span id="rq" style="margin-left:0.5rem;"></span>
+					<input type="hidden" id="days">
+				</p>
+
+				<p ONCLICK="curriculum($('#days').val())">
+					课程:<span id="ck" style="margin-left: 2rem;"></span>
+					<input type="hidden" id="ckhid" >
+					<input type="hidden" id="zw" >
+					<input type="hidden" id="name" >
+					<input type="hidden" id="tel" >
+				</p>
+
+				<!--<div id='result' class="ui-alert"></div>-->
+            </div>
+            <div class="tittle">
+                <div class="t_1">
+                    <span class="sp1"></span>
+                    <p>可选</p>
+                </div>
+                <div class="t_2">
+                    <span class="sp2"></span>
+                    <p>已选</p>
+                </div>
+                <div class="t_3">
+                    <span class="sp3"></span>
+                    <p>已无</p>
+                </div>
+				<div class="t_4">
+				    <span class="sp4"></span>
+				    <p>讲台</p>
+				</div>
+            </div>
+			<div class="jiangtai"></div>
+            <div class="content">
+                <div class="nine" pai="1">
+					<ul>
+						<li typ="2" onclick="check(this)">
+							<div class="name">
+								张三
+							</div>
+						</li>
+						<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>
+                    </ul>
+                </div>
+
+				
+				<div class="nine" pai="6">
+					<ul>
+						<li typ="0" onclick="check(this)"></li>
+						<!--<li typ="0" onclick="check(this)"></li>
+						<li typ="0" onclick="check(this)"></li>-->
+					</ul>
+				</div>
+            </div>
+            <div class="zw">
+                <p>已选座位<span>最多只能选择1个座位</span></p>
+                <div class="yxz"></div>
+            </div>
+        </div>
+		<div class="queding">确认选座</div>
+    </div>
+
+	<script type="text/javascript" src="/tsH5/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/tsH5/js/common.js"></script>
+	<script src="/tsH5/js/mui.min.js"></script>
+
+	<script src="/tsH5/js/mui.picker.js"></script>
+	<script src="/tsH5/js/mui.poppicker.js"></script>
+	<script src="/tsH5/js/mui.dtpicker.js"></script>
+
+
+	<script>
+		(function($) {
+			$.init();
+			var result = $('#rq')[0];
+			var days = $('#days')[0];
+			var btns = $('.btn');
+			btns.each(function(i, btn) {
+				btn.addEventListener('tap', function() {
+					var _self = this;
+					if(_self.picker) {
+						_self.picker.show(function (rs) {
+							//alert(rs.text)
+							//result.innerText = '选择结果: ' + rs.text;
+							_self.picker.dispose();
+							_self.picker = null;
+						});
+					} else {
+						var optionsJson = this.getAttribute('data-options') || '{}';
+						var options = JSON.parse(optionsJson);
+						var id = this.getAttribute('id');
+						// alert(id);
+						//alert(options)
+
+
+						//$.
+						//_self.picker = new $.dataTable(options);
+						_self.picker = new $.DtPicker(options);
+						_self.picker.show(function(rs) {
+
+							//$("#rq").innerText(rs.text);
+							/*
+                             * rs.value 拼合后的 value
+                             * rs.text 拼合后的 text
+                             * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+                             * rs.m 月，用法同年
+                             * rs.d 日，用法同年
+                             * rs.h 时，用法同年
+                             * rs.i 分（minutes 的第二个字母），用法同年
+                             */
+							result.innerText =  rs.text;
+							days.value=rs.text;
+						curriculum(days.value);
+							//发送ajax请求
+							/*
+                             * 返回 false 可以阻止选择框的关闭
+                             * return false;
+                             */
+							/*
+                             * 释放组件资源，释放后将将不能再操作组件
+                             * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+                             * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+                             * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+                             */
+							_self.picker.dispose();
+							_self.picker = null;
+						});
+					}
+
+				}, false);
+			});
+		})(mui);
+
+	</script>
+
+    <script type="text/javascript">
+        /*判断页面加载完成*/
+        window.onload = function () {
+            if (document.readyState == "complete") {
+                $("body").show();
+            }
+        };
+        var arr = []; /*已选座位数组*/
+        /*
+         遍历检查状态
+         typ ==0 可选
+         typ ==1 已选
+         typ ==2 已售
+         */
+        $(".content li").each(function (index) {
+            var typ = $(".content li").eq(index).attr("typ");
+            if (typ == "2") {
+                $(".content li").eq(index).css("background", "#0099ff");
+            }
+        });
+        /*已选座位添加*/
+        function add(msg) {
+            var html = '<div>' + msg + '</div>';
+            return html;
+        }
+        /*选座点击事件*/
+        function check(dom) {
+            var txt = $(dom).parent().parent().attr('pai') + "排" + parseInt($(dom).index() + 1) + "座";
+            var typ = $(dom).attr("typ");
+            if (typ == "0") {
+                if (arr.length > 0) {
+                    alert("一人只能选择1个座位！");
+                    return false;
+                } else {
+                    $(dom).css("background", "#fe3f55");
+                    $(dom).attr("typ", "1");
+                    arr.push(txt);
+                    $(".yxz").append(add(txt));
+                }
+            } else if (typ == "2") {
+                alert("该座位已预定！");
+                return false;
+            } else {
+                $(dom).css("background", "#f5f5f5");
+                $(dom).attr("typ", "0");
+                var index = arr.indexOf(txt);
+                arr.removeByValue(txt);/*指定数组删除*/
+                $(".yxz div").eq(index).remove();
+                $(".num").text(arr.length);/*已选电影票数量*/
+            }
+        }
+        /*数组删除指定元素方法*/
+        Array.prototype.removeByValue = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) {
+                    this.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    </script>
+
+
+	<script type="text/javascript">
+		function day(){
+
+
+
+		}
+		
+		function curriculum(ds){
+			alert(ds);
+			var userPicker = new mui.PopPicker({buttons: ["取消","确定"]});
+			//userPicker.setData(messageData);
+
+			$.get("/h5/curr/searchKc",{"dates":ds},function (data) {
+				userPicker.setData(data);
+			})
+
+			userPicker.show(function(items) {
+				var cid=items[0].value;
+				var cname=items[0].text;
+				$("#ckhid").val(cid);
+				$("#ck").html(cname);
+
+				// alert($("#ckhid").val());
+				//这个选择了 查询对应1的座位1
+				$.post("/h5/curr/showzw",{"cid":items[0].value},function (data) {
+					for (let i = 0; i <data.length ; i++) {
+
+					}
+				})
+
+				//smsMessage(mobile,setData[0].text);
+				//返回 false 可以阻止选择框的关闭
+				return true;
+			});
+		}
+	</script>
+</body>
+</html>

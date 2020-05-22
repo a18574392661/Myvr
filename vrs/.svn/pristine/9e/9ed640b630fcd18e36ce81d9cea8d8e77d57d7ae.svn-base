@@ -1,0 +1,298 @@
+<!DOCTYPE html><!-- Required tag for HTML5 -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keyword" content="">
+    <meta name="description" content="">
+
+    <link rel="icon" type="image/png" href="#"><!-- favicon icon -->
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/vrH5/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/color.css">
+    <link rel="stylesheet" href="/vrH5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/vrH5/css/owl.carousel.css">
+    <link rel="stylesheet" href="/vrH5/css/owl.transitions.css">
+    <link rel="stylesheet" href="/vrH5/css/animate.css">
+    <link rel="stylesheet" href="/vrH5/css/venobox.css">
+    <link rel="stylesheet" href="/vrH5/css/meanmenu.min.css">
+    <link rel="stylesheet" href="/vrH5/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vrH5/css/themify-icons.css">
+    <link rel="stylesheet" href="/vrH5/style.css">
+    <!-- REVOLUTION STYLE SHEETS -->
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/settings.css" />
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/navigation.css" />
+    <link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+
+    <title>换色系统</title>
+	<style>
+		.index-button{background-color:#DA231B ; color: #FFFFFF; border: none; border-radius: 5px; }
+		.head{margin-top: 5px;}
+		.dom{border: 0; appearance:none;}
+		.index-button2{background-color:#E47919 ; color: #FFFFFF; border: none; border-radius: 5px; width: 80px}
+		.help{margin-left: 10px;}
+		.roundness{border:solid 1px #000000; width: 18px;height: 18px;background-color:yellow;border-radius: 50%;-moz-border-radius: 50%;-webkit-border-radius: 50%;}
+		.index{margin-left: 5%;}
+		.index-first{margin-left: 5%;}
+		.index-first-button{background-color:#FFFFFF ; color: #2281B8; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.index-two-button{background-color:#2281B8 ; color: #FFFFFF; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.sousou{background-color: #2281B8; border:1px solid #2281B8;}
+		.fangan{background-color: #71706E; width: 300px; height: 1px; position: absolute; margin-top: 30px; margin-left: -305px;}
+		.fangan2{background-color: #71706E; width: 300px; height: 1px; position: absolute;margin-top: 30px; margin-left: 197px;}
+		 #page li{
+		    cursor:pointer;
+		}
+		.text-with-hr {
+		    text-align: center;
+		    position: relative;
+		    z-index: 2;
+		}
+		.text-with-hr:before {
+		    position: absolute;
+		    content: '';
+		    top: 20px;
+		    left: 0px;
+		    width: 100%;
+		    border-bottom: 1px solid #EF9A4A;
+		    z-index: -1;
+		}
+		.text-with-hr span {
+		    display: inline-block;
+		    background: white;
+			margin-top: -8px;
+		    padding: 10px;
+		}
+		.col-xs-5ths, .col-sm-5ths, .col-md-5ths, .col-lg-5ths {
+			position: relative;
+			min-height: 1px;
+			padding-right: 10px;
+			padding-left: 10px;
+		}
+		
+		@media ( min-width : 768px) {
+			.col-sm-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 992px) {
+			.col-md-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 1200px) {
+			.col-lg-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		.wd{border: 0px; border-radius: 20px; background-color: #037BBF; color: white; width: 150px; margin-left: 120px;}
+		.lookmore{width: 100%; border: 0px; background-color: #EBF1FD; color: #718BE2;}
+		.biaotibutton{margin-left: 55px; margin-top: 10px; width: 100px; color: #FFFFFF; height: 40px; border-radius: 20px; border: solid 1px #FFFFFF; background-color: #495678;}
+		
+	</style>
+</head>
+<body>
+
+
+
+<div class="theme-layout">
+    <div class="se-pre-con"></div><!-- loader -->
+    <header role="banner">
+        <div class="topbar" style="background-color: #FFFFFF;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="#" class="log-in-out get-login-register"><input type="button" value="立即体验" class="index-button head" /></a>
+                        <ul class="socials">
+                            <li>
+                                <select class="dom">
+                                    <option>客户端下载</option>
+                                </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                            </li>
+                            <li>
+                                <div class="head" style="color: #C5C5C5;">|<div>
+                            </li>
+                            <li>
+                                <div class="head">帮助中心</div>
+                            </li>
+                            <li>
+                                <div class="head" style="color: #C5C5C5;">|<div>
+                            </li>
+                           <!-- <li>
+                                <div class="head help">消息<font color="red">3</font></div>
+                            </li>-->
+                            <li>
+                                <div class="head help roundness"></div>
+                            </li>
+                            <li>
+                                <div class="head" th:if="${username !=null}"><span  th:text="${username}"></span></div>
+                                <div class="head" th:if="${username ==null}"><a href="/vrs/user/login">登陆</a>
+                                    <a href="/vrs/user/to_regite">登陆</a>
+
+                                </div>
+                            </li>
+                            <li>
+                                <div class="head" onclick="to_vip()">开通会员</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="full-menu-height"></div>
+        <div class="main-bar stick">
+            <div class="container">
+                <div class="row align-items-center">
+
+                    <div class="col-md-3">
+                        <div class="logo">
+                            <a href="#">
+                                <img src="/vrH5/assets/images/logo.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="width: 800px;">
+                        <nav role="navigation">
+                            <div class="main-menu">
+                                <ul>
+                                    <li class="menu-item-has-children" th:each="mu : ${maps.menu}"><a  title="" th:href="${mu.hrefs}" th:text="${mu.name}">首页</a>
+                                        <ul th:if="${mu.childTiles != null }">
+                                            <li th:each="chi : ${mu.childTiles}"><a th:text="${chi.name}" th:href="${chi.hrefs}"></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </nav>
+                    </div>
+
+                    <div class="col-md-3 text-right" style="position: absolute; right: 10px;">
+                        <a  class="butn1 butn-light" href="/vrs/user/to_userPro">我的方案</a>
+                        <a href="/login" class="butn1 butn-light">上架云视</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+        <div class="responsive-header">
+            
+            <div class="full-menu-height"></div>
+            <div class="main-bar stick">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-4 col-sm-3">
+                            <div class="logo">
+                                <a href="#">
+                                    <img src="assets/images/logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-8 col-sm-9 text-right">
+                            
+                            <span class="resp-btn">
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-wraper">
+            <div class="side-menu">
+                <span class="close-menu">
+                    <i class="fa fa-times"></i>
+                </span>
+                <ul>
+                    <li class="menu-item-has-children"><a href="index.html" title="">首页</a></li>
+                    <li class="menu-item-has-children"><a href="html/custom_design.html" title="">定制设计</a></li>
+                    <li class="menu-item-has-children"><a href="#" title="">换色系统</a></li>
+                    <li class="menu-item-has-children"><a href="#" title="">门窗设计</a></li>
+                    <li class="menu-item-has-children"><a href="#" title="">高端画册</a> </li>
+                    <li class="menu-item-has-children"><a href="#" title="">品牌墙</a> </li>
+                    <li><a href="contact.html" title="">全景导购</a>
+                	<ul>
+                	    <li><a href="blog.html" title="">软件介绍</a></li>
+                	    <li><a href="blog-detail.html" title="">门店导购</a></li>
+                	</ul>
+                    </li>
+                </ul>
+                <div class="side-meta topbar style2">
+                    <ul class="topbar-contact">
+                        
+                    </ul>
+                    <ul class="socials">
+        				<li></li>
+        				<li></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <main role="main">
+			<div class="overview-area area-padding">
+				<div class="container">
+					<div>
+
+			            <div class="overview-image" style="text-align: center; padding-top: 50px;">
+			            	<img  th:src="${lb.img}" style=" margin-top: -100px; width: 100%; height:50%;padding-left: 5px;padding-right: 5px;">
+						</div>
+						
+					</div>
+				</div>
+				
+				</div>
+				
+				<div style="margin-top: 15px; ">
+					<div style="text-align: center;">
+						<font color="#0093DD" size="5"  th:text="${lb.title}">标题</font>
+					</div>
+				</div>
+				
+				<div class="container" th:utext="${lb.texts}">
+					<div class="col-md-6 col-sm-12 col-xs-12">
+						<div class="overview-image" style="margin-top: 100px;">
+						    <img src="assets/images/event-img2.jpg" />
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-12 col-xs-12">
+					    <div class="overview-image" style="margin-top: 50px;">
+					    	 <h3 style="color: #0093DD;">什么是云视家全景展示软件</h3>
+					    </div>
+					</div>
+					
+				</div>
+				
+
+			
+		</main>
+
+
+
+        <script type="text/javascript" src="/vrH5/assets/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/vrH5/assets/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/vrH5/assets/js/script.js"></script>
+    
+   
+    
+</body>
+</html>

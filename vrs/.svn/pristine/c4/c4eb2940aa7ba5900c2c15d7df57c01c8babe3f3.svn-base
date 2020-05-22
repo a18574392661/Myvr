@@ -1,0 +1,38 @@
+package com.bootdo;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+@EnableAutoConfiguration(exclude = {
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
+})
+@EnableTransactionManagement
+@ServletComponentScan
+@MapperScan("com.bootdo.*.dao")
+@SpringBootApplication
+@EnableCaching
+public class VRApplication {
+
+
+    public static void main(String[] args){
+
+
+  SpringApplication.run(VRApplication.class, args);
+        // 指定jre系统属性，允许特殊符号， 如{} 做入参，其他符号按需添加。见 tomcat的HttpParser源码。
+        //System.setProperty("tomcat.util.http.parser.HttpParser.requestTargetAllow","[]|{}^&#x5c;&#x60;&quot;&lt;&gt;");
+    	//System.setProperty("tomcat.util.http.parser.HttpParser.requestTargetAllow","|{}");
+    	//System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
+
+        System.out.println("ヾ(◍°∇°◍)ﾉﾞ    Company启动成功      ヾ(◍°∇°◍)ﾉﾞ\n" +
+                " ______                    _   ______            \n" +
+                "|_   _ \\                  / |_|_   _ `.          \n" +
+                "  | |_) |   .--.    .--. `| |-' | | `. \\  .--.   \n" +
+                "  |  __'. / .'`\\ \\/ .'`\\ \\| |   | |  | |/ .'`\\ \\ \n" +
+                " _| |__) || \\__. || \\__. || |, _| |_.' /| \\__. | \n" +
+                "|_______/  '.__.'  '.__.' \\__/|______.'  '.__.'  ");
+    }
+}

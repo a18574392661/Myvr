@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="ts:currlog:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="ts:currlog:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+
+					<!--	<div class="columns  pull-right" style="margin-right: 20px;">
+							<select id="cid"  class="form-control" style="font-size: 12px;" >
+								<option value="">请选择</option>
+								<option th:each="dx :${clist}" th:value="${dx.id}" th:text="${dx.cname}"></option>
+							</select>
+						</div>
+
+						<div class="columns  pull-right" style="margin-right: 1px">
+							<a type="button" class="btn btn-success" >选择课程</a>
+						</div>-->
+
+
+
+						<div class="columns  pull-right" style="margin-right: 20px;">
+							<select id="rq" class="form-control" style="font-size: 12px;"  onchange="ff()">
+								<option value="0">请选择(今天及之后)</option>
+								<option value="1">今天</option>
+								<!--<option value="6">昨天</option>-->
+								<option value="2">本周</option>
+								<option value="3">下周</option>
+								<option value="7">本月</option>
+								<!--<option value="4">近一个月</option>-->
+								<option value="9">自定义时间</option>
+								<option value="8">自定义范围</option>
+							</select>
+						</div>
+
+
+
+						<div id="sj">
+						<div class="columns  pull-right" style="margin-right: 20px;">
+							<input id="d2" readonly placeholder="结束时间" name="daydate"  class="form-control" type="text">
+						</div>
+
+						<div class="columns  pull-right" style="margin-right: 20px;" >
+							<input id="d1" readonly placeholder="开始时间" name="daydate"  class="form-control" type="text">
+
+						</div>
+
+
+						<div class="columns  pull-right" style="margin-right: 1px">
+							<a type="button" class="btn btn-success" >时间范围:</a>
+						</div>
+						</div>
+
+						<div id="jt">
+							<div class="columns  pull-right" style="margin-right: 20px;">
+								<input id="jt1" readonly placeholder="确定时间" name="daydate"  class="form-control" type="text">
+							</div>
+
+
+
+							<div class="columns  pull-right" style="margin-right: 1px">
+								<a type="button" class="btn btn-success" >具体时间:</a>
+							</div>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true" class="table table-bordered">
+
+						<!--
+						<thead >
+						<tr class="active ">
+							<th class="text-center">名称</th>
+							<th class="text-center"> 城市</th>
+							<th class="text-center">邮编</th>
+						</tr>
+						</thead>-->
+					</table>
+
+
+
+					<nav aria-label="Page navigation" style="float: right;">
+						<ul class="pagination" id="fy">
+							总条数5
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="ts:currlog:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="ts:currlog:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="ts:currlog:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/ts/currlog/currlog.js"></script>
+
+	<script src="/layui/layui.js"></script>
+
+	<script src="laydate/laydate.js"></script>
+
+	<script>
+		function ff() {
+			var r=$("#rq").val();
+			if (r==8){
+				$("#sj").show();
+
+			}
+			else{
+				$("#sj").hide();
+			}
+
+			if (r==9){
+
+				$("#jt").show();
+			}
+			else{
+				$("#jt").hide();
+			}
+		}
+
+		//执行一个laydate实例
+		layui.use('laydate', function(){
+			var laydate = layui.laydate;
+
+			laydate.render({
+				elem: '#d1' //指定元素
+				,trigger: 'click'
+
+			});
+		})
+
+
+		//执行一个laydate实例
+		layui.use('laydate', function(){
+			var laydate = layui.laydate;
+
+			laydate.render({
+				elem: '#d2' //指定元素
+				,trigger: 'click'
+
+			});
+		})
+
+		layui.use('laydate', function(){
+			var laydate = layui.laydate;
+
+			laydate.render({
+				elem: '#jt1' //指定元素
+				,trigger: 'click'
+
+			});
+		})
+	</script>
+</body>
+</html>

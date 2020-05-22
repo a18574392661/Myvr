@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.school.dao.UserCouponDao">
+
+
+<resultMap type="com.bootdo.school.domain.UserCouponDO" id="couponAll" autoMapping="true">
+ <id column="id" property="id"/>
+<result column="code" property="code"/>
+<result column="uid" property="uid"/>
+<result column="price" property="price"/>
+<result column="name" property="name"/>
+<result column="createdate" property="createdate"/>
+<result column="updatedate" property="updatedate"/>
+<result column="status" property="status"/>
+</resultMap>
+
+
+<resultMap type="com.bootdo.school.domain.UserCouponDO" id="couponAndUserAll" autoMapping="true" extends="couponAll">
+ 
+ <association property="userDO" javaType="com.bootdo.system.domain.UserDO" autoMapping="true">
+
+ 	<result column="u.username" property="username"/>
+	 <result column="u.mobile" property="mobile"/>
+	 <result column="u.name" property="name"/>
+ </association>
+
+</resultMap>
+
+
+
+	<select id="get" resultMap="couponAndUserAll">
+		select cou.`id`,cou.`code`,cou.`uid`,cou.`price`,cou.`name`,cou.`createDate`,cou.`updateDate`,cou.`status`,u.username as 'u.username',u.mobile as 'u.mobile' from sc_user_coupon cou left join sys_user u
+		on cou.uid=u.user_id
+		where cou.id=#{id}
+
+	</select>
+
+	<select id="list" resultMap="couponAndUserAll">
+		<!-- select `id`,`code`,`uid`,`price`,`name`,`createDate`,`updateDate`,`status` from sc_user_coupon -->
+        
+        
+select cou.`id`,cou.`code`,cou.`uid`,cou.`price`,cou.`name`,cou.`createDate`,cou.`updateDate`,cou.`status`,u.username as 'u.username' from sc_user_coupon cou left join sys_user u 
+on cou.uid=u.user_id
+
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="code != null and code != ''"> and cou.code = #{code} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="updatedate != null and updatedate != ''"> and updateDate = #{updatedate} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		 and cou.status!=0
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sc_user_coupon
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="code != null and code != ''"> and code = #{code} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="updatedate != null and updatedate != ''"> and updateDate = #{updatedate} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		and status!=0
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.school.domain.UserCouponDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sc_user_coupon
+		(
+			`code`, 
+			`uid`, 
+			`price`, 
+			`name`, 
+			`createDate`, 
+			`updateDate`, 
+			`status`
+		)
+		values
+		(
+			#{code}, 
+			#{uid}, 
+			#{price}, 
+			#{name}, 
+			#{createdate}, 
+			#{updatedate}, 
+			#{status}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.school.domain.UserCouponDO">
+		update sc_user_coupon
+		<set>
+			<!-- <if test="code != null">`code` = #{code}, </if> -->
+			<!-- <if test="uid != null">`uid` = #{uid}, </if> -->
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+		<!-- 	<if test="createdate != null">`createDate` = #{createdate}, </if> -->
+			<if test="updatedate != null">`updateDate` = #{updatedate}, </if>
+			<!-- <if test="status != null">`status` = #{status}</if> -->
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		 delete from sc_user_coupon where id = #{value}
+			<!--update sc_user_coupon set status=0  where id = #{value}-->
+	</delete>
+
+
+	<delete id="batchRemove">
+		delete from sc_user_coupon where id in
+	<!--	update sc_user_coupon set status=0 where id in-->
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	
+	<select id="queryUserCoupon" parameterType="Long" resultMap="couponAndUserAll">
+	select cou.`id`,cou.`code`,cou.`uid`,cou.`price`,cou.`name`,cou.`createDate`,cou.`updateDate`,cou.`status`,u.username as 'u.username',u.name as 'u.name' from sc_user_coupon cou left join sys_user u
+	on cou.uid=u.user_id WHERE cou.uid=#{uid}
+	</select>
+
+
+	<select id="queryUserCouponPrice" resultType="string" parameterType="java.util.Map">
+	 select price from sc_user_coupon where uid=#{sid}
+	</select>
+	
+	<update id="updateUserCouponPrice" parameterType="java.util.Map">
+	 update sc_user_coupon set price=price-${price} where uid=#{sid}
+	</update>
+
+
+
+	<select id="queryUserAndCoupon" resultType="int" parameterType="Long">
+		select count(1) from sc_user_coupon where uid=#{uid}
+	</select>
+
+	<!--查询某个学院的优惠券-->
+	<select id="queryUserCodeHx" resultType="com.bootdo.school.domain.UserCouponDO" parameterType="java.util.Map">
+		select u.username,u.mobile,u_c.price,u_c.uid from sys_user u
+left join sc_user_coupon u_c
+on u.user_id=u_c.uid
+where u.rid=62
+and u.mobile=#{tel}
+and u_c.code=#{code}
+
+	</select>
+
+</mapper>
+

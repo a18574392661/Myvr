@@ -1,0 +1,177 @@
+package com.bootdo.vrs.pageh5.controller;
+
+import com.bootdo.common.utils.StringUtils;
+import com.bootdo.school.annotations.LoginRequired;
+import com.bootdo.school.util.RedisUtil;
+import com.bootdo.vrs.common.BaseController;
+import com.bootdo.vrs.common.MessageConstantVrs;
+import com.bootdo.vrs.dao.PayvipDao;
+import com.bootdo.vrs.domain.OrderCodeFactory;
+import com.bootdo.vrs.domain.PayorderLogDO;
+import com.bootdo.vrs.domain.PayvipDO;
+import com.bootdo.vrs.service.PayorderLogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+@Controller
+@RequestMapping("/vrs/pay")
+public class PayController  extends BaseController {
+
+
+    @Autowired
+    private PayorderLogService payorderLogService;
+
+    @Autowired
+    private PayvipDao payvipDao;
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    //去支付页面
+   @RequestMapping("/to_pay")
+   @LoginRequired
+    public  String to_pay(HttpServletRequest request, String vid,String sta, ModelMap map){
+       try {
+           String uid=request.getAttribute("uid")+"";
+           if (StringUtils.isBlank(vid)||StringUtils.isBlank(sta)){
+               return "redirect:/vrs/houses/index";
+           }
+
+           if (StringUtils.isBlank(uid)){
+               //以防万一
+               return "redirect:/vrs/houses/index";
+           }
+           if (StringUtils.isBlank(vid)){
+               return "redirect:/vrs/houses/index";
+           }
+
+           //防止重复提交订单
+           // redisUtil.getJedis();
+
+           //根据选择的日期查询对应出价格 防止页面谋改
+           PayvipDO payvipDa=payvipDao.get(Integer.parseInt(vid));
+           if (payvipDa==null){
+               return "redirect:/vrs/houses/index";
+           }
+
+
+           //添加订单 未支付
+           PayorderLogDO payorderLogDO=new PayorderLogDO();
+           String code=OrderCodeFactory.generateNumber(16);
+           payorderLogDO.setOrdercode(code);
+           payorderLogDO.setCreatedate(new Date());
+           //nteger.parseInt(sta)
+           payorderLogDO.setPaysta(1);
+           payorderLogDO.setPrice(payvipDa.getPrice());
+           payorderLogDO.setRemark("开通云视家会员");
+           payorderLogDO.setUid(Long.parseLong(uid));
+           payorderLogDO.setStatus(0);//未支付
+           int c=payorderLogService.save(payorderLogDO);
+           map.put("price",payvipDa.getPrice());
+           map.put("remker",payorderLogDO.getRemark()+":"+payvipDa.getRemker());
+           map.put("code",code);
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           //去错误页面
+           return "redirect:/vrs/houses/index";
+       }
+       finally {
+
+       }
+       return MessageConstantVrs.VRSH5_PAGE+"html/payment";//去支付页面
+   }
+
+    //回调方法
+    @RequestMapping("/returnPayStatus")
+    @ResponseBody
+    public  String returnPayStatus(HttpServletRequest request,Map<String,Object> paremts, ModelMap map){
+      String orderCode=request.getParameter("code");//拿到订单编号 这里参数需要修改
+        orderCode="2836616880645216";
+        //拿到月份1
+       String month=request.getParameter("month"); //前面拿
+
+        //模拟支付成功
+      if(true){
+          //支付成功 修改订单状态 防止重复修改
+         PayorderLogDO payorderLogDO=payorderLogService.getPayStatus(orderCode);
+         payorderLogDO.setMonth(3);
+         if (payorderLogDO.getStatus()==0){
+             //支付未成功 修改状态
+             payorderLogService.editPayStatus(payorderLogDO);
+
+         }
+
+      }else {
+
+      }
+
+
+        return  "";//去成功页面!
+    }
+
+
+    //监听订单状态支付是否成功
+    @ResponseBody
+    @RequestMapping("/lisentPaySta")
+    @LoginRequired
+    public  Map<String,Object> lisentPaySta(Map<String,Object> map){
+            start();
+       //拿到订单编号 获取支付状态
+        try {
+
+            if (true){
+                //支付成功 查询订单状态是否成功1
+
+                if (true){
+                    //修改编号 核销的逻辑 修改用户会员 添加日期
+
+                }
+
+
+                success(true);//停止监听
+
+            }
+            else {
+                success(false);
+
+            }
+
+        }
+        catch (Exception e){
+            success(false);
+
+        }
+
+        return  end();
+
+
+    }
+
+
+    public static void main(String[] args) {
+        List<String> list=new ArrayList();
+        for (int i = 0; i < 1000; i++) {
+            String code=OrderCodeFactory.generateNumber(16);
+            if (list.contains(code)==false){
+                list.add(code);
+            }
+        }
+        System.out.println( list.size());
+
+        String url="/usr/loca/pro";
+        String bus="/usr/loca/pro?id=5&q=6";
+        System.out.println(bus.contains(url));
+    }
+
+
+}

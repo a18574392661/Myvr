@@ -1,0 +1,186 @@
+package com.bootdo.school.interceptors;
+
+import com.alibaba.fastjson.JSON;
+import com.bootdo.school.annotations.LoginRequired;
+import com.bootdo.school.common.MessageConstant;
+import com.bootdo.school.util.CookieUtil;
+import com.bootdo.school.util.HttpclientUtil;
+import com.bootdo.school.util.RedisUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import redis.clients.jedis.Jedis;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
+
+
+@Component
+public class LoginInterceptor extends HandlerInterceptorAdapter {
+
+
+	@Autowired
+	private  RedisUtil redisUtil;
+	
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	//	String stateParent=request.getParameter("stateParent");
+		//拿到请求路径的注解 
+		//如果是null的不需要拦截(没定义)
+		if(!(handler instanceof HandlerMethod)){
+			return  true;
+		}
+		 HandlerMethod hm = (HandlerMethod) handler;
+		 LoginRequired methodAnnotation = hm.getMethodAnnotation(LoginRequired.class);
+		//定义了 有不需要登陆 或者一定要登陆
+		if (methodAnnotation==null) {
+
+			return true;
+		}
+
+		//反正登录成功两个值都会保存到token跟cookie
+		String userCookieToken=CookieUtil.getCookieValue(request, MessageConstant.UserCookieToken, true);
+
+		String token=request.getParameter("token");//用户登录验证的token
+		String loginSucessJwt="";
+		//拿到请求的路径 如果没登录 没拿到token 那就跳到登录 穿过去这个请求的路径
+		//判断是否登录覆盖变量 反正生成的说返回的token
+		if (StringUtils.isNotBlank(userCookieToken)) {
+			loginSucessJwt=userCookieToken;
+		}
+		if (StringUtils.isNotBlank(token)) {
+			loginSucessJwt=token;
+		}
+
+
+
+	 if (StringUtils.isBlank(loginSucessJwt)) {
+		//没登录
+			if (methodAnnotation.loginSuccess()==false) {
+			//不需要登录
+				return true;
+			}
+				//必须登录的话 那就驳回去登陆的页面
+		    String toUrl=request.getRequestURI();
+			//根据请求参数 判断是驾校项目还是vr
+			String url=MessageConstant.ToLoginUrl;
+
+
+		/*if (StringUtils.isNotBlank(toUrl)&&!("null".equals(toUrl))){
+			if (toUrl.contains("/vrs/pay/to_pay")){
+				response.sendRedirect(url+"?url=/pro/h5/queryVip");
+			}
+
+		}*/
+
+
+		response.sendRedirect(url+"?url="+toUrl);
+
+			/*if(StringUtils.isNotBlank(stateParent)){
+				url= MessageConstantVrs.ToLoginUrl;
+			}*/
+
+
+		 return false;
+	}
+	else {
+
+		 //不为null 放行 把token传过去解析 (其实这里写就行了)
+		  String ip = request.getHeader("x-forwarded-for");// 通过nginx转发的客户端ip
+          if(StringUtils.isBlank(ip)){
+              ip = request.getRemoteAddr();// 从request中获取ip
+              if(StringUtils.isBlank(ip)){
+                  ip = "127.0.0.1";
+              }
+          }
+          //MessageConstant.URL
+		//动态获取ip
+          	String host = request.getRequestURL().toString();
+          	String uri = request.getRequestURI().toString();
+
+          	String url = host.replace(uri, "");
+
+		    String successJson  = HttpclientUtil.doGet(url+"/api/user/verify?token=" + loginSucessJwt+"&currentIp="+ip);
+
+
+			Map<String, Object> map=JSON.parseObject(successJson, Map.class);
+
+          //验证成功
+          if ("success".equals(map.get("status"))) {
+          		String uid=map.get("uid")+"";
+				String username=map.get("username")+"";
+				if (this.getJedisToken(loginSucessJwt,uid)==false){
+					//无效token
+					return true;
+				}
+
+			  //登陆了放行
+			  request.setAttribute("uid", map.get("uid"));
+			  request.setAttribute("username", map.get("username"));
+
+
+        	  CookieUtil.setCookie(request, response,MessageConstant.UserCookieToken, loginSucessJwt, 60*30, true);
+
+			  String userCookieToken2=CookieUtil.getCookieValue(request, MessageConstant.UserCookieToken, true);
+			  //退出时候验证
+			  this.setJedisToken(loginSucessJwt,map.get("uid")+"");
+			  return true;
+          }
+          else {
+        	  System.out.println("验证失败 ");
+        	//  String toUrl=request.getRequestURI();
+    		  response.sendRedirect(MessageConstant.ToLoginUrl);
+				return false;
+		}
+
+	}
+
+	
+	}
+
+	public void setJedisToken(String token,String uid){
+		Jedis jedis= redisUtil.getJedis();
+		try {
+
+			jedis.setex("token:"+uid,60*30,token);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		finally {
+			if (jedis!=null)
+				jedis.close();
+
+		}
+
+
+	}
+
+	public boolean getJedisToken(String token,String uid){
+			Jedis jedis= redisUtil.getJedis();
+			try {
+
+				String val=jedis.get("token:"+uid);
+				if (StringUtils.isBlank(val)||!(token.equals(val))){
+					return  false;
+				}
+
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
+			finally {
+				if (jedis!=null)
+					jedis.close();
+
+			}
+		return  true;
+
+	}
+
+
+
+}

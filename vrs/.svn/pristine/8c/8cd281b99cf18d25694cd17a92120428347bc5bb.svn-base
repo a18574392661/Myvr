@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+.layui-upload-file{display:none!important;}
+</style>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">应用类型：</label>
+								<div class="col-sm-8">
+									<div class="col-sm-8">
+										<select id="client">
+											<option value="android">安卓</option>
+											<option value="ios">苹果</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">版本号：</label>
+								<div class="col-sm-8">
+									<div class="col-sm-8">
+										<input type="text" id="versionNo" placeholder="请输入版本号">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">选择新APP：</label>
+								<div class="col-sm-8">
+									<div class="col-sm-8">
+										<button type="button" class="btn  btn-danger" id="uploadApp">
+											<i class="fa fa-qrcode" aria-hidden="true"></i>选择新版本APP并提交
+										</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/lc/appVersion/appVersion.js">
+	</script>
+	<script src="/js/layui.js"></script>
+	<script>
+	layui.use('upload', function () {
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadApp', //绑定元素
+            url: '/vr/appVersion/uploadapk', //上传接口
+            size: 60000,
+            accept: 'file',
+            exts: 'apk|ipa|zip',
+            before: function(obj){
+                this.data={client: $("#client").val(), version: $("#versionNo").val()}//携带额外的数据
+            },
+            done: function (r) {
+                layer.msg(r.msg);
+                parent.reLoad();
+				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+				parent.layer.close(index);
+                //app.getData();
+            },
+            error: function (r) {
+                layer.msg(r.msg);
+            }
+        });
+    });
+	</script>
+</body>
+</html>

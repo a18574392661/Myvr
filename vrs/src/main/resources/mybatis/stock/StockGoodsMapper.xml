@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.stock.dao.StockGoodsDao">
+
+	<select id="get" resultType="com.bootdo.stock.domain.StockGoodsDO">
+		select `id`,`goods_name`,`stock`,`type_id`,type_path from stock_goods where id = #{value}
+	</select>
+	
+	<select id="queryByType" resultType="com.bootdo.stock.domain.StockGoodsDO">
+		select `id`,`goods_name`,`stock`,`type_id`,type_path from stock_goods where type_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.stock.domain.StockGoodsDO">
+		select a.*,CONCAT(d.type,' > ',c.type,' > ',b.type) typePath from stock_goods a
+			left join stock_type b on a.type_id=b.id
+			left join stock_type c on b.pid=c.id
+			left join stock_type d on c.pid=d.id
+        <where>  
+  		  <if test="id != null and id != ''"> and a.id = #{id} </if>
+  		  <if test="goodsName != null and goodsName != ''"> and a.goods_name like concat('%', #{goodsName},'%') </if>
+  		  <if test="typePath != null and typePath != ''"> and a.type_path like concat('%', #{typePath},'%') </if>
+  		  <if test="stock != null and stock != ''"> and a.stock = #{stock} </if>
+  		  <if test="typeId != null and typeId != ''"> and a.type_id = #{typeId} </if>
+  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by a.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from stock_goods a
+			left join stock_type b on a.type_id=b.id
+			left join stock_type c on b.pid=c.id
+			left join stock_type d on c.pid=d.id
+        <where>  
+  		  <if test="id != null and id != ''"> and a.id = #{id} </if>
+  		  <if test="goodsName != null and goodsName != ''"> and a.goods_name like concat('%', #{goodsName},'%') </if>
+  		  <if test="typePath != null and typePath != ''"> and a.type_path like concat('%', #{typePath},'%') </if>
+  		  <if test="stock != null and stock != ''"> and a.stock = #{stock} </if>
+  		  <if test="typeId != null and typeId != ''"> and a.type_id = #{typeId} </if>
+  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.stock.domain.StockGoodsDO">
+		insert into stock_goods
+		(
+			`id`, 
+			`goods_name`, 
+			`stock`, 
+			`type_id`
+			,type_path
+		)
+		values
+		(
+			#{id}, 
+			#{goodsName}, 
+			#{stock}, 
+			#{typeId}
+			,#{typePath}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.stock.domain.StockGoodsDO">
+		update stock_goods 
+		<set>
+			<if test="goodsName != null">`goods_name` = #{goodsName}, </if>
+			<if test="stock != null">`stock` = #{stock}, </if>
+			<if test="typePath != null">`type_path` = #{typePath}, </if>
+			<if test="typeId != null">`type_id` = #{typeId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="goodsIn" parameterType="com.bootdo.stock.domain.StockGoodsDO">
+		update stock_goods set stock = stock + #{stock}
+		where id = #{id}
+	</update>
+	
+	<update id="goodsOut" parameterType="com.bootdo.stock.domain.StockGoodsDO">
+		update stock_goods set stock = stock - #{stock}
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from stock_goods where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from stock_goods where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

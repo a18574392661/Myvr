@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${lbimgs.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">轮播图标题:</label>
+								<div class="col-sm-8">
+									<input id="title" name="title" th:value="${lbimgs.title}" class="form-control" type="text">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">轮播图:</label>
+								<div class="col-sm-8">
+
+									<style>
+										.layui-upload-file{display:none!important;}
+									</style>
+									<button type="button" class="btn  btn-success" id="uploadlogo" style="display:block">
+										<i class="fa fa-qrcode" aria-hidden="true"></i>上传轮播图
+									</button>
+									<input id="img" name="img" class="form-control" type="hidden" th:value="${lbimgs.img}">
+									<img width="128px" height="128px" src="/img/bg.png" id="simg" style="margin-top:10px;max-width: 128px;" th:src="${lbimgs.img}">
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">详细信息:</label>
+								<div class="col-sm-8" style="margin-left: -14px">
+									<div class="col-sm-8">
+										<div id="wangEditorDescription"></div>
+										<!--  这里需要用富文本编  -->
+										<input type="hidden" id="detailed" name="texts"  th:value="${lbimgs.texts}">
+										<!-- <textarea rows="5" id="detailed" name="detailed" class="form-control" placeHolder="请输入商家简介" style="display:none;"></textarea> -->
+									</div>
+
+
+								</div>
+							</div>
+
+
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">排序：</label>
+								<div class="col-sm-8">
+									<input id="sort" name="sort" th:value="${lbimgs.sort}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/lbimgs/edit.js">
+	</script>
+
+	<script type="text/javascript" src="/js/plugins/wangEditor/wangEditor.js"></script>
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	<script type="text/javascript" src="/js/layui.js"></script>
+	<script>
+		//富文本
+		initEditorSaveAndEdit('lbimg');
+
+		//图片上传
+		imageUpload("uploadlogo","lbimg","simg","img");
+
+	</script>
+
+</body>
+</html>

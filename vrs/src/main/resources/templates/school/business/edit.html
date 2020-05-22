@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${business.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">商家名称：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${business.name}" class="form-control" type="text">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">关联用户手机号(登录手机号)：</label>
+								<div class="col-sm-8">
+									<input id="tel" name="tel" th:value="${business.userDO.username}"  required="required" class="form-control" type="text">
+								</div>
+							</div>
+
+							<input type="hidden" id="uid" name="uid" th:value="${business.uid}"   class="form-control">
+
+						<!--	<div class="form-group">
+								<label class="col-sm-3 control-label">商家介绍：</label>
+								<div class="col-sm-8">
+									<div id="wangEditorDescription"></div>
+									&lt;!&ndash;  这里需要用富文本编  &ndash;&gt;
+									<input type="hidden" id="detailed" th:value="${business.detailed}" name="detailed">
+								</div>
+							</div>-->
+							
+							<!--<div class="form-group">
+								<label class="col-sm-3 control-label">商家首页图：</label>
+								<div class="col-sm-8">
+									
+									<style>
+									.layui-upload-file{display:none!important;}
+									</style>
+									<button type="button" class="btn  btn-success" id="uploadlogo" style="display:block">
+											<i class="fa fa-qrcode" aria-hidden="true"></i>上传logo图
+										</button>
+									<input id="img" name="img" class="form-control" type="hidden" th:value="${business.img}">
+									<img src="/img/bg.png" id="simg" th:src="${business.img}" style="margin-top:10px;max-width: 128px;">
+								</div>
+							</div>-->
+
+
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">商家地址：</label>
+								<div class="col-sm-8">
+									<input id="addres" name="addres" th:value="${business.addres}" class="form-control" type="text">
+								</div>
+							</div>
+							
+										<!--				<div class="form-group">
+								<label class="col-sm-3 control-label">经度：</label>
+								<div class="col-sm-8">
+									<input id="longitude" disabled="disabled" name="longitude" th:value="${business.longitude}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">纬度：</label>
+								<div class="col-sm-8">
+									<input id="latitude" disabled="disabled" name="latitude" th:value="${business.latitude}" class="form-control" type="text">
+								</div>
+							</div>
+						
+							<div class="form-group">	
+							<div class="col-sm-12" id="container" style="height: 300px;"></div>
+						</div>-->
+						
+												
+							
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	
+	<script type="text/javascript" src="/js/appjs/school/business/edit.js">
+	</script>
+	<script type="text/javascript" src="/js/plugins/wangEditor/wangEditor.js"></script>
+	<script src="https://webapi.amap.com/maps?v=1.4.13&key=d177fc718fb46f08f8817d62dec54664&plugin=AMap.ToolBar"></script>
+
+	<script src="https://webapi.amap.com/ui/1.0/main.js"></script>
+	<script src="/js/layui.js"></script>
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	<script type="text/javascript">
+	//initEditorSaveAndEdit();
+	 
+   //地图
+	/*$(window).ready(function(){
+		initMap();
+		
+		$("#addres").on('blur', function () {
+	        $.get("https://restapi.amap.com/v3/geocode/geo", { key: "21adadd07871884ad191c03051ec5154",city: $("#cityId option:selected").text(), addres: $("#addres").val() }, function (data) {
+	            //console.log(data);
+	            if (data.status == 1) {
+	                var locaiton = data.geocodes[0].location;
+	                var lng = locaiton.split(',')[0];
+	                var lat = locaiton.split(',')[1];
+	                $('input[name=longitude]').val(lng);
+	                $('input[name=latitude]').val(lat);
+	                initMap(lng, lat);
+	            }
+	        }, "json");
+	    });
+		
+		
+		$("#addres").bind("input propertychange", function() {
+			  $.get("https://restapi.amap.com/v3/geocode/geo", { key: "21adadd07871884ad191c03051ec5154",city: $("#cityId option:selected").text(), addres: $("#addres").val() }, function (data) {
+		            //console.log(data);
+		            if (data.status == 1) {
+		                var locaiton = data.geocodes[0].location;
+		                var lng = locaiton.split(',')[0];
+		                var lat = locaiton.split(',')[1];
+		                $('input[name=longitude]').val(lng);
+		                $('input[name=latitude]').val(lat);
+		                initMap(lng, lat);
+		            }
+		        }, "json");
+		    });
+	
+		
+	
+		
+		
+	});
+  
+ 
+	
+	function initMap(lng, lat) { 
+        var map;
+        AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
+            if (lng != undefined && lng != "" && lat != undefined && lat!="") {
+                map = new AMap.Map('container', {
+                    resizeEnable: true, //是否监控地图容器尺寸变化
+                    zoom: 16, //初始化地图层级 
+                    center: [lng, lat],
+                });
+            }
+            else {
+                map = new AMap.Map('container', {
+                    resizeEnable: true, //是否监控地图容器尺寸变化
+                    zoom: 16, //初始化地图层级  
+                });
+            }
+            //var map = new AMap.Map('container', {
+            //    resizeEnable: true, //是否监控地图容器尺寸变化
+            //    center: [lng, lat],
+            //    zoom: 16,
+            //    scrollWheel: false
+            //});
+            var positionPicker = new PositionPicker({
+                mode: 'dragMap',
+                map: map
+            });
+
+            positionPicker.on('success', function (positionResult) {
+                //console.log("1111");
+                // alert(positionResult.position.toString());
+                var posi = positionResult.position.toString(); 
+                $('input[name=longitude]').val(posi.split(',')[0]);
+                $('input[name=latitude]').val(posi.split(',')[1]);
+                $('input[name=addres]').val(positionResult.addres); 
+            });
+            positionPicker.on('fail', function (positionResult) {
+                $('input[name=longitude]').val('');
+                $('input[name=latitude]').val('');
+                $('input[name=addres]').val('');
+            });
+            var onModeChange = function (e) {
+                positionPicker.setMode(e.target.value)
+            }
+           
+           // AMap.event.addDomListener("dragMap", 'change', onModeChange);
+            
+            positionPicker.start();
+            map.panBy(0, 1);
+
+            map.addControl(new AMap.ToolBar({
+                liteStyle: true
+            }))
+        });
+	}*/
+	
+	//图片上传
+	/imageUpload("uploadlogo","business","simg","img");
+
+	</script>
+	
+   
+   
+</body>
+</html>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.ts.dao.CurrDao">
+
+	<select id="get" resultType="com.bootdo.ts.domain.CurrDO">
+		select `id`,`cname`,`status` from t_curr where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.ts.domain.CurrDO">
+		select `id`,`cname`,`status` from t_curr
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="cname != null and cname != ''"> and cname = #{cname} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_curr
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="cname != null and cname != ''"> and cname = #{cname} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.ts.domain.CurrDO">
+		insert into t_curr
+		(
+			`id`, 
+			`cname`, 
+			`status`
+		)
+		values
+		(
+			#{id}, 
+			#{cname}, 
+			#{status}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.ts.domain.CurrDO">
+		update t_curr 
+		<set>
+			<if test="cname != null">`cname` = #{cname}, </if>
+			<if test="status != null">`status` = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_curr where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_curr where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

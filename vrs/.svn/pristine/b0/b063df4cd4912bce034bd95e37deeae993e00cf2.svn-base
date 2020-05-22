@@ -1,0 +1,149 @@
+<!DOCTYPE html><!-- Required tag for HTML5 -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keyword" content="">
+    <meta name="description" content="">
+    <!-- Incluse css and media files -->
+    <link rel="icon" type="image/png" href="#"><!-- favicon icon -->
+	<link rel="icon" type="image/png" href="#"><!-- favicon icon -->
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/flaticon.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/animate.min.css">
+	<link rel="stylesheet" href="/css/manager/house/assets/css/jquery.fancybox.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/owl.carousel.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/owl.theme.default.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/perfect-scrollbar.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/responsive.css">
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/color.css">
+	<!-- REVOLUTION STYLE SHEETS -->
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/settings.css" />
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/navigation.css" />
+	<link rel="stylesheet" type="text/css" href="/css/manager/house/assets/css/revolution/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+
+    <title>首页</title>
+	<style>
+		.index-button{background-color:#DA231B ; color: #FFFFFF; border: none; border-radius: 5px; }
+		.head{margin-top: 5px;}
+		.dom{border: 0; appearance:none;}
+		.index-button2{background-color:#E47919 ; color: #FFFFFF; border: none; border-radius: 5px; width: 80px}
+		.help{margin-left: 10px;}
+		.roundness{border:solid 1px #000000; width: 18px;height: 18px;background-color:yellow;border-radius: 50%;-moz-border-radius: 50%;-webkit-border-radius: 50%;}
+		.index{margin-left: 5%;}
+		.index-first{margin-left: 5%;}
+		.index-first-button{background-color:#FFFFFF ; color: #2281B8; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.index-two-button{background-color:#2281B8 ; color: #FFFFFF; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.sousou{background-color: #2281B8; border:1px solid #2281B8;}
+	</style>
+</head>
+<body>
+
+
+
+<div th:replace="vrs/manager/house/head::pageheader"></div>
+
+
+<center>
+<section style="padding-top: 20px; align-content: center;" >
+                <div class="block no-bottom">
+						<div class="container">
+							<ul>
+								<li style=" margin-top: -10%;">
+									<input type="text" style="width: 60%; height: 50px;"  id="name" />
+									<div style="background-color: #0093DD; height: 50px; width: 138px; margin-top: -50px; margin-left: 60%;" onclick="search()">
+										<img src="/images/manager/house/assets/images/sousuo.png" style="margin-left: 70%; margin-top: 10px;">
+									</div>
+
+								</li>
+							</ul>
+						</div>
+                </div>
+            </section>
+</center>
+
+			<section th:each="menuPro : ${maps.indexMenu}">
+			    <div class="block no-bottom">
+			        <div class="container">
+			    		<ul style="margin-top: -10%;">
+			    			<li style="margin-left: 15px;">
+			    				<font size="5" color="#00D2C6"><b><a th:href="${menuPro.hrefs}" th:text="${menuPro.name}">定制设置</a></b></font>&nbsp;
+								<font color="#9D9D9D" th:text="${menuPro.tname}">新中式 / 极简 / 北欧 / 现代</font>
+			    			</li>
+
+							<li>
+								<div class="container">
+								<div class="row">
+									<div class="col-sm-4" th:each="pro : ${menuPro.proDo2}">
+										<img src="assets/images/bg.jpg" th:src="${pro.img}"  style="width:300px;height:300px;" th:onclick="'javascript:to_proDetail('+${pro.id}+');'">
+									</div>
+
+								</div>
+								</div>
+							</li>
+							<li class="text-center" style="margin-top: 20px;">
+								<a th:href="${menuPro.hrefs}" class="butn1 butn-light">更多方案</a>
+							</li>
+			    		</ul>
+			        </div>
+			    </div>
+			</section>
+
+
+		<script type="text/javascript" src="/js/appjs/vrs/manager/house/assets/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/appjs/vrs/manager/house/assets/js/bootstrap.min.js"></script>&ndash;&gt;
+		<script type="text/javascript" src="/js/appjs/vrs/manager/house/assets/js/script.js"></script>
+
+<script type="text/javascript" src="/js/appjs/common.js"></script>
+
+
+
+
+
+    <script type="text/javascript">
+
+		function search(){
+			var name=$("#name").val();
+					location.href='/pro/h5/quertSearchPro?name='+name;
+
+		}
+
+    	/*$(function(){
+    		getindex();
+    	});
+*/
+/*
+    	function getindex(){
+    		var id = Utils.getUrlParam("id");
+    		 // alert(id);
+    		 //console.log(id);
+    		if( id && id > 0 ){
+    			Request({
+    				type: 'get',
+    				url: "/api/contract/CarInfo",
+    				data: {}
+    			}, function( r ){
+    				console.log( JSON.stringify(r));
+    				$("#indexContainer").html(template("indexTemplate", r.reslut));
+    			});
+    		}
+
+    	}*/
+
+		$(function () {
+			var i=$("#ste").val();
+			$("#mu"+i).css("color","red");
+
+
+
+
+		})
+    </script>
+
+
+
+</body>
+</html>

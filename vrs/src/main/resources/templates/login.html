@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>云世家</title>
+    <meta name="keywords" content="管理系统">
+    <meta name="description" content="管理系统">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+    </script>
+
+</head>
+
+<body class="signin">
+<div class="signinpanel">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="signin-info">
+                <div class="logopanel m-b">
+                    <h1></h1>
+                </div>
+                <div class="m-b"></div>
+                <h3>
+                    欢迎使用 <strong>云世家管理系统</strong>
+                </h3>
+                <ul class="m-b">
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i>
+                        
+                    </li>
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> </li>
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> </li>
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i>
+                        
+                    </li>
+                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i>
+                        
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-5">
+           <form role="form" id="signupForm">
+                <h3 class="text-center">用户后台登录</h3>
+                <p class="m-t-md text-center">欢迎登录云视家后台管理系统</p>
+                <div class="form-group">
+                	<input type="text" id="username" value="admin" name="username" class="form-control uname" placeholder="请输入用户名" />
+                </div>
+                <div class="form-group">
+                	<input type="password" id="password" name="password" value="111111"
+                       class="form-control pword m-b" placeholder="请输入密码"/>
+                </div>
+                <div class="form-group">
+                		<a id="img" href="javascipt:refreshCode();"><img id="code" onclick="refreshCode();" class="control-label col-sm-4 pull-right" src="/verify/getVerifyCode" width="102" height="34"/></a>
+                		<div>
+                		<input type="text" name="verify" id="verify"
+                        class="form-control col-sm-6 pull-left" style="width:66%;margin-top:0;margin-bottom:15px;" placeholder="请输入验证码"/>
+                        </div>
+                </div>
+                <button type="button" id="login" class="btn btn-login btn-block">登录</button>
+
+            </form>
+        </div>
+    </div>
+    <!--<div class="signup-footer">
+        <div class="pull-left" style="font-size: 12px;">&copy; Copyright 2018 长沙慧都凡志网络科技有限公司 <a href="http://www.miitbeian.gov.cn" target="_blank" style="color: #d2ebe3;border-bottom: dotted 1px #a5d8c7;">湘ICP备18015732号</a>
+        </div>
+    </div>-->
+</div>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4" th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6" th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+
+<!-- 自定义js -->
+<script src="/js/content.js?v=1.0.0" th:src="@{/js/content.js?v=1.0.0}"></script>
+
+<!-- jQuery Validation plugin javascript-->
+<script src="/js/ajax-util.js"></script>
+<script src="/js/plugins/validate/jquery.validate.min.js" th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script src="/js/plugins/validate/messages_zh.min.js" th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script type="text/javascript">
+function refreshCode(){
+	$("#code").attr("src","/verify/getVerifyCode?time="+Math.random());
+}
+$("#signupForm").keydown(function (){
+	keyDownSearch();
+});
+function keyDownSearch(e) {  
+	        // 兼容FF和IE和Opera  
+	        var theEvent = e || window.event;  
+	        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;  
+	        if (code == 13) {   
+	            $("#login").click();  
+	            return false;  
+	        }  
+	        return true;  
+		}
+    $(document).ready(function () {
+    	 $("#login").on('click',function(e){
+         	$.ajax({
+         		url : '/verify/checkVerifyCode',
+         		method : 'get',
+         		data : {
+         			verify : $("#verify").val()
+         		},
+         		success : function(r){
+         			if(r.code == 0){
+         				login();
+         			}else{
+         				layer.msg(r.msg);
+         				refreshCode();
+         			}
+         		} 
+         	});
+         	}
+         );
+    });
+
+    $.validator.setDefaults({
+        submitHandler: function () {
+            login();
+        }
+    });
+
+    function login() {
+    	console.log(ctx)
+    	 $.ajax({
+             type: "POST",
+             url: ctx+"login",
+             data: {
+             	username : $("#username").val(),
+             	password : $("#password").val(),
+             	verify : $("#verify").val()
+             },
+             success: function (r) {
+            	 console.log(r)
+                  if (r.code == 0) {
+                     var index = layer.load(1, {
+                         shade: [0.1,'#fff'] //0.1透明度的白色背景
+                     });
+                     parent.location.href = '/index';
+                 } else {
+                     layer.msg(r.msg);
+                     refreshCode();
+                 }
+             },
+         });
+    }
+
+    function validateRule() {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                username: {
+                    required: true
+                },
+                password: {
+                    required: true
+                }
+            },
+            messages: {
+                username: {
+                    required: icon + "请输入您的用户名",
+                },
+                password: {
+                    required: icon + "请输入您的密码",
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

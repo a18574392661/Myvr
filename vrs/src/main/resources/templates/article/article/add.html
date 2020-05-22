@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						
+								<div class="form-group">	
+								<label class="col-sm-3 control-label">所属分类：</label>
+								<div class="col-sm-8">
+									<select class="form-control" id="category" name="categoryId">
+									</select>
+								</div>
+							</div>
+						
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">商品名称：</label>
+								<div class="col-sm-8">
+									<input id="title" name="title" class="form-control" type="text">
+								</div>
+							</div>
+							
+													<!-- 	<div class="form-group">	
+								<label class="col-sm-3 control-label">商品详情：</label>
+								<div class="col-sm-8">
+									<div id="wangEditorDescription"></div>
+									 这里需要用富文本编 
+									<input type="hidden" id="context" name="context">
+								</div>
+							</div> -->
+							
+							
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">商品详情：</label>
+								<div class="col-sm-8">
+									<div id="wangEditorDescription"></div>
+									<!--  这里需要用富文本编  -->
+									<textarea rows="5" id="description" name="context" class="form-control" placeHolder="请输入驾校简介" style="display:none;"></textarea>
+								</div>
+							</div>
+							
+							
+												 		<div class="form-group" >	
+								<label class="col-sm-3 control-label"></label>
+								<div class="col-sm-8">
+									<input id="createTime" 
+								      th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}"
+									  name="createTime" class="form-control" type="hidden">
+								</div>
+							</div>
+													<!-- 	<div class="form-group">	
+								<label class="col-sm-3 control-label"></label>
+								<div class="col-sm-8">
+									<input id="updateTime" name="updateTime" class="form-control" type="text">
+								</div>
+							</div> 
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">二维码：</label>
+								<div class="col-sm-8">
+									<input id="qrcodeUrl" name="qrcodeUrl" class="form-control" type="text">
+								</div>
+							</div>  -->
+													
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">状态：</label>
+								<div class="col-sm-8">
+									<select class="form-control" name="state">
+										<option value="1">公开</option>
+										 <option value="0">私密</option>
+									</select>
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	
+	<script type="text/javascript" src="/js/plugins/wangEditor/wangEditor.js"></script>
+	<script type="text/javascript" src="/js/appjs/article/article/add.js"></script>
+	<script src="/js/layui.js"></script>
+	
+	<script type="text/javascript">
+	
+	
+/* 	 var E = window.wangEditor
+     var editor = new E('#wangEditorDescription')//初始化
+     editor.customConfig.uploadImgServer =  "/school/upload?name=text"; //上传URL
+     editor.customConfig.uploadFileName = 'file';
+     
+     editor.customConfig.uploadImgHooks = {
+         customInsert: function (insertImg, result, editor) {
+                     // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+                     // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+                   	debugger;
+                     // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+                     
+                     var url =result.fileName;
+                     insertImg(url);
+              
+                     // result 必须是一个 JSON 格式字符串！！！否则报错
+                 }
+             }
+
+
+     
+	  //标签值 要回显示样式
+	 editor.customConfig.onchange = function (html) {
+	        // 监控变化，同步更新到 textarea
+	       
+	        //同步到 隐藏域
+	        $("#context").val(html);
+	        
+	    }
+	 
+	 
+	 editor.create();
+	 editor.txt.html($("#context").val())
+	  */
+	 
+	///////////批量
+	 
+	var E = window.wangEditor;
+    var editor = new E('#wangEditorDescription');
+    var $text1 = $('#description');
+    
+    editor.customConfig.uploadImgServer = '/school/uploadDescImages'
+  	editor.customConfig.uploadFileName = 'files'
+	editor.customConfig.uploadImgTimeout = 20000
+	
+   	editor.customConfig.uploadImgHooks = {
+   	    customInsert: function (insertImg, result, editor) {
+   	    	console.log( insertImg, result)
+            // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+            // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+     
+            // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+            var len = result.list.length;
+            for( var i = 0; i < len; i++ ){
+            	insertImg(result.list[i]);
+            }
+            //var url =result.data;
+	        // result 必须是一个 JSON 格式字符串！！！否则报错
+	     }
+	}
+    
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        $text1.val(html)
+    }
+    editor.create()
+    // 初始化 textarea 的值
+    $text1.val(editor.txt.html())
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	
+		//获取所有分类
+		$.ajax({
+			"url" : "/category/category/listall",
+			"type" : "get",
+			"dataType" : "json",
+			"success" : function(obj) {
+				for(var i = 0;i<obj.length;i++){
+					$("#category").append("<option value='"+obj[i].id+"'>"+obj[i].name+"</option>");
+				}
+			},
+			"error":function(){
+				console.log("console log error");
+			}
+		});
+
+	
+		//图片上传
+		imageUpload("uploadlogo","business","simg","img");
+		
+	</script>
+	
+</body>
+</html>

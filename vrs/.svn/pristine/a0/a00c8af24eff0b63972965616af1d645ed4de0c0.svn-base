@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.HxLogDao">
+
+	<select id="get" resultType="com.bootdo.vrs.domain.HxLogDO">
+		select `id`,`uid`,`pid`,`remker`,`createDate`,`price`,`status`,`level` from vrs_hx_log where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.vrs.domain.HxLogDO">
+		select u.username as 'uname',u2.username as 'pname',log.* from vrs_hx_log log
+		left join sys_user u
+		on log.uid=u.user_id
+		left join sys_user u2
+		on log.pid=u2.user_id
+
+        <where>  
+		  		  <if test="id != null and id != ''"> and log.id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and log.uid = #{uid} </if>
+		  		  <if test="pid != null and pid != ''"> and log.pid = #{pid} </if>
+		  		  <if test="remker != null and remker != ''"> and remker = #{remker} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="price != null and price != ''"> and log.price = #{price} </if>
+		  		  <if test="status != null and status != ''"> and log.status = #{status} </if>
+		  		  <if test="level != null and level != ''"> and log.level = #{level} </if>
+				<if test="ordercode != null and ordercode != ''"> and log.ordercode = #{ordercode} </if>
+
+			<if test="username != null and username != ''"> and u.username like  '%${username}%' </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by log.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_hx_log
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="pid != null and pid != ''"> and pid = #{pid} </if>
+		  		  <if test="remker != null and remker != ''"> and remker = #{remker} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="level != null and level != ''"> and level = #{level} </if>
+			 <if test="ordercode != null and ordercode != ''"> and ordercode = #{ordercode} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.HxLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_hx_log
+		(
+			`uid`, 
+			`pid`, 
+			`remker`, 
+			`createDate`, 
+			`price`, 
+			`status`, 
+			`level`,
+			`ordercode`
+		)
+		values
+		(
+			#{uid}, 
+			#{pid}, 
+			#{remker}, 
+			#{createdate}, 
+			#{price}, 
+			#{status}, 
+			#{level},
+			#{ordercode}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.HxLogDO">
+		update vrs_hx_log 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="pid != null">`pid` = #{pid}, </if>
+			<if test="remker != null">`remker` = #{remker}, </if>
+			<if test="createdate != null">`createDate` = #{createdate}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="level != null">`level` = #{level}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_hx_log where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_hx_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

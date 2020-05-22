@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"  >
+
+
+
+
+<div class="navbar-wrapper"  th:fragment="tit">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar" ></span>
+            <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+                </button>
+                <img src="/vrH5/newVr/img/logo.png" />
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li th:each="mu : ${maps.menu}" ><a class="page-scroll"  th:href="${mu.hrefs}" th:text="${mu.name}">首页</a></li>
+
+                    <li><a class="page-scroll" style="color: yellow;" href="#">个人VIP</a></li>
+                    <li><a class="page-scroll" style="color: yellow;" href="#">企业VIP</a></li>
+                    <li><a class="page-scroll" style="color: yellow;" href="#">工厂VIP</a></li>
+                    <div class="page-scroll-div">
+                        <font class="page-scroll-font">我的方案</font>
+                    </div>
+                    <div class="page-scroll-div2">
+                        <font class="page-scroll-font2"><span>登录</span> / <span>注册</span></font>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+
+
+        <div  th:fragment="cen">
+
+        <section class="features container services text-center">
+            <img src="/vrH5/newVr/img/sa.jpg" width="250"  style="margin-left: -170px;position: absolute;"/>
+        </section>
+
+        <section  class="features container services" style="margin-top: 50px;">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="designs">
+                        <span class="desings-title">海量设计方案</span>
+                    </div>
+                    <div class="design-con">
+                        <span class="designs-content">定制行业顶尖设计方案，在线更新</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="designs">
+                        <span class="desings-title">一键上架展示</span>
+                    </div>
+                    <div class="design-con">
+                        <span class="designs-content">ipad,手机，触屏机多媒体展示<br>方便快捷，针对不同商家分类展示</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="designs">
+                        <span class="desings-title">一键换色展示</span>
+                    </div>
+                    <div class="design-con">
+                        <span class="designs-content">全景图实线一图多色切换展示，<br>更多选择，更多体验</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="features" class="container services text-center">
+            <button class="ollie">
+                <img src="/vrH5/newVr/img/bofang.png" />
+                新手教程
+            </button>
+            <button class="hiden"></button>
+            <button class="ollie">开始上架</button>
+        </section>
+
+
+
+
+        </div>
+</html>

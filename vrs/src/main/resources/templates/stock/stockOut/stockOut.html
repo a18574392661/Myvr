@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="stock:stockOut:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="stock:stockOut:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control" placeholder="输入商品名称、订单编号或备注" style="font-size: 12px;">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="thirdPid" name="thirdPid" class="form-control" style="font-size: 12px;">
+								<option value="">==请选择三级类别(可不选)==</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="secondPid" name="secondPid" class="form-control" style="font-size: 12px;">
+								<option value="">==请选择二级类别(可不选)==</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="firstPid" name="firstPid" class="form-control" style="font-size: 12px;">
+								<option value="">==请选择一级分类(可不选)==</option>
+								<option th:each="type: ${first}" th:value="${type.id}" th:text="${type.type}"></option>
+							</select>
+						</div>						
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="stock:stockOut:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="stock:stockOut:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="stock:stockOut:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/stock/stockOut/stockOut.js"></script>
+	<script>
+		$("#firstPid").change(function(){
+			var val = $(this).val();
+			if( val ){
+				$.get("/stock/stockType/queryByPid", {pid: val}, function(data){
+					console.log(data)
+					var options = "<option value=''>==请选择二级分类(可不选)==</option>";
+					for( var i = 0; i < data.length; i++ ){
+						options += "<option value='"+data[i].id+"'>"+data[i].type+"</option>";
+					}
+					$("#secondPid").html(options);
+					
+					var options2 = "<option value=''>==请选择三级分类(可不选)==</option>";
+					$("#thirdPid").html(options2);
+				});
+			} else {
+				var options = "<option value=''>==请选择二级分类(可不选)==</option>";
+				$("#secondPid").html(options);
+				
+				var options2 = "<option value=''>==请选择三级分类(可不选)==</option>";
+				$("#thirdPid").html(options2);
+			}
+		});
+		
+		$("#secondPid").change(function(){
+			var val = $(this).val();
+			if( val ){
+				$.get("/stock/stockType/queryByPid", {pid: val}, function(data){
+					console.log(data)
+					var options = "<option value=''>==请选择三级分类(可不选)==</option>";
+					for( var i = 0; i < data.length; i++ ){
+						options += "<option value='"+data[i].id+"'>"+data[i].type+"</option>";
+					}
+					$("#thirdPid").html(options);
+				});
+			} else {
+				var options = "<option value=''>==请选择三级分类(可不选)==</option>";
+				$("#thirdPid").html(options);
+			}
+		});
+	</script>
+</body>
+</html>

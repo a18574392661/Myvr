@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.ts.dao.CurrlogDao">
+
+	<select id="get" resultType="com.bootdo.ts.domain.CurrlogDO">
+		select `id`,`cid`,`ji`,date_format(dayDate, '%Y-%m-%d' ) as 'daydate',`startDate`,`endDate` from t_currlog where id = #{value}
+	</select>
+
+
+	<select id="getCurrCnames" resultType="com.bootdo.ts.domain.CurrlogDO" parameterType="string">
+			select kl.*,c.cname as 'cname',j.name as 'jname' from t_currlog kl
+		left join t_curr c
+		on kl.cid=c.id
+		left join t_xj j
+		on kl.ji=j.id
+
+		where
+		 kl.id=#{id}
+	</select>
+
+	<select id="list2" parameterType="java.util.Map" resultType="java.util.Map">
+			select kl.id,date_format( kl.daydate, '%Y-%m-%d' ) as 'daydate'
+ 		${tj}
+		from t_currlog kl
+		left join t_curr c
+		on kl.cid=c.id
+		left join t_xj j
+		on kl.ji=j.id
+		GROUP BY kl.daydate
+having 1=1
+   <if test="bs !=null and bs !='' ">
+
+	   <if  test="bs ==0">
+		   and to_days(kl.daydate) >= to_days(now())
+
+	   </if>
+
+	   <if test="bs ==1 ">
+		  and to_days(kl.daydate) = to_days(now())
+	   </if>
+	   <if test="bs ==2 ">
+
+		   and	YEARWEEK(DATE_FORMAT(kl.daydate,'%Y-%m-%d')) = YEARWEEK(NOW())
+	   </if>
+	   <if test="bs ==3 ">
+		   and	YEARWEEK(DATE_FORMAT(kl.daydate,'%Y-%m-%d')) = YEARWEEK(NOW())+1
+	   </if>
+
+	   <if test="bs ==4 ">
+		   and DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= DATE(kl.daydate)
+	   </if>
+
+	   <if test="bs ==5 ">
+		   and DATE_SUB(CURDATE(), INTERVAL 30 DAY)  &gt; date(kl.daydate)
+	   </if>
+
+	   <if test="bs ==6 ">
+		   and date_sub(kl.daydate, interval 1 day)
+	   </if>
+
+	   <!--本月-->
+	   <if test="bs ==7 ">
+		   and DATE_FORMAT( kl.daydate, '%Y%m' ) = DATE_FORMAT(CURDATE(),'%Y%m' )
+	   </if>
+
+	   <if test="bs==8 ">
+		   <!--区间时间-->
+		   and kl.daydate>=#{ks} and kl.daydate &lt;= #{js}
+	   </if>
+
+	   <if test="bs==9 ">
+		   <!--自定义时间-->
+		   and kl.daydate=#{sj}
+	   </if>
+
+   </if>
+
+
+	</select>
+
+	<select id="total" parameterType="java.util.Map" resultType="int">
+		select  count(1) from (
+		select kl.id,date_format( kl.daydate, '%Y-%m-%d' ) as 'daydate'
+		${tj}
+		from t_currlog kl
+		left join t_curr c
+		on kl.cid=c.id
+		left join t_xj j
+		on kl.ji=j.id
+		GROUP BY kl.daydate
+		having 1=1
+		<if test="bs !=null and bs !='' ">
+
+			<if  test="bs =='0' ">
+				and to_days(kl.daydate) >= to_days(now())
+
+			</if>
+
+
+			<if test="bs =='1' ">
+				and to_days(kl.daydate) = to_days(now())
+			</if>
+			<!--本周-->
+			<if test="bs =='2' ">
+			and	YEARWEEK(DATE_FORMAT(kl.daydate,'%Y-%m-%d')) = YEARWEEK(NOW())
+
+			</if>
+			<!--下周-->
+			<if test="bs =='3' ">
+				and	YEARWEEK(DATE_FORMAT(kl.daydate,'%Y-%m-%d')) = YEARWEEK(NOW())+1
+			</if>
+
+			<if test="bs =='4' ">
+				and DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= DATE(kl.daydate)
+			</if>
+
+			<if test="bs ==5 ">
+				and DATE_SUB(CURDATE(), INTERVAL 30 DAY) &gt; date(kl.daydate)
+			</if>
+
+			<if test="bs =='6' ">
+				and date_sub(kl.daydate, interval 1 day)
+			</if>
+
+			<!--本月-->
+			<if test="bs =='7' ">
+				and DATE_FORMAT( kl.daydate, '%Y%m' ) = DATE_FORMAT(CURDATE(),'%Y%m' )
+			</if>
+
+
+			<if test="bs=='8' ">
+				<!--区间时间-->
+				and kl.daydate>=#{ks} and kl.daydate &lt;= #{js}
+			</if>
+
+			<if test="bs=='9' ">
+				<!--自定义时间-->
+				and kl.daydate=#{sj}
+			</if>
+		</if>
+
+
+
+		) f
+
+	</select>
+
+
+	<select id="list" resultType="com.bootdo.ts.domain.CurrlogDO">
+	<!--	select `id`,`cid`,`ji`,`dayDate`,`startDate`,`endDate` from t_currlog-->
+
+	<!--	select kl.*,c.cname as 'cname',j.name as 'jname' from t_currlog kl
+		left join t_curr c
+		on kl.cid=c.id
+		left join t_xj j
+		on kl.ji=j.id-->
+
+
+
+
+		<where>
+		  		  <if test="id != null and id != ''"> and kl.id = #{id} </if>
+		  		  <if test="cid != null and cid != ''"> and kl.cid = #{cid} </if>
+		  		  <if test="ji != null and ji != ''"> and kl.ji = #{ji} </if>
+		  		  <if test="daydate != null and daydate != ''"> and dayDate = #{daydate} </if>
+		  		  <if test="startdate != null and startdate != ''"> and startDate = #{startdate} </if>
+		  		  <if test="enddate != null and enddate != ''"> and endDate = #{enddate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by kl.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_currlog
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <if test="ji != null and ji != ''"> and ji = #{ji} </if>
+		  		  <if test="daydate != null and daydate != ''"> and dayDate = #{daydate} </if>
+		  		  <if test="startdate != null and startdate != ''"> and startDate = #{startdate} </if>
+		  		  <if test="enddate != null and enddate != ''"> and endDate = #{enddate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.ts.domain.CurrlogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_currlog
+		(
+			`cid`, 
+			`ji`, 
+			`dayDate`, 
+			`startDate`, 
+			`endDate`
+		)
+		values
+		(
+			#{cid}, 
+			#{ji}, 
+			#{daydate}, 
+			#{startdate}, 
+			#{enddate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.ts.domain.CurrlogDO">
+		update t_currlog 
+		<set>
+			<if test="cid != null">`cid` = #{cid}, </if>
+			<if test="ji != null">`ji` = #{ji}, </if>
+			<if test="daydate != null">`dayDate` = #{daydate}, </if>
+			<if test="startdate != null">`startDate` = #{startdate}, </if>
+			<if test="enddate != null">`endDate` = #{enddate}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_currlog where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_currlog where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+
+	<select id="queryDayJkCount" parameterType="com.bootdo.ts.domain.CurrlogDO" resultType="int">
+	select  count(1) from t_currlog where  ji=#{ji} and dayDate=#{daydate} and cid=#{cid}
+
+	<if test="id !=null and id !='' ">
+		and id !=#{id}
+
+	</if>
+	</select>
+
+
+
+
+	<!--查询明天的课程安排-->
+	<select id="currAllLogs"  resultType="com.bootdo.ts.domain.CurrlogDO">
+		SELECT date_format(daydate, '%Y-%m-%d' ) as daydate from t_currlog
+		GROUP BY daydate
+		ORDER BY daydate
+	</select>
+
+	<!--根据日期联动-->
+
+	<select id="currAllLogsKc" parameterType="string" resultType="com.bootdo.ts.domain.CurrlogDO">
+		select kl.*,c.cname as 'cname',j.name as 'jname' from t_currlog kl
+		left join t_curr c
+		on kl.cid=c.id
+		left join t_xj j
+		on kl.ji=j.id
+		<where>
+			<if test="dates ==null or dates =='' ">
+
+				and to_days(kl.daydate) = to_days(now());
+			</if>
+			<if test="dates !=null and dates !='' ">
+				and kl.dayDate=#{dates}
+			</if>
+
+		</where>
+
+	</select>
+
+	<select id="querySJDays" parameterType="string" resultType="com.bootdo.ts.domain.CurrlogDO">
+		  SELECT log.*,cen.uname as 'uname',c.cname as 'cname',IFNULL(cen.id,0) as 'checked' FROM t_currlog log
+ left join t_u_cids cen
+ on log.id=cen.cid
+ left join t_curr c
+ on log.cid=c.id
+ WHERE  log.daydate=#{dates} and log.ji=#{days} and log.cid=#{cid}
+	</select>
+
+</mapper>

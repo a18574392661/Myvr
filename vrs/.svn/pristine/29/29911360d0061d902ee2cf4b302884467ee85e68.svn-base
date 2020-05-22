@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.stock.dao.StockTypeDao">
+
+	<select id="get" resultType="com.bootdo.stock.domain.StockTypeDO">
+		select `id`,`type`,`sort`,`pid`,`level` from stock_type where id = #{value}
+	</select>
+	
+	<select id="queryByPid" resultType="com.bootdo.stock.domain.StockTypeDO">
+		select `id`,`type`,`sort`,`pid`,`level` from stock_type where pid = #{value}
+	</select>
+	
+	<select id="queryFirstLevel" resultType="com.bootdo.stock.domain.StockTypeDO">
+		select `id`,`type`,`sort`,`pid`,`level` from stock_type where level=1
+	</select>
+
+	<select id="list" resultType="com.bootdo.stock.domain.StockTypeDO">
+		select `id`,`type`,`sort`,`pid`,`level` from stock_type
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="type != null and type != ''"> and type like concat('%', #{type},'%')  </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="pid != null and pid != ''"> and pid = #{pid} </if>
+		  		  <if test="level != null and level != ''"> and level = #{level} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from stock_type
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="type != null and type != ''"> and type like concat('%', #{type},'%')  </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="pid != null and pid != ''"> and pid = #{pid} </if>
+		  		  <if test="level != null and level != ''"> and level = #{level} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.stock.domain.StockTypeDO">
+		insert into stock_type
+		(
+			`id`, 
+			`type`, 
+			`sort`, 
+			`pid`, 
+			`level`
+		)
+		values
+		(
+			#{id}, 
+			#{type}, 
+			#{sort}, 
+			#{pid}, 
+			#{level}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.stock.domain.StockTypeDO">
+		update stock_type 
+		<set>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="pid != null">`pid` = #{pid}, </if>
+			<if test="level != null">`level` = #{level}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from stock_type where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from stock_type where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

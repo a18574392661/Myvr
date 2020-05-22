@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+
+
+							<!--<div class="form-group">
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="img" name="img" class="form-control" type="text">
+								</div>
+							</div>-->
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">详细图片：</label>
+								<div class="col-sm-8">
+									<div >
+										<button type="button" class="layui-btn" id="test2">多图片上传</button>
+										<blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;width: 88%">
+											    	预览图：
+											    <div class="layui-upload-list uploader-list" style="overflow: auto;" id="uploader-list">
+											    </div>
+										</blockquote>
+									</div>
+								</div>
+							</div>
+							<div id="is">
+
+							</div>
+
+
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">排序：</label>
+								<div class="col-sm-8">
+									<input id="sort" name="sort" class="form-control" type="text">
+								</div>
+							</div>
+
+											<!--			<div class="form-group">
+								<label class="col-sm-3 control-label">产品图片id：</label>
+								<div class="col-sm-8">-->
+									<input id="cid" name="cid" class="form-control" type="hidden" th:value="${cid}">
+							<!--	</div>
+							</div>-->
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/imgsSyt/add.js">
+	</script>
+
+
+	<script src="/js/layui.js"></script>
+
+
+	<script>
+
+		layui.use('upload', function () {
+			var upload = layui.upload;
+
+			upload.render({
+				elem: '#test2'
+				,url: '/school/upload?name=vr'
+				,multiple: true
+				,before: function(obj){
+					layer.msg('图片上传中...', {
+						icon: 16,
+						shade: 0.01,
+						time: 0
+					})
+				}
+				,done: function(res,index){
+
+					layer.close(layer.msg());//关闭上传提示窗口
+					//上传完毕
+					var i="<div id='tp"+index+"'> <input  type='checkbox' checked='true' name='imgsCls' value='"+res.fileName+"' /> </div>";
+					$('#uploader-list').append(
+							'<div id="" class="file-iteme">' +
+							'<div class="handle"><span class="glyphicon glyphicon-trash"></span>'+i+'</div>' +
+							'<img style="width: 100px;height: 100px;" src='+ res.fileName +'>' +
+							'<div class="info"></div>' +
+							'</div>'
+					);
+
+					$("#tp"+index).hide();
+
+
+				}
+			});
+			$(document).on("mouseenter mouseleave", ".file-iteme", function(event){
+				if(event.type === "mouseenter"){
+					//鼠标悬浮
+					$(this).children(".info").fadeIn("fast");
+					$(this).children(".handle").fadeIn("fast");
+				}else if(event.type === "mouseleave") {
+					//鼠标离开
+					$(this).children(".info").hide();
+					$(this).children(".handle").hide();
+				}
+			});
+			// 删除图片
+			$(document).on("click", ".file-iteme .handle", function(event){
+				$(this).parent().remove();
+			});
+
+		});
+
+
+
+	</script>
+
+</body>
+</html>

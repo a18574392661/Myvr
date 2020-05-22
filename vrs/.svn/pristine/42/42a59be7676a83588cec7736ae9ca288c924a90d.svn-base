@@ -1,0 +1,602 @@
+<!DOCTYPE html><!-- Required tag for HTML5 -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keyword" content="">
+    <meta name="description" content="">
+    <!-- Incluse css and media files -->
+	<!-- Incluse css and media files -->
+	<link rel="icon" type="image/png" href="#"><!-- favicon icon -->
+<!--	<link href="https://fonts.googleapis.com/css?family=Barlow:400,500,600,700,800,900" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,800,900" rel="stylesheet">-->
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/flaticon.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/animate.min.css">
+	<link rel="stylesheet" href="/vrH5/assets/css/jquery.fancybox.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/owl.carousel.min.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/owl.theme.default.min.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/perfect-scrollbar.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/responsive.css">
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/color.css">
+	<link rel="stylesheet" href="style.css">
+	<!-- REVOLUTION STYLE SHEETS -->
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/settings.css" />
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/navigation.css" />
+	<link rel="stylesheet" type="text/css" href="/vrH5/assets/css/revolution/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+
+    <title>换色系统</title>
+	<style>
+		.index-button{background-color:#DA231B ; color: #FFFFFF; border: none; border-radius: 5px; }
+		.head{margin-top: 5px;}
+		.dom{border: 0; appearance:none;}
+		.index-button2{background-color:#E47919 ; color: #FFFFFF; border: none; border-radius: 5px; width: 80px}
+		.help{margin-left: 10px;}
+		.roundness{border:solid 1px #000000; width: 18px;height: 18px;background-color:yellow;border-radius: 50%;-moz-border-radius: 50%;-webkit-border-radius: 50%;}
+		.index{margin-left: 5%;}
+		.index-first{margin-left: 5%;}
+		.index-first-button{background-color:#FFFFFF ; color: #2281B8; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.index-two-button{background-color:#2281B8 ; color: #FFFFFF; border:1px solid #2281B8; border-radius: 40px; width: 80px; height: 30px; }
+		.sousou{background-color: #2281B8; border:1px solid #2281B8;}
+		.fangan{background-color: #71706E; width: 300px; height: 1px; position: absolute; margin-top: 30px; margin-left: -305px;}
+		.fangan2{background-color: #71706E; width: 300px; height: 1px; position: absolute;margin-top: 30px; margin-left: 197px;}
+		 #page li{
+		    cursor:pointer;
+		}
+		.text-with-hr {
+		    text-align: center;
+		    position: relative;
+		    z-index: 2;
+		}
+		.text-with-hr:before {
+		    position: absolute;
+		    content: '';
+		    top: 20px;
+		    left: 0px;
+		    width: 100%;
+		    border-bottom: 1px solid #EF9A4A;
+		    z-index: -1;
+		}
+		.text-with-hr span {
+		    display: inline-block;
+		    background: white;
+			margin-top: -8px;
+		    padding: 10px;
+		}
+		.col-xs-5ths, .col-sm-5ths, .col-md-5ths, .col-lg-5ths {
+			position: relative;
+			min-height: 1px;
+			padding-right: 10px;
+			padding-left: 10px;
+		}
+		
+		@media ( min-width : 768px) {
+			.col-sm-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 992px) {
+			.col-md-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+		
+		@media ( min-width : 1200px) {
+			.col-lg-5ths {
+				width: 20%;
+				float: left;
+			}
+		}
+	</style>
+	<style>
+		.wd{border: 0px; border-radius: 20px; background-color: #037BBF; color: white; width: 150px; margin-left: 120px;}
+		.lookmore{width: 100%; border: 0px; background-color: #EBF1FD; color: #718BE2;}
+		.over {position: fixed; left:0; top:0; width:100%; z-index:100;}
+	    .tempContainer {position:fixed; width:100%; margin-right:0px; margin-left:0px; text-align:center; z-index:101;}
+	</style>
+
+	<style>
+		#krpanoSWFObject{min-height: 320px;border-radius: 10px;}
+	</style>
+</head>
+<body onload="loadImg(1)">
+
+
+<script type="text/javascript" src="/vrH5/assets/js/jquery.min.js"></script>
+
+<div class="theme-layout">
+	<div class="se-pre-con"></div><!-- loader -->
+	<div th:replace="vrs/manager/house/html/zc::zc"></div>
+	<header role="banner">
+		<div class="topbar" style="background-color: #FFFFFF;">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+
+					</div>
+					<div class="col-md-6 text-right">
+					<!--	<a href="#" class="log-in-out get-login-register"><input type="button" value="立即体验" class="index-button head" /></a>-->
+						<ul class="socials">
+							<!--<li>
+								<select class="dom">
+									<option>客户端下载</option>
+								</select>&nbsp;&nbsp;&nbsp;&nbsp;
+							</li>-->
+
+							<li>
+								<div class="head help" style="cursor: pointer;" onclick="down()">客户端下载</div>
+							</li>
+
+							<script>
+								function down() {
+									location.href="/vrs/houses/to_down";
+								}
+							</script>
+
+							<li>
+								<div class="head" style="color: #C5C5C5;">|<div>
+							</li>
+							<li>
+								<div class="head">帮助中心</div>
+							</li>
+							<li>
+								<div class="head" style="color: #C5C5C5;">|<div>
+							</li>
+						<!--	<li>
+								<div class="head help">消息<font color="red">3</font></div>
+							</li>-->
+							<li>
+								<div class="head help roundness"></div>
+							</li>
+							<li>
+								<div class="head" th:if="${username !=null}"><span  th:text="${username}"></span></div>
+								<div class="head" th:if="${username == null}"><a href="/vrs/user/login">登陆</a><a  href="" data-toggle="modal" data-target="#myModal1" style="margin-left: 1rem;">注册</a></div>
+
+							</li>
+
+
+							<li th:if="${username !=null}">
+								<div class="head" ><a href="/vrs/user/to_outLogin">退出</a></div>
+							</li>
+
+							<li>
+								<div class="head" onclick="to_vip()">开通会员</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="qjt" th:value="${pro.qjtfile}">
+		<div class="full-menu-height"></div>
+		<div class="main-bar stick">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-3">
+						<div class="logo">
+							<a href="#">
+								<img src="/vrH5/assets/images/logo.jpg" alt="">
+							</a>
+						</div>
+					</div>
+					<input type="hidden" id="id" th:value="${pro.id}">
+					<input type="hidden" id="payState" th:value="${pro.payState}">
+					<div style="width: 800px;">
+						<nav role="navigation">
+							<div class="main-menu">
+								<ul>
+									<li class="menu-item-has-children" th:each="mu : ${maps.menu}"><a  title="" th:href="${mu.hrefs}" th:text="${mu.name}">首页</a>
+									<!--	<ul>
+											<li th:each="chi : ${mu.childTiles}"><a th:text="${chi.name}" th:href="${chi.hrefs}"></a></li>
+										</ul>-->
+									</li>
+
+								</ul>
+
+							</div>
+						</nav>
+					</div>
+
+					<div class="col-md-3 text-right" style="position: absolute; right: 10px;">
+						<a href="/vrs/user/to_userPro" class="butn1 butn-light" >我的方案</a>
+						<a href="/index" target="_blank" class="butn1 butn-light">个人中心</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+
+	<div class="responsive-header">
+
+		<div class="full-menu-height"></div>
+		<div class="main-bar stick">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-4 col-sm-3">
+						<div class="logo">
+							<a href="#">
+								<img src="/vrH5/assets/images/logo.png" alt="">
+							</a>
+						</div>
+					</div>
+					<div class="col-8 col-sm-9 text-right">
+
+                            <span class="resp-btn">
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menu-wraper">
+		<div class="side-menu">
+                <span class="close-menu">
+                    <i class="fa fa-times"></i>
+                </span>
+			<ul>
+				<li class="menu-item-has-children"><a href="index.html" title="">首页</a></li>
+				<li class="menu-item-has-children"><a href="html/custom_design.html" title="">定制设计</a></li>
+				<li class="menu-item-has-children"><a href="#" title="">换色系统</a></li>
+				<li class="menu-item-has-children"><a href="#" title="">门窗设计</a></li>
+				<li class="menu-item-has-children"><a href="#" title="">高端画册</a> </li>
+				<li class="menu-item-has-children"><a href="#" title="">品牌墙</a> </li>
+				<li><a href="contact.html" title="">全景导购</a>
+					<ul>
+						<li><a href="blog.html" title="">软件介绍</a></li>
+						<li><a href="blog-detail.html" title="">门店导购</a></li>
+					</ul>
+				</li>
+			</ul>
+			<div class="side-meta topbar style2">
+				<ul class="topbar-contact">
+
+				</ul>
+				<ul class="socials">
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+        <main role="main">
+             <section>
+                <div class="main-slider">
+					<div id="demo" class="carousel slide" data-ride="carousel">
+					 
+					  <!-- 指示符 -->
+					  <ul class="carousel-indicators">
+					    <li data-target="#demo" data-slide-to="0" class="active"></li>
+					    <li data-target="#demo" data-slide-to="1"></li>
+					    <li data-target="#demo" data-slide-to="2"></li>
+					  </ul>
+						<script src="/h5pano/tour.js"></script>
+
+					 <div class="overview-area area-padding">
+					 	<div class="container">
+					 		<div class="row">
+					             <!-- Start Column -->
+					             <div class="col-md-6 col-sm-12 col-xs-12">
+					                 <div class="overview-image">
+					                 	<!-- 点击放大图片 -->
+					 					<div class="over"></div><!--背景层-->
+					 					<div class="logoImg amplifyImg"><!--注意：此处的amlifyImg不可少-->
+
+											<div id="pano" style="width:100%;height:100%;min-height: 320px;">
+												<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
+
+												<script>
+													function loadImg(val) {
+
+														embedpano({swf:"/h5pano/tour.swf", xml:"/h5pano/tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true});
+														/*定义控件*/
+														var krpano = document.getElementById("krpanoSWFObject");
+														/*******************动态数据获取*******************/
+														var name = "aa3456345";
+														var sd_path2='';
+														if(val===1||val==='1'){
+														 sd_path2 ="/files/qjt/vtour/panos/"+$("#qjt").val();
+														}else{
+														 sd_path2 ="/files/qjt/vtour/panos/"+val;
+														}
+
+
+														var xml = '<scene name="'+name+'" title="1" onstart=""   lat="" lng="" heading="">' +
+																'<view hlookat="0.0" vlookat="0.0" fovtype="MFOV"  fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" /><image><cube url="'+ sd_path2 + '/pano_%s.jpg"/></image></scene>';
+
+														//if( !krpano ) krpano = document.getElementById("krpanoSWFObject");
+
+														krpano.call("loadxml(" + xml + ");");//切换场景
+														krpano.call("skin_loadscene("+name+");");//加载某个场景
+
+													}
+
+
+												</script>
+
+
+											</div>
+
+
+											<!--<img th:src="${pro.img}" src="/vrH5/img/about/vd.jpg" alt="overview">--><!-- 此处是引入图片的路径 -->
+					 					</div>
+					                 	<!-- <div class="video-content">
+					 						<a href="https://www.bilibili.com/video/BV15i4y1879X?spm_id_from=333.851.b_7265706f7274466972737432.4" class="video-play vid-zone">
+					 							<i class="fa fa-play"></i>
+					 						</a>
+					 					</div> -->
+					                 </div>
+
+
+					 				<font color="#0044CC" style=" position: absolute; right: 26px; margin-top: 2px;"></font>
+					 		    </div>
+					 			<div class="col-md-6 col-sm-12 col-xs-12">
+					 			    <div class="overview-image" style="margin-top: 30px;">
+					 			    	<div class="section-headline">
+					 			    	    <h3 th:text="${pro.name}">标题</h3>
+											编号:<font th:text="${pro.code}">风格</font><br>
+											是否免费:<font th:text="${pro.payState==1?'付费':'免费'}">风格</font><br>
+					 						<!--<font>户主</font><br>
+					 						<font>风格</font><br>
+					 						<font>空间</font>-->
+					 						<div style="background-color: #71706E; width: 300px; height: 1px;"></div>
+
+					 			    	</div>
+
+					 					<div style="background-color: #E2E0E1; width: 300px; height: 1px; margin-top: 90px; position: absolute;"></div>
+					 					<input type="button" value="加入我的云视" class="wd"  onclick="saveMypro()"/>
+					 					
+					 			    </div>
+					 			</div>
+					 		</div>
+					 	</div>
+					</div>
+					<div class="location-area bg-color area-padding-2 fix">
+					     <div class="container">
+					     	<div class="row">
+					             <!-- Start Column -->
+					             <div class="col-md-6 col-sm-12 col-xs-12">
+					                <div class="row" style="margin-top: 1.5rem;">
+					                		<div class="col-md-4 col-sm-6 col-xs-12" th:each="cols :${colorList}">
+												<!--border:solid 1px #000-->
+					                			<div style="width: 150px; height: 150px;">
+													<img  th:src="${cols.colorimg}" width="100%" height="100%" th:onclick="'javascript:to_color('+${cols.id}+');'" >
+												</div>
+					                			<!--<font style="margin-left: 45px;"  th:text="${pro.code}"></font>-->
+					                		</div>
+					                </div>	
+
+
+									<div class="info-box" style="margin-top: 50px;">
+									    <section style="margin-top: 50px;">
+									    	<div class="block no-gap overlap-75">
+									    		<div class="container text-center">
+									    			<nav aria-label="Page navigation example">
+									    			  <ul class="pagination" th:if="${proDetas.pages gt 0}">
+														  <li class="page-item"><a class="page-link" th:href="'javascript:toPage('+${proDetas.prePage}+');'">上一页</a></li>
+
+														  <li th:class="${page==i?'page-item active':'page-item'}" th:each="i:${#numbers.sequence(1,proDetas.pages)}"><a class="page-link"  th:href="'javascript:toPage('+${i}+');'" th:text="${i}">1</a></li>
+
+														  <li class="page-item"><a class="page-link" th:href="'javascript:toPage('+${proDetas.nextPage}+');'">下一页</a></li>
+
+									    			  </ul>
+									    			</nav>
+									    		</div>
+									    	</div>
+									    </section>
+									</div>
+					     	    </div>
+								<div>
+								     <div  style="width: 260px; box-shadow: 0 0 15px #4E4E4E; margin-top: 10px; margin-left: 20px;">
+								     	<div class="overview-image" style="background-color: #FFFFFF; margin-top: 30px;">
+								     		<div class="section-headline" style="height: 60px;">
+								     			<font color="#000000" style="position: absolute; margin-top: 10px; margin-left: 10px;">推荐方案</font>
+								     		</div>
+								     		<div th:each="simg : ${imgsStysinfo.list}" style="margin-top: 2rem;">
+								     			<img src="img/service/2.jpg" style="height: 100px; margin-left: 12px; width: 90%;"  th:src="${simg.pimg}"/>
+								     		</div>
+
+								     		<div class="info-box">
+								     		    <section style="margin-top: 50px;">
+								     		    	<div class="block no-gap overlap-75">
+								     		    		<div class="container text-center">
+								     		    			<nav aria-label="Page navigation example">
+								     		    			  <ul class="pagination">
+																  <div style="margin-top: 5px;" id="toCls">
+																	  <input type="button" value="查看更多方案" class="lookmore"  />
+																  </div>
+								     		    			  </ul>
+								     		    			</nav>
+								     		    		</div>
+								     		    	</div>
+								     		    </section>
+								     		</div>
+								     	</div>
+								     </div>
+								</div>
+					 			
+					     	</div>
+					     </div>
+					</div>
+			
+
+						<input type="hidden" id="name" th:value="${pro.name}"/>
+			
+			</main>
+
+
+
+		<script type="text/javascript" src="/vrH5/assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/vrH5/assets/js/script.js"></script>
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+
+
+	<script>
+
+		function to_color(id) {
+					//alert(id)
+			$.get("/pro/h5/queryColorCarid",{"id":id},function (data) {
+				loadImg(data.qjt);
+
+
+			})
+		}
+		function toPage(page) {
+			var id=$("#id").val();
+ 			location.href="/pro/h5/proHuance?page="+page+"&id="+id;
+		}
+
+		$(function () {
+			//去换色系统1
+			$("#toCls").click(function(){
+				location.href="/vrs/houses/pageListG";
+			})
+		})
+
+	</script>
+    <script>
+        $(document).ready(function () {
+            var imgsObj = $('.amplifyImg img');//需要放大的图像
+            if(imgsObj){
+                $.each(imgsObj,function(){
+                    $(this).click(function(){
+                        var currImg = $(this);
+                        coverLayer(1);
+                        var tempContainer = $('<div class=tempContainer></div>');//图片容器
+                        with(tempContainer){//width方法等同于$(this)
+                            appendTo("body");
+                            var windowWidth=$(window).width();
+                            var windowHeight=$(window).height();
+                            //获取图片原始宽度、高度
+                            var orignImg = new Image();
+                            orignImg.src =currImg.attr("src") ;
+                            var currImgWidth= orignImg.width;
+                            var currImgHeight = orignImg.height;
+                           if(currImgWidth<windowWidth){//为了让图片不失真，当图片宽度较小的时候，保留原图
+                                if(currImgHeight<windowHeight){
+                                    var topHeight=(windowHeight-currImgHeight)/2;
+                                    if(topHeight>35){/*此处为了使图片高度上居中显示在整个手机屏幕中：因为在android,ios的微信中会有一个title导航，35为title导航的高度*/
+                                        topHeight=topHeight-35;
+                                        css('top',topHeight);
+                                    }else{
+                                        css('top',0);
+                                    }
+                                    html('<img border=0 src=' + currImg.attr('src') + '>');
+                                }else{
+                                    css('top',0);
+                                    html('<img border=0 src=' + currImg.attr('src') + ' height='+windowHeight+'>');
+                                }
+                            }else{
+                                var currImgChangeHeight=(currImgHeight*windowWidth)/currImgWidth;
+                                if(currImgChangeHeight<windowHeight){
+                                    var topHeight=(windowHeight-currImgChangeHeight)/2;
+                                    if(topHeight>35){
+                                        topHeight=topHeight-35;
+                                        css('top',topHeight);
+                                    }else{
+                                        css('top',0);
+                                    }
+                                    html('<img border=0 src=' + currImg.attr('src') + ' width='+windowWidth+';>');
+                                }else{
+                                    css('top',0);
+                                    html('<img border=0 src=' + currImg.attr('src') + ' width='+windowWidth+'; height='+windowHeight+'>');
+                                }
+                            }
+                        }
+                        tempContainer.click(function(){
+                            $(this).remove();
+                            coverLayer(0);
+                        });
+                    });
+                });
+            }
+            else{
+                return false;
+            }
+            //使用禁用蒙层效果
+            function coverLayer(tag){
+                with($('.over')){
+                    if(tag==1){
+                        css('height',$(document).height());
+                        css('display','block');
+                        css('opacity',1);
+                        css("background-color","#FFFFFF");
+                        css("background-color","rgba(0,0,0,0.7)" );  //蒙层透明度
+                    }
+                    else{
+                        css('display','none');
+                   }
+               }
+            }
+        });
+    </script>
+
+	<script>
+		function saveMypro() {
+			//判断图片是否1免费
+			var id=$("#id").val();
+			var payState=$("#payState").val();
+			//alert(id+"//"+payState);
+			//var val=$("#uid").val();
+		 $.get("/vrs/user/getUserVerity",function (data) {
+            if(data.success==false){
+            	alert(data.message);
+            	location.href="/vrs/user/login?url=/pro/h5/proHuance?id="+id;
+            	return;
+			}
+            else{
+				savePro(id);
+			}
+
+		})
+
+
+
+		}
+
+		function savePro(pid){
+			var m=prompt("请输入你要给的昵称(不输入默认产品名字,不输入默认不加入)",$("#name").val());
+
+			if (m)
+			{
+				if (m==""||m==null||m.length<=0)
+				{
+
+				}
+				else
+				{
+					$.post("/vrs/user/saveMyPro",{"proid":pid,"name":m},function (data) {
+						alert(data.message)
+					})
+				}
+				}
+				else
+				{
+
+				}
+
+		}
+
+
+		function to_vip(){
+			location.href="/pro/h5/queryVip"
+		}
+
+
+	</script>
+
+
+
+    
+</body>
+</html>

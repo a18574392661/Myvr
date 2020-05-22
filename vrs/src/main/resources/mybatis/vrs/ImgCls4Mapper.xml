@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.ImgCls4Dao">
+
+	<select id="get" resultType="com.bootdo.vrs.domain.ImgCls4DO">
+		select `id`,`name`,`status`,`cid`,`sort`,`updateDate` from vrs_img_cls4 where id = #{value}
+	</select>
+	
+	<!-- 是否可以删除当前分类-门窗设计 -->
+	<select id="contains" resultType="java.util.Map">
+		select  
+			pro.*,category.name categoryname,category.cid categoryid 
+		from 
+			vrs_pro pro 
+		inner join 
+			vrs_img_cls4 category
+		where pro.cid = #{id} and pro.typeid = category.cid
+	</select>
+	
+	<!-- 获取所属分类 -->
+	<select id="getCategory" resultType="com.bootdo.vrs.domain.ImgCls4DO">
+		select category.*,menu.`name` category from vrs_img_cls4 category inner join vrs_title_cls menu
+		on 
+			category.cid = menu.id
+		where 
+			category.id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.vrs.domain.ImgCls4DO">
+		select `id`,`name`,`status`,`cid` from vrs_img_cls4
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and <!-- name = #{name} --> name like concat('%',#{name},'%')  </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  	<!-- 新加字段 -->
+		  		   <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		   <if test="updateDate != null"> and updateDate = #{updateDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_img_cls4
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and <!-- name = #{name} --> name like concat('%',#{name},'%') </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <!-- 新加字段 -->
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="updateDate != null"> and updateDate = #{updateDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.ImgCls4DO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_img_cls4
+		(
+			`name`, 
+			`status`, 
+			`cid`,
+			`sort`,
+			`updateDate`
+		)
+		values
+		(
+			#{name}, 
+			#{status}, 
+			#{cid},
+			#{sort},
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.ImgCls4DO">
+		update vrs_img_cls4 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="cid != null">`cid` = #{cid}</if>
+			<!-- 新增字段 -->
+			<if test="sort != null and sort != ''"> `sort` = #{sort},</if>
+			<if test="updateDate != null"> `updateDate` = #{updateDate},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_img_cls4
+		where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_img_cls4
+		where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

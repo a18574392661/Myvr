@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title th:text="${ht.title}"></title>
+    <script src="/h5/js/mui.min.js"></script>
+    <link href="/h5/css/mui.min.css" rel="stylesheet"/>
+	<link href="/h5/css/iconfont.css" rel="stylesheet"/>
+	<link href="/h5/css/common.css" rel="stylesheet"/>
+	<link href="/h5/css/imgviewer.css" rel="stylesheet"/>
+	<style>
+		html,body,.mui-content,p{background-color: #ffffff;margin:0px}
+		#xyContainer{padding: 0px;background: #ffffff;margin:0px}
+		body,html,.mui-content{background: #ffffff;}
+		img{display: block;}
+		
+	</style>
+</head>
+<body>
+	<!-- <header class="mui-bar mui-bar-nav">
+		 <h1 class="mui-title" id="titleId" th:text="${ht.title}">协议</h1> 
+	</header> -->
+	<div class="mui-content">
+		<div id="xyContainer" th:utext="${ht.context}">
+			
+		</div>
+		<div style="font-size: 12px;text-align:center;width: 90%;color: #666;background: #ffffff;padding: 15px 0;margin: 0 auto;">
+			<div>艾沐馨家居荣誉出品，盗图必究</div>
+			<div>地址: 长沙市井湾子家具城A座一楼/二楼艾沐馨/爱曼堡家居</div>
+			<div>电话: 18773187178 / 18684970308</div>
+		</div>
+	</div>
+	<script src="/h5/js/jquery.min.js"></script>
+	<script src="/h5/js/common.js"></script>
+	<script src="/h5/js/mui.zoom.js"></script>
+	<script src="/h5/js/mui.previewimage.js"></script>
+	
+	<script type="text/javascript">
+		mui.init();
+		
+		$(function() {
+			loadXy();
+		});
+		
+		function loadXy(){
+			$("#xyContainer").find("img").attr("data-preview-src", "");
+			$("#xyContainer").find("img").attr("data-preview-group", "88");
+			
+			mui.previewImage();
+		}
+		
+	</script>
+</body>
+</html>

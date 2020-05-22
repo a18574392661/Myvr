@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vr.dao.RoomTypeImgsDao">
+
+	<select id="get" resultType="com.bootdo.vr.domain.RoomTypeImgsDO">
+		select `id`,`room_id`,`img`,`sort` from vr_room_type_imgs where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.vr.domain.RoomTypeImgsDO">
+		select `id`,`room_id`,`img`,`sort` from vr_room_type_imgs
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="roomId != null and roomId != ''"> and room_id = #{roomId} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vr_room_type_imgs
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="roomId != null and roomId != ''"> and room_id = #{roomId} </if>
+		  		  <if test="img != null and img != ''"> and img = #{img} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vr.domain.RoomTypeImgsDO">
+		insert into vr_room_type_imgs
+		(
+			`id`, 
+			`room_id`, 
+			`img`, 
+			`sort`
+		)
+		values
+		(
+			#{id}, 
+			#{roomId}, 
+			#{img}, 
+			#{sort}
+		)
+	</insert>
+	
+	<insert id="saveBatch" parameterType="java.util.Map">
+		insert into vr_room_type_imgs (`room_id`, `img`)
+		values
+		<foreach item="img" collection="imgs" open="" separator="," close="">
+			(#{roomId}, #{img})
+		</foreach>
+	</insert>
+	
+	<delete id="removeByRoomId">
+		delete from vr_room_type_imgs where room_id = #{value}
+	</delete>
+	
+	<update id="update" parameterType="com.bootdo.vr.domain.RoomTypeImgsDO">
+		update vr_room_type_imgs 
+		<set>
+			<if test="roomId != null">`room_id` = #{roomId}, </if>
+			<if test="img != null">`img` = #{img}, </if>
+			<if test="sort != null">`sort` = #{sort}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vr_room_type_imgs where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vr_room_type_imgs where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

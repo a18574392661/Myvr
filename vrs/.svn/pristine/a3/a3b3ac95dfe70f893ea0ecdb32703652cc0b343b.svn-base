@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vrs.dao.PayorderLogDao">
+
+	<resultMap id="payLogAll" type="com.bootdo.vrs.domain.PayorderLogDO">
+			<id column="id" property="id"></id>
+      	<result column="status" property="status"></result>
+		<result column="paysta" property="paysta"></result>
+		<result column="createDate" property="createdate"></result>
+		<result column="hprice" property="hprice"></result>
+		<result column="price" property="price"></result>
+		<result column="paysta" property="paysta"></result>
+		<result column="tradeNo" property="tradeNo"></result>
+		<result column="ordercode" property="ordercode"></result>
+		<result column="remark" property="remark"></result>
+		<result column="uid" property="uid"></result>
+		<result column="payDate" property="payDate"></result>
+		<result column="context" property="context"></result>
+		<result column="month" property="month"></result>
+	</resultMap>
+
+	<resultMap id="payLogUserAll" type="com.bootdo.vrs.domain.PayorderLogDO" extends="payLogAll">
+ 		<association property="userDO" javaType="com.bootdo.vrs.domain.UserDO">
+			<result column="name" property="name"></result>
+			<result column="username" property="username"></result>
+		</association>
+	</resultMap>
+
+	<select id="get" resultType="com.bootdo.vrs.domain.PayorderLogDO">
+	
+		select * from vrs_payorder_log where id = #{value}
+	</select>
+
+	<select id="list" resultMap="payLogUserAll">
+		select log.*,u.username as 'username' ,u.name as 'name' from vrs_payorder_log log
+		left join  sys_user u
+		on log.uid=u.user_id
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="ordercode != null and ordercode != ''"> and log.ordercode = #{ordercode} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="hprice != null and hprice != ''"> and hprice = #{hprice} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="paysta != null and paysta != ''"> and paySta = #{paysta} </if>
+		  		  <if test="uid != null and uid != ''"> and log.uid = #{uid} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		
+		  		  <if test="tradeNo != null and tradeNo != ''"> and tradeNo = #{tradeNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vrs_payorder_log
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="ordercode != null and ordercode != ''"> and ordercode = #{ordercode} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="hprice != null and hprice != ''"> and hprice = #{hprice} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="paysta != null and paysta != ''"> and paySta = #{paysta} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		
+		  		  <if test="tradeNo != null and tradeNo != ''"> and tradeNo = #{tradeNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vrs.domain.PayorderLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into vrs_payorder_log
+		(
+			`ordercode`, 
+			`price`, 
+			`hprice`, 
+			`status`, 
+			`remark`, 
+			`paySta`, 
+			`uid`, 
+			`createDate`, 
+			`tradeNo`,
+			`payDate`,
+			`context`,
+			`month`
+
+		)
+		values
+		(
+			#{ordercode}, 
+			#{price}, 
+			#{hprice}, 
+			#{status}, 
+			#{remark}, 
+			#{paysta}, 
+			#{uid}, 
+			#{createdate}, 
+
+			#{tradeno},
+			#{payDate},
+
+			#{context},
+			#{month}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vrs.domain.PayorderLogDO">
+		update vrs_payorder_log 
+		<set>
+			<if test="ordercode != null">`ordercode` = #{ordercode}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="hprice != null">`hprice` = #{hprice}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="paysta != null">`paySta` = #{paysta}, </if>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="createdate != null">`createDate` = #{createdate}, </if>
+			<if test="tradeNo != null">`tradeNo` = #{tradeNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vrs_payorder_log where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vrs_payorder_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

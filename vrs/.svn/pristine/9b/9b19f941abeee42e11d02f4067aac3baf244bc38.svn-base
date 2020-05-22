@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vr.dao.RomeTypeDao">
+
+	<select id="get" resultType="com.bootdo.vr.domain.RomeTypeDO">
+		select `rome_id`,`left_style_id`,`rome_name`,`rome_sort`,top_style_id,imgs from vr_rome_type where rome_id = #{value}
+	</select>
+
+	<select id="queryByLeftStyleId"  resultType="com.bootdo.vr.domain.RomeTypeDO">
+		select * from vr_rome_type where left_style_id=#{value}
+	</select>
+	
+
+	<select id="list" resultType="com.bootdo.vr.domain.RomeTypeDO">
+		select a.*,b.top_name,c.left_name from vr_rome_type a 
+		left join vr_top_style b on a.top_style_id = b.top_id
+		left join vr_left_style c on a.left_style_id=c.left_id
+        <where>  
+		  		  <if test="romeId != null and romeId != ''"> and a.rome_id = #{romeId} </if>
+		  		  <if test="topStyleId != null and topStyleId != ''"> and a.top_style_id = #{topStyleId} </if>
+		  		  <if test="leftStyleId != null and leftStyleId != ''"> and a.left_style_id = #{leftStyleId} </if>
+		  		  <if test="romeName != null and romeName != ''"> and a.rome_name = #{romeName} </if>
+		  		  <if test="romeSort != null and romeSort != ''"> and a.rome_sort = #{romeSort} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by rome_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vr_rome_type a 
+		left join vr_top_style b on a.top_style_id = b.top_id
+		left join vr_left_style c on a.left_style_id=c.left_id
+        <where>  
+  		  <if test="romeId != null and romeId != ''"> and a.rome_id = #{romeId} </if>
+  		  <if test="topStyleId != null and topStyleId != ''"> and a.top_style_id = #{topStyleId} </if>
+  		  <if test="leftStyleId != null and leftStyleId != ''"> and a.left_style_id = #{leftStyleId} </if>
+  		  <if test="romeName != null and romeName != ''"> and a.rome_name = #{romeName} </if>
+  		  <if test="romeSort != null and romeSort != ''"> and a.rome_sort = #{romeSort} </if>
+  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vr.domain.RomeTypeDO" useGeneratedKeys="true" keyProperty="romeId">
+		insert into vr_rome_type
+		(
+			`rome_id`,
+			top_style_id, 
+			`left_style_id`, 
+			`rome_name`, 
+			`rome_sort`,
+			imgs
+		)
+		values
+		(
+			#{romeId},
+			#{topStyleId}, 
+			#{leftStyleId}, 
+			#{romeName}, 
+			#{romeSort},
+			#{imgs}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.vr.domain.RomeTypeDO">
+		update vr_rome_type 
+		<set>
+			<if test="topStyleId != null">`top_style_id` = #{topStyleId}, </if>
+			<if test="leftStyleId != null">`left_style_id` = #{leftStyleId}, </if>
+			<if test="romeName != null">`rome_name` = #{romeName}, </if>
+			<if test="imgs != null">`imgs` = #{imgs}, </if>
+			<if test="romeSort != null">`rome_sort` = #{romeSort}</if>
+		</set>
+		where rome_id = #{romeId}
+	</update>
+	
+	<delete id="remove">
+		delete from vr_rome_type where rome_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vr_rome_type where rome_id in 
+		<foreach item="romeId" collection="array" open="(" separator="," close=")">
+			#{romeId}
+		</foreach>
+	</delete>
+
+</mapper>

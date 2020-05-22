@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${uCids.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="uid" name="uid" th:value="${uCids.uid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="cid" name="cid" th:value="${uCids.cid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">座位id：</label>
+								<div class="col-sm-8">
+									<input id="zid" name="zid" th:value="${uCids.zid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">预约时间：</label>
+								<div class="col-sm-8">
+									<input id="createdate" name="createdate" th:value="${uCids.createdate}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/ts/uCids/edit.js">
+	</script>
+</body>
+</html>

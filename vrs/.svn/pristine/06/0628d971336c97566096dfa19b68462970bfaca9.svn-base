@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+	.control-label{height: 46px;line-height: 40px;}
+</style>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+
+							<!--避免选择二级分类-->
+			<input type="hidden" id="cid2" name="cid2">
+
+
+							<div class="form-group" >
+								<label class="col-sm-3 control-label">是否免费:</label>
+								<div class="col-sm-8" >
+									<label  for="payState1" onclick="checks('payState')">
+										<input style="vertical-align: middle;"  id="payState" name="payState"  type="radio" value="0" checked >
+										<span style="vertical-align: middle;display: inline-block;height: 46px;line-height: 50px;">免费</span>
+									</label>
+									<label style="margin-left: 20px;" for="payYes" onclick="checks('payYes')">
+										<input style="vertical-align: middle;" name="payState" id="payYes" type="radio" value="1" >
+										<span style="vertical-align: middle;display: inline-block;height: 46px;line-height: 50px;">付费</span>
+									</label>
+								</div>
+							</div>
+
+
+							<div class="form-group" >
+								<label class="col-sm-3 control-label">是否展示到网页:</label>
+								<div class="col-sm-8" >
+									<label  for="payState2" onclick="checks('z1')">
+										<input style="vertical-align: middle;"  name="status"  type="radio" id="z1" value="1" checked >
+										<span style="vertical-align: middle;display: inline-block;height: 46px;line-height: 50px;">展示</span>
+									</label>
+									<label style="margin-left: 20px;" for="payYes1"  onclick="checks('z2')">
+										<input style="vertical-align: middle;" name="status"  id="z2" type="radio" value="0" >
+										<span style="vertical-align: middle;display: inline-block;height: 46px;line-height: 50px;">不展示</span>
+									</label>
+								</div>
+							</div>
+
+
+
+
+
+
+
+
+
+							<div class="form-group">
+									<label class="col-sm-3 control-label">所属分类标签:</label>
+									<div class="col-sm-8">
+									<span  th:each="title : ${typeCls}">
+												<label  for="payState1">
+												<input style="vertical-align: middle;" type="checkbox" name="tids" th:value="${title.id}" th:id="'c'+${title.id}">
+												<span style="vertical-align: middle;display: inline-block;height: 46px;line-height: 50px;" th:text="${title.name}" th:onclick="'javascript:ff('+${title.id}+');'"></span> &nbsp;
+													</label>
+
+										</span>
+									</div>
+								</div>
+
+							<!--根据展示的标签展示不同的分类 typeid不同-->
+							<!--2 3 4 一级分类的-->
+							<div class="form-group" >
+								<label class="col-sm-3 control-label">选择标签分类：</label>
+								<div class="col-sm-5">
+									<select  id="typeid" name="typeid" class="form-control" required="required" style="width: 15rem;">
+										<option value="" >请选择</option>
+										<option  th:each="title : ${typeCls}" th:text="${title.name}" th:value="${title.id}">请选择</option>
+									</select>
+
+								</div>
+							</div>
+
+
+							<div id="bigCls">
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default" th:each="cls,sta : ${list}">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<h4 class="panel-title">
+												<a th:text="${cls.name}" role="button" data-toggle="collapse" data-parent="#accordion" th:href="'#collapseOne'+${cls.id}" aria-expanded="true" aria-controls="collapseOne">
+												</a>
+											</h4>
+										</div>
+										<div th:id="'collapseOne'+${cls.id}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body">
+												<span th:each="cs,chi : ${cls.childs}" id="'par'+${sta.index}">
+													<input th:onclick="'checkSingle(this)'" style="vertical-align: middle;" type="checkbox" data-th-index="${chi.index}"  th:value="${cs.id}" name="childs" th:id="'index'+${sta.index}+'cs'+${chi.index}">
+													<lable th:onclick="'checkSingle(this)'" th:for="'index'+${sta.index}+'cs'+${chi.index}" data-th-index="${chi.index}" style="vertical-align: middle;display: inline-block;height: 46px;line-height: 50px;margin-right: 1rem;"  th:text="${cs.name}"> </lable>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+
+
+
+							<div id="cls">
+								<div class="form-group">
+									<label class="col-sm-3 control-label">分类名称:</label>
+									<div class="col-sm-8">
+
+
+										<select  id="cid" name="cid" class="form-control" required="required" style="width: 15rem;">
+											<option value="" >请选择</option>
+										</select>
+										<br/>
+									</div>
+								</div>
+							</div>
+
+							<!--二级分类的-->
+							<div id="twos">
+								<div class="form-group">
+									<label class="col-sm-3 control-label">分类名称:</label>
+									<div class="col-sm-8">
+
+
+										<select  id="t1"  class="form-control" required="required" style="width: 15rem;">
+											<option value="" >请选择</option>
+										</select>
+										<br/>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label">二级分类:</label>
+									<div class="col-sm-8">
+
+
+										<select  id="t2"  class="form-control" required="required" style="width: 15rem;">
+											<option value="" >请选择</option>
+										</select>
+										<br/>
+									</div>
+								</div>
+
+							</div>
+
+
+
+							<div class="form-group" style="text-align: center;">
+								<!--<label class="col-sm-3 layui-form-label">批量上传全景图：</label>-->
+								<div class="col-sm-8">
+									<input type="hidden" name="slide_show" class="multiple_show_img" value="">
+
+
+								<div class="layui-upload">
+									<button type="button" class="layui-btn" id="multiple_img_upload">批量上传全景色图</button>
+								<!--	<blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">-->
+
+										<div class="layui-upload-list" id="div-slide_show" style="margin-left: 20rem;">
+
+										</div>
+
+								<!--	</blockquote>-->
+								</div>
+
+								</div>
+
+	<!--容器-->							</div>
+<div id="context">
+
+</div>
+
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/vrs/pro/add2.js">
+	</script>
+
+	<script type="text/javascript" src="/js/appjs/common.js"></script>
+	<script src="/js/layui.js"></script>
+
+	<script>
+		$("#context").hide();
+
+			var index=0;
+		var multiple_images = [];
+		layui.use('upload', function () {
+			var upload = layui.upload;
+			//多图片上传
+			upload.render({
+				elem: '#multiple_img_upload'
+				,url: '/vr/colorType/uploadQjt?name=pro',
+						size: 60000,
+						accept: 'file'
+				,multiple: true
+				,before: function(obj){
+
+				}
+				,done: function(res){
+
+					//如果上传成功
+					if (res.code == 0) {
+						var context=$("#div-slide_show");
+
+						var del='<span id="del'+index+'" onclick="del('+index+')" class="layui-btn layui-btn-danger layui-btn-xs btn-sm">删除</span>';
+						var cons='';
+						if(index>5){
+							cons="<div style='margin-top: 3rem;' class='col-md-2'  id='c"+index+"'>"+del+"<img src='"+res.fileName+"'  width='150px' height='100px'> </div>";
+						}else{
+							cons="<div class='col-md-2'  id='cs"+index+"'>"+del+"<img src='"+res.fileName+"'  width='150px' height='100px'> </div>";
+						}
+						context.append(cons)
+
+						$("#context").append("<input id='fx"+index+"' type='checkbox' name='imgs' checked='true' value='"+res.fileName+"' />")
+						//追加图片成功追加文件名至图片容器
+						index++;
+
+					}else {
+						//提示信息
+						dialog.tip(res.msg);
+					}
+				}
+			});
+
+		});
+
+		//单击图片删除图片 【注册全局函数】
+		function del(index){
+
+		 	$("#cs"+index).remove();
+			//$("#c"+index).remove();
+			//复选框删除
+			$("#fx"+index).prop("checked",false);
+
+		}
+	</script>
+
+	<script>
+		function ff(id) {
+
+ 						var sta=$("#c"+id).prop("checked");
+						$("#c"+id).prop("checked",!sta)
+		}
+
+		function to_xz(chiid,sid) {
+			//$("#"+chiid+"cs"+sid)
+			var len=$("#par"+sid).find(":checkbox").length;
+			/*	alert(len);
+			alert(chiid+".."+sid);*/
+		}
+	</script>
+
+	<script>
+	//imageUpload("uploadlogo","pro","simg","img");
+		imageUpload2("uploadlogo","pro","simg","img");
+
+		imageUpload("uploadlogo2","pro","simgs","simg1");
+
+		function delChecbox(){
+			var lens=document.getElementsByName("childs");
+			for (let i = 0; i <lens.length ; i++) {
+				lens[i].checked=false;
+			}
+
+		}
+
+	$(function () {
+		$("input").addClass("input-lg");
+
+      		//改变事件
+			$("#cls").hide();
+			$("#bigCls").hide();
+			$("#twos").hide();
+
+
+		//	$("#counts").hide();
+
+			$("#typeid").change(function () {
+				//复选框清空
+				$("#cid2").val('');
+
+			//	alert($("#cid2").val());
+				//alert($("#cid2").val());
+				$("#cid option:not(:first)").remove();
+				$("#t1 option:not(:first)").remove();
+				$("#t2 option:not(:first)").remove();
+				delChecbox();
+				$("#cid").val("");
+
+				if(this.value=='') {
+					$("#cls").hide();
+					$("#bigCls").hide();
+
+				}
+					//拿到id去获取typeid 选择不同的分类
+					$.get("/vrs/titleCls/getTypeid/"+this.value,function (data) {
+							//alert(data.name+"//"+data.typeid);
+							if (data.typeid==1){
+
+								//查询二级分类的表
+								$("#cls").hide();
+								$("#cid option:not(:first)").remove();
+
+								$("#counts").hide();
+								$("#count").val('');
+								$("#pricce").val('');
+								$("#twos").hide();
+								$("#bigCls").show();
+
+
+							}
+							else if (data.typeid==4||data.typeid==3){
+
+								//2二级分类隐藏
+								$("#bigCls").hide();
+							//	$("#bigCls").empty();
+								$("#cls").show();
+								$("#twos").hide();
+								var tableName="";
+
+										//门窗设计
+										if(data.typeid==3){
+											$("#pric").hide();
+											$("#counts").hide();
+											$("#count").val('');
+											$("#pricce").val('');
+											tableName="vrs_img_cls4";
+
+										}
+										//高端画册
+										if(data.typeid==4){
+											//价格数量才显示出来
+											$("#pric").show();
+											$("#counts").show();
+
+											tableName="vrs_img_cls3";
+										}
+
+										$.post("/vrs/imgCls2/queryTableCls",{"tableName":tableName},function (data) {
+												for (let i = 0; i <data.length; i++) {
+														$("#cid").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+												}
+										});
+
+
+							}
+							else if(data.typeid==2){
+								$("#cid2").val('');
+								 delChecbox();
+								$("#bigCls").hide();
+								$("#pric").hide();
+								$("#counts").hide();
+								$("#count").val('');
+								$("#pricce").val('');
+								$("#cid").val('');
+								$("#cls").hide();
+								$("#twos").show();
+								//查询父分类
+								$.post("/vrs/imgCls2/queryParentCls",{"pid":0},function (data) {
+									for (let i = 0; i <data.length; i++) {
+										 $("#t1").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+									}
+
+								});
+							}
+						})
+					});
+
+			//改变事件
+		$("#t1").change(function () {
+
+			$("#t2 option:not(:first)").remove();
+			$.post("/vrs/imgCls2/queryParentCls",{"pid":this.value},function (data) {
+				for (let i = 0; i <data.length; i++) {
+					$("#t2").append("<option value='"+data[i].id+"'>"+data[i].name+"</option>")
+				}
+
+			});
+
+		});
+
+		$("#t2").change(function () {
+
+             $("#cid2").val(this.value);
+
+		})
+	})
+
+
+	function checks(dx) {
+			$("#"+dx).prop("checked",true);
+	}
+
+	var currentindex = -1;
+	function checkSingle(obj){
+		//获取对象
+		var $obj = $(obj);
+		var flag = $obj.prop("checked") ? $obj.prop("checked") : true;
+		var index = $obj.attr("index");
+
+		///获取input
+		var ids = $obj.parent().parent().parent().attr("id");
+		var lens = document.getElementById(ids).getElementsByTagName("input");
+		for(var i = 0;i < lens.length;i++){
+			if(i != index){
+				$(lens[i]).prop("checked",!flag);
+			}else{
+				if(currentindex == index){
+					$(lens[index]).prop("checked",!flag);
+					currentindex = -1;
+				}else{
+					$(lens[index]).prop("checked",flag);
+					currentindex = index;
+				}
+			}
+		}
+	}
+
+</script>
+</body>
+</html>

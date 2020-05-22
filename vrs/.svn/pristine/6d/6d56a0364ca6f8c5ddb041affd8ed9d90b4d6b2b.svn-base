@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title></title>
+	<link rel="stylesheet" href="/tsH5/style.css" media="screen" type="text/css" />
+	<style>
+		.zhuce{
+			font-size: 5px;
+			color: #007BFF;
+			text-decoration:none;
+		}
+	</style>
+
+</head>
+	
+<body>
+	<section class='container'>
+		<form id="bd">
+		<fieldset class='alpha'>
+			<legend><b>预约课程</b></legend>
+			<div class='frow'>
+				<input class='item' id="name" placeholder='姓名' type='text'>
+			</div>
+			<div class='frow'>
+				<input class='item' id="tel" placeholder='联系电话' type='number' minlength="11" maxlength="11">
+			</div>
+
+
+			<div class='frow'>
+				<a class='next-step' href='javascript:yy()'>预约</a>
+			</div>
+
+			<div class='frow' id="s" style="text-align: center;">
+				<font style="color: red;">请输入完整信息预约!</font>
+			</div>
+		<!--	<div class='frow'>
+				<a class="zhuce" href="reg.html">没有账号?那就快来注册加入我们吧！</a>
+			</div>-->
+		</fieldset>
+	</section>
+	<script src='/js/jquery.min.js'></script>
+	<script src="/tsH5/index.js"></script>
+
+<script>
+	$("#s").hide()
+	function yy() {
+		var name=$("#name").val()
+		var tel=$("#tel").val();
+		if(name===''||tel===''||name.length<=0||tel.length<=0){
+			$("#s").show();
+			return;
+		}
+
+
+		//提交预约
+		location.href="/h5/curr/to_xz?name="+name+"&tel="+tel;
+	}
+</script>
+</body>
+</html>

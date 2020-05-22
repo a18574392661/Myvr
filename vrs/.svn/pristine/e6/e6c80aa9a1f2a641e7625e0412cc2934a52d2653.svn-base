@@ -1,0 +1,28 @@
+package com.bootdo.pay;
+
+public class PayConfig {
+	
+	// 微信号
+	public static String APP_ID = "wx66b8b5da82c63493";
+	// 应用对应的凭证
+	public static String APP_SECRET = "6ed784a692bcb697c43766bf23c29035s";
+	// 商户密钥
+	public static String API_KEY = "3qgsertg3w4ghhbsrty4w35yghwe4t23";
+	// 商业号
+	public static String MCH_ID = "1590586091";
+	
+	// 回调地址
+	public static String NOTIFY_URL = "http://ysjvr.cn/api/wxpay/payNotify";
+	//public static String NOTIFY_URL = "http://localhostUrl/resourceManager/xxxxxx?userid=";
+	
+	//微信支付h5 回调地址
+	public static String NOTIFY_URL_H5 = "http://ysjvr.cn/api/wxpay/payNotify";
+	// 商品名称
+	public static String BODY = "长沙铭远网络科技有限公司 ";
+	// 请求地址
+	public static String UFDODER_URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+	// 微信支付V2账单查询接口
+	public static String ORDERQUERY = "https://api.mch.weixin.qq.com/pay/orderquery";
+
+	public static String UFDODER_SAO_URL = "https://api.mch.weixin.qq.com/pay/micropay";
+}

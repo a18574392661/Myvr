@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.vr.dao.ProductActiveCodeDao">
+
+	<select id="getProductActiveCodeByCode" resultType="com.bootdo.vr.domain.ProductActiveCodeDO">
+	select * from vr_product_active_code where active_code=#{value}
+	</select>
+
+	<select id="get" resultType="com.bootdo.vr.domain.ProductActiveCodeDO">
+		select `id`,`product_id`,`active_code`,`create_time`,`device_code`,`active_time`,`status` from vr_product_active_code where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.vr.domain.ProductActiveCodeDO">
+		select a.*,b.name productName from vr_product_active_code a
+		left join vr_product_info b on a.product_id=b.id
+        <where>  
+		  		  <if test="id != null and id != ''"> and a.id = #{id} </if>
+		  		  <if test="productId != null and productId != ''"> and a.product_id = #{productId} </if>
+		  		  <if test="activeCode != null and activeCode != ''"> and a.active_code like concat('%', #{activeCode}, '%') </if>
+		  		  <if test="createTime != null and createTime != ''"> and a.create_time = #{createTime} </if>
+		  		  <if test="deviceCode != null and deviceCode != ''"> and a.device_code = #{deviceCode} </if>
+		  		  <if test="activeTime != null and activeTime != ''"> and a.active_time = #{activeTime} </if>
+		  		  <if test="status != null and status != ''"> and a.status = #{status} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from vr_product_active_code
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="activeCode != null and activeCode != ''"> and active_code = #{activeCode} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="deviceCode != null and deviceCode != ''"> and device_code = #{deviceCode} </if>
+		  		  <if test="activeTime != null and activeTime != ''"> and active_time = #{activeTime} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.vr.domain.ProductActiveCodeDO">
+		insert into vr_product_active_code
+		(
+			`id`, 
+			`product_id`, 
+			`active_code`, 
+			`create_time`, 
+			`device_code`, 
+			`active_time`, 
+			`status`
+		)
+		values
+		(
+			#{id}, 
+			#{productId}, 
+			#{activeCode}, 
+			#{createTime}, 
+			#{deviceCode}, 
+			#{activeTime}, 
+			#{status}
+		)
+	</insert>
+	
+	<insert id="saveBatch" parameterType="java.util.Map">
+		insert into vr_product_active_code (`product_id`, `active_code`, `create_time`,`status`)
+		values
+		<foreach item="code" collection="codes" open="" separator="," close="">
+			(#{productId}, #{code}, #{createTime}, #{status})
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterType="com.bootdo.vr.domain.ProductActiveCodeDO">
+		update vr_product_active_code 
+		<set>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="activeCode != null">`active_code` = #{activeCode}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="deviceCode != null">`device_code` = #{deviceCode}, </if>
+			<if test="activeTime != null">`active_time` = #{activeTime}, </if>
+			<if test="status != null">`status` = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from vr_product_active_code where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from vr_product_active_code where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

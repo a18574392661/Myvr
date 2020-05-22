@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en"  >
+
+<div class="navbar-wrapper"  th:fragment="tit">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar" ></span>
+            <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+                </button>
+                <img src="/vrH5/newVr/img/logo.png" />
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+
+                    <!--th:onclick="'javascript:huan('+${menuPro.id}+','+${sta.index}+');'"-->
+                    <li th:each="mu : ${maps.menu}" th:onMouseOver="'javascript:showInform('+${mu.id}+');'" th:onMouseOut="'javascript:hiddenInform('+event+','+${mu.id}+');'">
+
+                        <a class="page-scroll"  th:href="${mu.hrefs}" th:text="${mu.name}" >
+
+                            <span th:if="${mu.id==2 || mu.id=='2' || mu.id eq '2'}">
+                                   <img src="/vrH5/newVr/img/caidan.png" />
+                            </span>
+
+                            首页</a></li>
+
+                    <li><a class="page-scroll" style="color: yellow;" href="#">个人VIP</a></li>
+                    <li><a class="page-scroll" style="color: yellow;" href="#">企业VIP</a></li>
+                    <li><a class="page-scroll" style="color: yellow;" href="#">工厂VIP</a></li>
+
+                 <!--   <a href="/vrs/user/to_userPro">
+                    <div class="page-scroll-div">
+                       <font class="page-scroll-font" >我的方案</font>
+                    </div>
+                    </a>-->
+
+                    <!--<div class="page-scroll-div2">
+                        <font class="page-scroll-font2"><span th:text="${username !=null?username:'登录'}" onclick="toLogin(this)">登录</span>/ <span  onclick="toOutOrReg(this)" th:text="${username !=null?'退出':'注册'}">注册</span></font>
+                    </div>-->
+
+                    <div class="page-scroll-div">
+                        <font class="page-scroll-font">我的方案</font>
+                    </div>
+
+
+                    <button class="page-scroll-div2" >
+                        <font class="page-scroll-font2" onMouseOver="javascript:show(this,'xuan');" onMouseOut="hide(this,'xuan')">登录 / 注册</font>
+                    </button>
+
+                    <div id="xuan" class="xuan">
+                        <div class="xuan-title">
+                            <font class="xuan-title-content">1步轻松登录</font>
+                        </div>
+                        <div>
+                            <p style="margin-top: 20px;">
+                                <img src="/vrH5/newVr/img/img/manyou.png" class="xuan-content" />
+                                480,000+模板在线编辑
+                            </p>
+                            <p style="margin-top: 20px;">
+                                <img src="/vrH5/newVr/img/yunduan.png" class="xuan-content" />
+                                云端同步我的设计
+                            </p>
+                            <p style="margin-top: 20px;">
+                                <img src="/vrH5/newVr/img/down.png" class="xuan-content" />
+                                一键高清无水印下载
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <!-- 导航菜单 -->
+                    <div id="inform" onMouseOver="javascript:showInform(2);" onMouseOut="hiddenInform(event,2)" class="xuan2">
+                        <div class="containor">
+                                    <div class="nav_left">
+
+                                        <ul>
+                                            <li th:each="cls,sta : ${maps.clsTree}"  th:data-id="${sta.index}"> <span th:text="${cls.name}">美妆/个人护理</span></li>
+
+                                        </ul>
+
+                                    </div>
+                            <div class="nav_right">
+
+                                <div class="sub hide" th:each="cls,sta : ${maps.clsTree}" th:data-id="${sta.index}">
+                                    <dl th:each="chi : ${cls.childs}" >
+                                        <dt><a th:text="${chi.name}">护肤品</a></dt>
+                                        <dd >
+                                            <a th:each="san : ${chi.childs}" th:text="${san.name}">官方直售</a>
+
+                                        </dd>
+
+                                    </dl>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!--SSS-->
+                    </div>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<div id="inSlider" class="carousel slide carousel-fade" data-ride="carousel" th:fragment="lbtAll">
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <div class="container">
+                <div class="row">
+                    <div class="text-center" style="margin-top: 100px;">
+                        <h1 class="head-title">云视网·导购神器</h1>
+                        <input id="name" class="sou" placeholder="按照风格、户型、空间、编号搜索" />
+                        <img src="/vrH5/newVr/img/sousuo.jpg" class="suo" onclick="search()" />
+                        <h5 class="h5">热门搜索：画册设计  画册定制  极简设计  阳光房</h5>
+
+                        <div class="poster-main B_Demo" style="margin-top:50px">
+                            <div class="poster-btn poster-prev-btn"></div>
+                            <ul class="poster-list" id="cnm">
+
+
+                            </ul>
+                            <div class="poster-btn poster-next-btn"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
+
+
+
+        <div  th:fragment="cen">
+
+        <section class="features container services text-center">
+            <img src="/vrH5/newVr/img/sa.jpg" width="250"  style="margin-left: -170px;position: absolute;"/>
+        </section>
+
+        <section  class="features container services" style="margin-top: 50px;">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="designs">
+                        <span class="desings-title">海量设计方案</span>
+                    </div>
+                    <div class="design-con">
+                        <span class="designs-content">定制行业顶尖设计方案，在线更新</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="designs">
+                        <span class="desings-title">一键上架展示</span>
+                    </div>
+                    <div class="design-con">
+                        <span class="designs-content">ipad,手机，触屏机多媒体展示<br>方便快捷，针对不同商家分类展示</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="designs">
+                        <span class="desings-title">一键换色展示</span>
+                    </div>
+                    <div class="design-con">
+                        <span class="designs-content">全景图实线一图多色切换展示，<br>更多选择，更多体验</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+            <section id="features" class="container services text-center">
+                <button class="ollie">
+                    <img src="/vrH5/newVr/img/bofang.png" />
+                    新手教程
+                </button>
+                <button class="hiden"></button>
+                <button class="ollie">开始上架</button>
+            </section>
+
+
+
+
+        </div>
+
+
+
+<script>
+    $.ajax
+    ({
+        cache: false,
+        async: false,   //
+        dataType: 'json', type: 'post',
+        url: "/pro/h5/queryLbAll",
+        success: function (data)
+        {
+            for (var j = 0; j <data.length ; j++) {
+                $("#cnm").append('<li  height="290px" class="poster-item"><img  src="'+data[j].img+'" onclick="lbDetail('+data[j].id+')" width="100%" height="290px"></li>')
+
+            }
+        }
+
+    });
+
+    //})
+
+
+    function toLogin(dx) {
+  var d=$(dx).html();
+    if ('登录'===d){
+        //去登陆页面
+        location.href="/vrs/user/login";
+
+    }
+    }
+
+    function toOutOrReg(toOutOrReg) {
+        var d=$(toOutOrReg).html();
+        if ('退出'===d){
+            //去登陆页面
+            location.href="/vrs/user/to_outLogin";
+
+        }
+        //去注册页面
+
+    }
+
+
+
+</script>
+
+
+<script src="/vrH5/newVr/js/lun/PicCarousel.js" ></script>
+
+
+
+<script>
+
+
+    $('button').click(function(){
+        $('.pop-up').addClass('open');
+    });
+
+    $('.pop-up .close').click(function(){
+        $('.pop-up').removeClass('open');
+    });
+
+    function show(obj,id) {
+        var objDiv = $("#"+id+"");
+        $(objDiv).css("display","block");
+        $(objDiv).css("left", event.clientX);
+        $(objDiv).css("top", event.clientY + 10);
+    }
+    function hide(obj,id) {
+        var objDiv = $("#"+id+"");
+        $(objDiv).css("display", "none");
+    }
+
+    $(function() {
+        $('.containor').on('mouseenter', function() {
+            $(".nav_right").removeClass('hide');
+        }).on('mouseleave', function() {
+            $(".nav_right").addClass('hide');
+            $(".sub").addClass('hide');
+        }).on('mouseenter', 'li', function(e) {
+            var li_data = $(this).attr('data-id');
+            $(".sub").addClass('hide');
+            $('.sub[data-id="' + li_data + '"]').removeClass('hide');
+        })
+    })
+
+    //显示悬浮层
+    function showInform(id){
+        if (id!=2){
+            return;
+        }
+
+        document.getElementById("inform").style.display='block';
+        // document.getElementById("inform").css("display","block");
+    }
+
+    //隐藏悬浮层
+    function hiddenInform(event,id){
+        if (id!=2){
+            return;
+        }
+
+        var informDiv = document.getElementById('inform');
+        var x=event.clientX;
+        var y=event.clientY;
+        var divx1 = informDiv.offsetLeft;
+        var divy1 = informDiv.offsetTop;
+        var divx2 = informDiv.offsetLeft + informDiv.offsetWidth;
+        var divy2 = informDiv.offsetTop + informDiv.offsetHeight;
+        if( x < divx1 || x > divx2 || y < divy1 || y > divy2){
+            document.getElementById('inform').style.display='none';
+        }
+
+    }
+
+
+    $(".A_Demo").PicCarousel("init");
+    $(".B_Demo").PicCarousel({
+        "width":1000,
+        "height":300,
+        "posterWidth":520,
+        "posterHeight":300,
+        "scale":0.9,
+        "speed":500,
+        "autoPlay":true,
+        "delay":1000,
+        "verticalAlign":"top"
+    });
+
+
+    function search(){
+        var name=$("#name").val();
+        location.href='/pro/h5/quertSearchPro?name='+name;
+
+    }
+
+
+</script>
+
+
+
+
+
+</html>
